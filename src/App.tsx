@@ -9,6 +9,7 @@ import type { UserProfile } from "./types/user";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { WorkoutPage } from "./pages/WorkoutPage/WorkoutPage";
 import { ExercisesPage } from "./pages/ExercisesPage/ExercisesPage";
+import { NutritionPage } from "./pages/NutritionPage/NutritionPage";
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -49,6 +50,7 @@ export default function App() {
         <Route index element={<HomePage user={user} />} />
         <Route path="workout" element={<WorkoutPage />} />
         <Route path="exercises" element={<ExercisesPage />} />
+        <Route path="/nutrition" element={<NutritionPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

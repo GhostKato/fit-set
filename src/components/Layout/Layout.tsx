@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { logoutUser } from "../../services/authOps";
 import { MusicPlayer } from "../MusicPlayer/MusicPlayer";
 import type { UserProfile } from "../../types/user";
@@ -16,19 +16,19 @@ export const Layout = ({ user }: LayoutProps) => {
     <div className={styles.wrapper}>
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <div className={styles.brand}>
+          <Link to="/" className={styles.brand}>
             Fit<span className={styles.brandAccent}>Set</span>
-          </div>
+          </Link>
 
           <nav className={styles.nav}>
-            <NavLink to="/" end className={getNavLinkClass}>
-              Главная
-            </NavLink>
             <NavLink to="/workout" className={getNavLinkClass}>
               Тренировка
             </NavLink>
             <NavLink to="/exercises" className={getNavLinkClass}>
               Упражнения
+            </NavLink>
+            <NavLink to="/nutrition" className={getNavLinkClass}>
+              Питание
             </NavLink>
           </nav>
 

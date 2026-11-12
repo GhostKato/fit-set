@@ -29,6 +29,12 @@
   font-weight: 800;
   color: #1e1e1e;
   letter-spacing: -0.5px;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.brand:hover {
+  opacity: 0.8;
 }
 
 .brandAccent {
