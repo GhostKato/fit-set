@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import { RestTimer } from "../../components/RestTimer/RestTimer";
+import styles from "./WorkoutPage.module.css";
 
 export const WorkoutPage = () => {
   const [searchParams] = useSearchParams();
@@ -23,12 +24,14 @@ export const WorkoutPage = () => {
 
   if (dayExercises.length === 0) {
     return (
-      <div>
-        <h2>На {selectedDay} упражнений пока нет</h2>
+      <div className={styles.emptyCard}>
+        <h2 className={styles.emptyTitle}>
+          На {selectedDay} упражнений пока нет
+        </h2>
         <button
           type="button"
           onClick={() => navigate("/exercises")}
-          style={{ padding: "10px 16px", cursor: "pointer" }}>
+          className={styles.addBtn}>
           Добавить упражнения
         </button>
       </div>
@@ -52,106 +55,74 @@ export const WorkoutPage = () => {
   const isLastExercise = currentIndex === dayExercises.length - 1;
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "15px",
-        }}>
-        <span style={{ fontWeight: "bold", color: "#28a745" }}>
+    <div className={styles.page}>
+      <div className={styles.topBar}>
+        <span className={styles.progressText}>
           {selectedDay} • Упражнение {currentIndex + 1} из {dayExercises.length}
         </span>
         <button
           type="button"
           onClick={() => navigate("/")}
-          style={{ padding: "6px 12px", cursor: "pointer" }}>
+          className={styles.finishTopBtn}>
           Завершить
         </button>
       </div>
 
-      <div
-        style={{
-          border: "1px solid #ddd",
-          borderRadius: "10px",
-          padding: "20px",
-        }}>
-        <span style={{ fontSize: "13px", color: "#666" }}>
+      <div className={styles.exerciseCard}>
+        <span className={styles.muscleBadge}>
           {currentExercise.muscleGroup}
         </span>
-        <h2 style={{ margin: "6px 0 12px 0" }}>{currentExercise.name}</h2>
+        <h2 className={styles.exerciseName}>{currentExercise.name}</h2>
 
-        <p
-          style={{
-            fontSize: "18px",
-            fontWeight: "bold",
-            color: "#28a745",
-            marginBottom: "15px",
-          }}>
+        <p className={styles.stats}>
           {currentExercise.sets} подх. × {currentExercise.reps} повт. • Вес:{" "}
           {currentExercise.weight || "Свой вес"}
         </p>
 
-        <div style={{ marginBottom: "20px" }}>
-          <h4 style={{ marginBottom: "8px" }}>Отметьте выполненные подходы:</h4>
-          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+        <div className={styles.setsSection}>
+          <h4 className={styles.setsHeading}>Отметьте выполненные подходы:</h4>
+          <div className={styles.setsGrid}>
             {currentSetsState.map((isDone, idx) => (
               <label
                 key={idx}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  padding: "8px 14px",
-                  border: "1px solid #28a745",
-                  borderRadius: "6px",
-                  backgroundColor: isDone ? "#28a745" : "transparent",
-                  color: isDone ? "#fff" : "#333",
-                  cursor: "pointer",
-                }}>
+                className={`${styles.setLabel} ${
+                  isDone ? styles.setLabelDone : ""
+                }`}>
                 <input
                   type="checkbox"
                   checked={isDone}
                   onChange={() => toggleSet(idx)}
-                  style={{ cursor: "pointer" }}
+                  className={styles.setCheckbox}
                 />
-                Подход {idx + 1}
+                <span>Подход {idx + 1}</span>
               </label>
             ))}
           </div>
         </div>
 
-        <div
-          style={{
-            fontSize: "14px",
-            lineHeight: "1.5",
-            color: "#333",
-            borderTop: "1px solid #eee",
-            paddingTop: "12px",
-          }}>
+        <div className={styles.details}>
           {currentExercise.targetMuscles && (
-            <p>
+            <p className={styles.detailItem}>
               <strong>Мышцы:</strong> {currentExercise.targetMuscles}
             </p>
           )}
           {currentExercise.howToDo && (
-            <p>
+            <p className={styles.detailItem}>
               <strong>Техника:</strong> {currentExercise.howToDo}
             </p>
           )}
           {currentExercise.handsMode && (
-            <p>
+            <p className={styles.detailItem}>
               <strong>Хват:</strong> {currentExercise.handsMode}
             </p>
           )}
           {currentExercise.palmPosition && (
-            <p>
+            <p className={styles.detailItem}>
               <strong>Ладони:</strong> {currentExercise.palmPosition}
             </p>
           )}
           {currentExercise.breathing && (
-            <p>
+            <p className={styles.detailItem}>
               <strong>Дыхание:</strong> {currentExercise.breathing}
             </p>
           )}
@@ -160,54 +131,23 @@ export const WorkoutPage = () => {
 
       <RestTimer />
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "20px",
-        }}>
+      <div className={styles.navBar}>
         <button
           type="button"
           disabled={currentIndex === 0}
           onClick={() => setCurrentIndex((prev) => prev - 1)}
-          style={{
-            padding: "10px 18px",
-            cursor: currentIndex === 0 ? "not-allowed" : "pointer",
-          }}>
+          className={styles.prevBtn}>
           ← Назад
         </button>
 
-        {isLastExercise ? (
-          <button
-            type="button"
-            onClick={() => navigate("/")}
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "#28a745",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}>
-            Завершить тренировку
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setCurrentIndex((prev) => prev + 1)}
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "#28a745",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}>
-            Следующее упражнение →
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={() =>
+            isLastExercise ? navigate("/") : setCurrentIndex((prev) => prev + 1)
+          }
+          className={styles.nextBtn}>
+          {isLastExercise ? "Завершить тренировку" : "Следующее упражнение →"}
+        </button>
       </div>
     </div>
   );

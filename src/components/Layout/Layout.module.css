@@ -1,0 +1,138 @@
+.wrapper {
+  min-height: 100vh;
+  background-color: #f4f6f8;
+  padding-bottom: 140px;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  background-color: #ffffff;
+  border-bottom: 1.5px solid #e2e5e9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.headerInner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.brand {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1e1e1e;
+  letter-spacing: -0.5px;
+}
+
+.brandAccent {
+  color: #28a745;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navLink {
+  padding: 8px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #555555;
+  transition: all 0.2s ease;
+}
+
+.navLink:hover {
+  background-color: #f0f2f5;
+  color: #1e1e1e;
+}
+
+.navLinkActive {
+  background-color: #e9f7ef;
+  color: #28a745;
+  font-weight: 700;
+}
+
+.navLinkActive:hover {
+  background-color: #dcf3e5;
+  color: #218838;
+}
+
+.userBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.userName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555555;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logoutBtn {
+  padding: 8px 14px;
+  min-height: 36px;
+  background-color: #ffffff;
+  color: #dc3545;
+  border: 1.5px solid #f5c2c7;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logoutBtn:hover {
+  background-color: #dc3545;
+  color: #ffffff;
+  border-color: #dc3545;
+}
+
+.main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+@media (max-width: 640px) {
+  .headerInner {
+    padding: 12px 16px;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+    justify-content: space-between;
+  }
+
+  .navLink {
+    flex: 1;
+    text-align: center;
+    padding: 10px 8px;
+    font-size: 14px;
+  }
+
+  .userName {
+    max-width: 110px;
+  }
+
+  .main {
+    padding: 18px 16px;
+  }
+}

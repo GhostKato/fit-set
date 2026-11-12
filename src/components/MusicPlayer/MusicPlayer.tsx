@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect, type CSSProperties } from "react";
+import { useState, useRef, useEffect } from "react";
+import styles from "./MusicPlayer.module.css";
 
 interface Station {
   id: number;
@@ -8,14 +9,13 @@ interface Station {
 }
 
 const NIGHTRIDE_HOST = "https://stream.nightride.fm";
-const SOMAFM_HOST = "https://ice5.somafm.com";
 
 const PRESET_STATIONS: Station[] = [
   {
     id: 1,
-    title: "Nightride FM",
-    genre: "Synthwave / Phonk",
-    url: `${NIGHTRIDE_HOST}/nightride.mp3`,
+    title: "Datawave FM",
+    genre: "Cyberpunk / Gym",
+    url: `${NIGHTRIDE_HOST}/datawave.mp3`,
   },
   {
     id: 2,
@@ -25,21 +25,21 @@ const PRESET_STATIONS: Station[] = [
   },
   {
     id: 3,
-    title: "Datawave FM",
-    genre: "Cyberpunk / Gym",
-    url: `${NIGHTRIDE_HOST}/datawave.mp3`,
-  },
-  {
-    id: 4,
     title: "EBSM Radio",
     genre: "Dark / Industrial",
     url: `${NIGHTRIDE_HOST}/ebsm.mp3`,
   },
   {
-    id: 5,
+    id: 4,
     title: "Horrorsynth",
     genre: "Heavy Synth",
     url: `${NIGHTRIDE_HOST}/horrorsynth.mp3`,
+  },
+  {
+    id: 5,
+    title: "Nightride FM",
+    genre: "Synthwave / Phonk",
+    url: `${NIGHTRIDE_HOST}/nightride.mp3`,
   },
 ];
 
@@ -47,7 +47,7 @@ export const MusicPlayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [isMinimized, setIsMinimized] = useState<boolean>(false);
+  const [isMinimized, setIsMinimized] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string>("");
 
   const currentStation = PRESET_STATIONS[currentIndex];
@@ -94,18 +94,7 @@ export const MusicPlayer = () => {
   };
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: "#1e1e1e",
-        color: "#fff",
-        padding: "12px 16px",
-        borderTop: "2px solid #28a745",
-        zIndex: 1000,
-      }}>
+    <div className={styles.player}>
       <audio
         ref={audioRef}
         src={currentStation.url}
@@ -116,95 +105,55 @@ export const MusicPlayer = () => {
         }}
       />
 
-      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: "10px",
-            flexWrap: "wrap",
-          }}>
-          <div>
-            <span
-              style={{
-                fontSize: "12px",
-                color: "#28a745",
-                fontWeight: "bold",
-              }}>
+      <div className={styles.container}>
+        <div className={styles.topBar}>
+          <div className={styles.stationInfo}>
+            <span className={styles.stationMeta}>
               РАДИО #{currentStation.id} • {currentStation.genre}
             </span>
-            <div style={{ fontSize: "15px", fontWeight: "bold" }}>
-              {currentStation.title}
-            </div>
-            {errorMsg && (
-              <div
-                style={{
-                  fontSize: "12px",
-                  color: "#ff6b6b",
-                  marginTop: "2px",
-                }}>
-                {errorMsg}
-              </div>
-            )}
+            <div className={styles.stationTitle}>{currentStation.title}</div>
+            {errorMsg && <div className={styles.errorMsg}>{errorMsg}</div>}
           </div>
 
-          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+          <div className={styles.controls}>
             <button
               type="button"
               onClick={handlePrev}
-              style={btnStyle}
+              className={styles.controlBtn}
               title="Предыдущая">
               ⏮
             </button>
             <button
               type="button"
               onClick={togglePlay}
-              style={{
-                ...btnStyle,
-                backgroundColor: "#28a745",
-                padding: "8px 16px",
-                fontWeight: "bold",
-              }}>
+              className={`${styles.controlBtn} ${styles.playBtn}`}>
               {isPlaying ? "Пауза" : "Играть"}
             </button>
             <button
               type="button"
               onClick={handleNext}
-              style={btnStyle}
+              className={styles.controlBtn}
               title="Следующая">
               ⏭
             </button>
             <button
               type="button"
               onClick={handleRandom}
-              style={btnStyle}
+              className={styles.controlBtn}
               title="Случайная станция">
               🎲
             </button>
             <button
               type="button"
               onClick={() => setIsMinimized((prev) => !prev)}
-              style={{
-                ...btnStyle,
-                border: "1px solid #555",
-                backgroundColor: "transparent",
-              }}>
+              className={`${styles.controlBtn} ${styles.toggleBtn}`}>
               {isMinimized ? "Список" : "Скрыть"}
             </button>
           </div>
         </div>
 
         {!isMinimized && (
-          <div
-            style={{
-              display: "flex",
-              gap: "6px",
-              flexWrap: "wrap",
-              marginTop: "12px",
-              paddingTop: "10px",
-              borderTop: "1px solid #333",
-            }}>
+          <div className={styles.stationsList}>
             {PRESET_STATIONS.map((station, idx) => (
               <button
                 key={station.id}
@@ -213,18 +162,9 @@ export const MusicPlayer = () => {
                   setCurrentIndex(idx);
                   setIsPlaying(true);
                 }}
-                style={{
-                  padding: "5px 10px",
-                  fontSize: "12px",
-                  borderRadius: "14px",
-                  border:
-                    idx === currentIndex
-                      ? "1px solid #28a745"
-                      : "1px solid #444",
-                  backgroundColor: idx === currentIndex ? "#28a745" : "#2a2a2a",
-                  color: "#fff",
-                  cursor: "pointer",
-                }}>
+                className={`${styles.stationChip} ${
+                  idx === currentIndex ? styles.stationChipActive : ""
+                }`}>
                 {station.id}. {station.title}
               </button>
             ))}
@@ -233,14 +173,4 @@ export const MusicPlayer = () => {
       </div>
     </div>
   );
-};
-
-const btnStyle: CSSProperties = {
-  padding: "8px 12px",
-  backgroundColor: "#333",
-  color: "#fff",
-  border: "none",
-  borderRadius: "6px",
-  cursor: "pointer",
-  fontSize: "14px",
 };

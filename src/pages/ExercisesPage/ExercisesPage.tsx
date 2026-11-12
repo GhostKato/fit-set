@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addExercise } from "../../redux/exercises/operations";
 import { ExerciseCard } from "../../components/ExerciseCard/ExerciseCard";
 import type { NewExercise } from "../../types/exercise";
+import styles from "./ExercisesPage.module.css";
 
 const ALL_DAYS = [
   "Понедельник",
@@ -72,119 +73,108 @@ export const ExercisesPage = () => {
     .sort((a, b) => a.order - b.order);
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "15px",
-        }}>
-        <h2>Моя программа упражнений</h2>
+    <div className={styles.page}>
+      <div className={styles.header}>
+        <h2 className={styles.title}>Моя программа упражнений</h2>
         <button
           type="button"
           onClick={() => setIsFormOpen((prev) => !prev)}
-          style={{
-            padding: "10px 16px",
-            backgroundColor: "#28a745",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-          }}>
+          className={`${styles.toggleFormBtn} ${
+            isFormOpen ? styles.toggleFormBtnActive : ""
+          }`}>
           {isFormOpen ? "Закрыть форму" : "+ Добавить упражнение"}
         </button>
       </div>
 
       {isFormOpen && (
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "grid",
-            gap: "10px",
-            padding: "15px",
-            border: "1px solid #28a745",
-            borderRadius: "8px",
-            marginBottom: "20px",
-          }}>
-          <h3>Новое упражнение</h3>
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <h3 className={styles.formTitle}>Новое упражнение</h3>
+
+          <div className={styles.row}>
             <select
               name="day"
               value={formData.day}
               onChange={handleChange}
-              style={{ padding: "8px" }}>
+              className={styles.select}>
               {ALL_DAYS.map((day) => (
                 <option key={day} value={day}>
                   {day}
                 </option>
               ))}
             </select>
+
             <input
               name="dayTitle"
               value={formData.dayTitle}
               onChange={handleChange}
               placeholder="Тема дня (Грудь и Трицепс)"
-              style={{ padding: "8px", flex: 1 }}
+              className={`${styles.input} ${styles.flex1}`}
             />
+
             <input
               name="muscleGroup"
               value={formData.muscleGroup}
               onChange={handleChange}
               placeholder="Группа мышц"
-              style={{ padding: "8px" }}
+              className={`${styles.input} ${styles.flex1}`}
             />
           </div>
 
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+          <div className={styles.row}>
             <input
               name="name"
               value={formData.name}
               onChange={handleChange}
               placeholder="Название упражнения *"
               required
-              style={{ padding: "8px", flex: 2 }}
+              className={`${styles.input} ${styles.flex2}`}
             />
-            <input
-              type="number"
-              name="order"
-              value={formData.order}
-              onChange={handleChange}
-              placeholder="№"
-              title="Порядок в тренировке"
-              style={{ padding: "8px", width: "65px" }}
-            />
+
+            <label className={styles.numberGroup}>
+              <span>№:</span>
+              <input
+                type="number"
+                name="order"
+                value={formData.order}
+                onChange={handleChange}
+                min={1}
+                title="Порядок в тренировке"
+                className={`${styles.input} ${styles.numberInput}`}
+              />
+            </label>
           </div>
 
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            <label>
-              Подходы:{" "}
+          <div className={styles.row}>
+            <label className={styles.numberGroup}>
+              <span>Подходы:</span>
               <input
                 type="number"
                 name="sets"
                 value={formData.sets}
                 onChange={handleChange}
                 min={1}
-                style={{ padding: "8px", width: "65px" }}
+                className={`${styles.input} ${styles.numberInput}`}
               />
             </label>
-            <label>
-              Повторы:{" "}
+
+            <label className={styles.numberGroup}>
+              <span>Повторы:</span>
               <input
                 type="number"
                 name="reps"
                 value={formData.reps}
                 onChange={handleChange}
                 min={1}
-                style={{ padding: "8px", width: "65px" }}
+                className={`${styles.input} ${styles.numberInput}`}
               />
             </label>
+
             <input
               name="weight"
               value={formData.weight}
               onChange={handleChange}
               placeholder="Рабочий вес (например, 50 кг)"
-              style={{ padding: "8px", flex: 1 }}
+              className={`${styles.input} ${styles.flex1}`}
             />
           </div>
 
@@ -193,87 +183,70 @@ export const ExercisesPage = () => {
             value={formData.targetMuscles}
             onChange={handleChange}
             placeholder="Целевые мышцы (например, Верх груди)"
-            style={{ padding: "8px" }}
+            className={styles.input}
           />
+
           <textarea
             name="howToDo"
             value={formData.howToDo}
             onChange={handleChange}
             placeholder="Как выполнять (техника)"
             rows={2}
-            style={{ padding: "8px" }}
+            className={styles.textarea}
           />
+
           <input
             name="handsMode"
             value={formData.handsMode}
             onChange={handleChange}
             placeholder="Хват / режим рук (например, Широкий хват)"
-            style={{ padding: "8px" }}
+            className={styles.input}
           />
+
           <input
             name="palmPosition"
             value={formData.palmPosition}
             onChange={handleChange}
             placeholder="Положение ладоней (например, Прямой хват)"
-            style={{ padding: "8px" }}
+            className={styles.input}
           />
+
           <input
             name="breathing"
             value={formData.breathing}
             onChange={handleChange}
             placeholder="Дыхание (например, Выдох на усилии)"
-            style={{ padding: "8px" }}
+            className={styles.input}
           />
 
-          <button
-            type="submit"
-            style={{
-              padding: "12px",
-              backgroundColor: "#28a745",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}>
+          <button type="submit" className={styles.submitBtn}>
             Сохранить в базу
           </button>
         </form>
       )}
 
-      <div
-        style={{
-          display: "flex",
-          gap: "8px",
-          marginBottom: "15px",
-          flexWrap: "wrap",
-        }}>
+      <div className={styles.filters}>
         {["Все", ...ALL_DAYS].map((day) => (
           <button
             key={day}
             type="button"
             onClick={() => setSelectedDay(day)}
-            style={{
-              padding: "6px 12px",
-              borderRadius: "20px",
-              border: "1px solid #28a745",
-              backgroundColor: selectedDay === day ? "#28a745" : "transparent",
-              color: selectedDay === day ? "#fff" : "#28a745",
-              cursor: "pointer",
-            }}>
+            className={`${styles.filterBtn} ${
+              selectedDay === day ? styles.filterBtnActive : ""
+            }`}>
             {day}
           </button>
         ))}
       </div>
 
-      {isLoading && <p>Загрузка упражнений...</p>}
-      {error && <p style={{ color: "red" }}>Ошибка: {error}</p>}
+      {isLoading && <p className={styles.statusText}>Загрузка упражнений...</p>}
+      {error && <p className={styles.errorText}>Ошибка: {error}</p>}
 
       {!isLoading && filteredExercises.length === 0 ? (
-        <p style={{ color: "#666" }}>
+        <div className={styles.emptyState}>
           Пока нет упражнений. Нажмите «+ Добавить упражнение», чтобы создать
           первое.
-        </p>
+        </div>
       ) : (
         filteredExercises.map((exercise) => (
           <ExerciseCard key={exercise.id} exercise={exercise} />

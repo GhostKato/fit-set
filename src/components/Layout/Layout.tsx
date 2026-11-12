@@ -2,53 +2,49 @@ import { NavLink, Outlet } from "react-router-dom";
 import { logoutUser } from "../../services/authOps";
 import { MusicPlayer } from "../MusicPlayer/MusicPlayer";
 import type { UserProfile } from "../../types/user";
+import styles from "./Layout.module.css";
 
 interface LayoutProps {
   user: UserProfile;
 }
 
 export const Layout = ({ user }: LayoutProps) => {
+  const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
+    isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
+
   return (
-    <div style={{ paddingBottom: "160px" }}>
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "15px 20px",
-          borderBottom: "1px solid #eee",
-          flexWrap: "wrap",
-          gap: "10px",
-        }}>
-        <div style={{ fontSize: "20px", fontWeight: "bold" }}>
-          Fit<span style={{ color: "#28a745" }}>Set</span>
-        </div>
+    <div className={styles.wrapper}>
+      <header className={styles.header}>
+        <div className={styles.headerInner}>
+          <div className={styles.brand}>
+            Fit<span className={styles.brandAccent}>Set</span>
+          </div>
 
-        <nav style={{ display: "flex", gap: "15px" }}>
-          <NavLink to="/">Главная</NavLink>
-          <NavLink to="/workout">Тренировка</NavLink>
-          <NavLink to="/exercises">Упражнения</NavLink>
-        </nav>
+          <nav className={styles.nav}>
+            <NavLink to="/" end className={getNavLinkClass}>
+              Главная
+            </NavLink>
+            <NavLink to="/workout" className={getNavLinkClass}>
+              Тренировка
+            </NavLink>
+            <NavLink to="/exercises" className={getNavLinkClass}>
+              Упражнения
+            </NavLink>
+          </nav>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <span style={{ fontSize: "14px", color: "#666" }}>
-            {user.name || user.email}
-          </span>
-          <button
-            type="button"
-            onClick={logoutUser}
-            style={{
-              padding: "6px 12px",
-              cursor: "pointer",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}>
-            Выйти
-          </button>
+          <div className={styles.userBlock}>
+            <span className={styles.userName}>{user.name || user.email}</span>
+            <button
+              type="button"
+              onClick={logoutUser}
+              className={styles.logoutBtn}>
+              Выйти
+            </button>
+          </div>
         </div>
       </header>
 
-      <main style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
+      <main className={styles.main}>
         <Outlet />
       </main>
 

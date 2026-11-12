@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
-import type { UserProfile } from "../../types/workout.types";
+import type { UserProfile } from "../../types/user";
+import styles from "./HomePage.module.css";
 
 interface HomePageProps {
   user: UserProfile;
@@ -49,108 +50,59 @@ export const HomePage = ({ user }: HomePageProps) => {
   };
 
   return (
-    <div>
-      <h1 style={{ marginBottom: "6px" }}>
-        Привет, {user.name || "Спортсмен"}!
-      </h1>
-      <p style={{ color: "#666", marginBottom: "20px" }}>
+    <div className={styles.page}>
+      <h1 className={styles.greeting}>Привет, {user.name || "Спортсмен"}!</h1>
+      <p className={styles.dateText}>
         Сегодня: <strong>{todayName}</strong>
       </p>
 
       {todayExercises.length > 0 ? (
-        <div
-          style={{
-            backgroundColor: "#e9f7ef",
-            border: "2px solid #28a745",
-            borderRadius: "12px",
-            padding: "20px",
-            marginBottom: "28px",
-          }}>
-          <span
-            style={{
-              display: "inline-block",
-              backgroundColor: "#28a745",
-              color: "#fff",
-              fontSize: "12px",
-              fontWeight: "bold",
-              padding: "4px 10px",
-              borderRadius: "12px",
-              marginBottom: "10px",
-            }}>
-            ТРЕНИРОВКА СЕГОДНЯ
-          </span>
+        <div className={styles.todayCard}>
+          <span className={styles.badge}>ТРЕНИРОВКА СЕГОДНЯ</span>
 
-          <h2 style={{ margin: "0 0 8px 0" }}>
+          <h2 className={styles.todayTitle}>
             {todayName} — {todayExercises.at(0)?.dayTitle || "Тренировка"}
           </h2>
 
-          <p style={{ margin: "0 0 16px 0", color: "#333" }}>
+          <p className={styles.todayInfo}>
             Запланировано упражнений: <strong>{todayExercises.length}</strong>
           </p>
 
           <button
             type="button"
             onClick={() => handleStartWorkout(todayName)}
-            style={{
-              padding: "12px 24px",
-              backgroundColor: "#28a745",
-              color: "#fff",
-              border: "none",
-              borderRadius: "8px",
-              fontSize: "16px",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}>
+            className={styles.startBtn}>
             Начать сегодняшнюю тренировку
           </button>
         </div>
       ) : (
-        <div
-          style={{
-            backgroundColor: "#f8f9fa",
-            border: "1px solid #ddd",
-            borderRadius: "12px",
-            padding: "18px",
-            marginBottom: "28px",
-          }}>
-          <h3 style={{ margin: "0 0 6px 0" }}>
+        <div className={styles.restCard}>
+          <h3 className={styles.restTitle}>
             Сегодня день отдыха и восстановления
           </h3>
-          <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
+          <p className={styles.restText}>
             На {todayName.toLowerCase()} тренировок нет. Отдыхайте и набирайтесь
             сил перед следующим занятием.
           </p>
         </div>
       )}
 
-      <h3 style={{ marginBottom: "14px" }}>Ваше расписание на неделю</h3>
+      <h3 className={styles.sectionTitle}>Ваше расписание на неделю</h3>
 
       {activeDays.length === 0 ? (
-        <div
-          style={{
-            padding: "16px",
-            backgroundColor: "#f8f9fa",
-            borderRadius: "8px",
-          }}>
-          <p style={{ margin: "0 0 10px 0" }}>
+        <div className={styles.emptyCard}>
+          <p className={styles.emptyText}>
             У вас пока нет добавленных упражнений.
           </p>
           <button
             type="button"
             onClick={() => navigate("/exercises")}
-            style={{
-              padding: "8px 16px",
-              backgroundColor: "#007bff",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-            }}>
+            className={styles.addBtn}>
             Добавить упражнения
           </button>
         </div>
       ) : (
-        <div style={{ display: "grid", gap: "14px" }}>
+        <div className={styles.scheduleGrid}>
           {activeDays.map((day) => {
             const dayExercises = exercises.filter((item) => item.day === day);
             const customTitle = dayExercises.at(0)?.dayTitle || "Тренировка";
@@ -159,21 +111,17 @@ export const HomePage = ({ user }: HomePageProps) => {
             return (
               <div
                 key={day}
-                style={{
-                  border: isToday ? "2px solid #28a745" : "1px solid #ddd",
-                  borderRadius: "10px",
-                  padding: "16px",
-                }}>
-                <h4 style={{ margin: "0 0 6px 0" }}>
+                className={`${styles.dayCard} ${
+                  isToday ? styles.dayCardToday : ""
+                }`}>
+                <h4 className={styles.dayTitle}>
                   {day} —{" "}
-                  <span style={{ color: "#28a745" }}>{customTitle}</span>{" "}
+                  <span className={styles.dayAccent}>{customTitle}</span>
                   {isToday && (
-                    <span style={{ fontSize: "12px", color: "#28a745" }}>
-                      (Сегодня)
-                    </span>
+                    <span className={styles.todayTag}>(Сегодня)</span>
                   )}
                 </h4>
-                <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
+                <p className={styles.dayCount}>
                   Упражнений в программе: <strong>{dayExercises.length}</strong>
                 </p>
               </div>

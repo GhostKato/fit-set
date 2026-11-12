@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { loginUser, registerUser } from "../../services/authOps";
+import styles from "./AuthPage.module.css";
 
 export const AuthPage = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -26,82 +27,62 @@ export const AuthPage = () => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "360px",
-        margin: "60px auto",
-        padding: "20px",
-        border: "1px solid #ddd",
-        borderRadius: "10px",
-      }}>
-      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-        {isRegister ? "Регистрация в Fit Set" : "Вход в Fit Set"}
-      </h2>
+    <div className={styles.wrapper}>
+      <div className={styles.card}>
+        <div className={styles.brand}>
+          Fit<span className={styles.brandAccent}>Set</span>
+        </div>
 
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-        {isRegister && (
+        <h2 className={styles.title}>
+          {isRegister ? "Создание аккаунта" : "Вход в личный кабинет"}
+        </h2>
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          {isRegister && (
+            <input
+              type="text"
+              placeholder="Ваше имя"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className={styles.input}
+            />
+          )}
+
           <input
-            type="text"
-            placeholder="Ваше имя"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
-            style={{ padding: "10px" }}
+            className={styles.input}
           />
-        )}
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{ padding: "10px" }}
-        />
+          <input
+            type="password"
+            placeholder="Пароль (от 6 символов)"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className={styles.input}
+          />
 
-        <input
-          type="password"
-          placeholder="Пароль (от 6 символов)"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{ padding: "10px" }}
-        />
+          {error && <p className={styles.error}>{error}</p>}
 
-        {error && <p style={{ color: "red", fontSize: "14px" }}>{error}</p>}
+          <button type="submit" className={styles.submitBtn}>
+            {isRegister ? "Создать аккаунт" : "Войти"}
+          </button>
+        </form>
 
         <button
-          type="submit"
-          style={{
-            padding: "12px",
-            backgroundColor: "#28a745",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            fontSize: "16px",
-          }}>
-          {isRegister ? "Создать аккаунт" : "Войти"}
+          type="button"
+          onClick={() => setIsRegister((prev) => !prev)}
+          className={styles.switchBtn}>
+          {isRegister
+            ? "Уже есть аккаунт? Войти"
+            : "Нет аккаунта? Зарегистрироваться"}
         </button>
-      </form>
-
-      <button
-        type="button"
-        onClick={() => setIsRegister((prev) => !prev)}
-        style={{
-          marginTop: "15px",
-          width: "100%",
-          background: "none",
-          border: "none",
-          color: "#007bff",
-          cursor: "pointer",
-        }}>
-        {isRegister
-          ? "Уже есть аккаунт? Войти"
-          : "Нет аккаунта? Зарегистрироваться"}
-      </button>
+      </div>
     </div>
   );
 };

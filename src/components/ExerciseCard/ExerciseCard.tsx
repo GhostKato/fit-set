@@ -2,6 +2,7 @@ import { useState, type ChangeEvent } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { editExercise, removeExercise } from "../../redux/exercises/operations";
 import type { Exercise, NewExercise } from "../../types/exercise";
+import styles from "./ExerciseCard.module.css";
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -55,25 +56,32 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
     setIsEditing(false);
   };
 
+  const hasDetails = Boolean(
+    exercise.targetMuscles ||
+    exercise.howToDo ||
+    exercise.handsMode ||
+    exercise.palmPosition ||
+    exercise.breathing,
+  );
+
   if (isEditing) {
     return (
-      <div
-        style={{
-          border: "2px solid #007bff",
-          borderRadius: "8px",
-          padding: "15px",
-          marginBottom: "12px",
-        }}>
-        <h4>Редактирование упражнения</h4>
-        <div style={{ display: "grid", gap: "8px" }}>
+      <div className={styles.cardEditing}>
+        <h4 className={styles.editTitle}>Редактирование упражнения</h4>
+        <div className={styles.editGrid}>
           <input
             name="name"
             value={formData.name}
             onChange={handleChange}
             placeholder="Название"
+            className={styles.input}
           />
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-            <select name="day" value={formData.day} onChange={handleChange}>
+          <div className={styles.row}>
+            <select
+              name="day"
+              value={formData.day}
+              onChange={handleChange}
+              className={styles.select}>
               {ALL_DAYS.map((day) => (
                 <option key={day} value={day}>
                   {day}
@@ -85,29 +93,34 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
               value={formData.dayTitle}
               onChange={handleChange}
               placeholder="Тема дня"
+              className={`${styles.input} ${styles.flex1}`}
             />
             <input
               name="muscleGroup"
               value={formData.muscleGroup}
               onChange={handleChange}
               placeholder="Группа мышц"
+              className={`${styles.input} ${styles.flex1}`}
             />
             <input
               type="number"
               name="order"
               value={formData.order}
               onChange={handleChange}
-              placeholder="Порядок"
-              style={{ width: "70px" }}
+              placeholder="№"
+              title="Порядок"
+              className={`${styles.input} ${styles.numberInput}`}
             />
           </div>
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+          <div className={styles.row}>
             <input
               type="number"
               name="sets"
               value={formData.sets}
               onChange={handleChange}
               placeholder="Подходы"
+              title="Подходы"
+              className={`${styles.input} ${styles.numberInput}`}
             />
             <input
               type="number"
@@ -115,12 +128,15 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
               value={formData.reps}
               onChange={handleChange}
               placeholder="Повторы"
+              title="Повторы"
+              className={`${styles.input} ${styles.numberInput}`}
             />
             <input
               name="weight"
               value={formData.weight}
               onChange={handleChange}
               placeholder="Вес (например, 40 кг)"
+              className={`${styles.input} ${styles.flex1}`}
             />
           </div>
           <input
@@ -128,6 +144,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
             value={formData.targetMuscles}
             onChange={handleChange}
             placeholder="Целевые мышцы"
+            className={styles.input}
           />
           <textarea
             name="howToDo"
@@ -135,45 +152,39 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
             onChange={handleChange}
             placeholder="Техника выполнения"
             rows={2}
+            className={styles.textarea}
           />
           <input
             name="handsMode"
             value={formData.handsMode}
             onChange={handleChange}
             placeholder="Хват / режим рук"
+            className={styles.input}
           />
           <input
             name="palmPosition"
             value={formData.palmPosition}
             onChange={handleChange}
             placeholder="Положение ладоней"
+            className={styles.input}
           />
           <input
             name="breathing"
             value={formData.breathing}
             onChange={handleChange}
             placeholder="Дыхание"
+            className={styles.input}
           />
         </div>
 
-        <div style={{ display: "flex", gap: "10px", marginTop: "12px" }}>
-          <button
-            type="button"
-            onClick={handleSave}
-            style={{
-              backgroundColor: "#28a745",
-              color: "#fff",
-              border: "none",
-              padding: "8px 14px",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}>
+        <div className={styles.editActions}>
+          <button type="button" onClick={handleSave} className={styles.saveBtn}>
             Сохранить
           </button>
           <button
             type="button"
             onClick={() => setIsEditing(false)}
-            style={{ padding: "8px 14px", cursor: "pointer" }}>
+            className={styles.cancelBtn}>
             Отмена
           </button>
         </div>
@@ -182,78 +193,63 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
   }
 
   return (
-    <div
-      style={{
-        border: "1px solid #ddd",
-        borderRadius: "8px",
-        padding: "15px",
-        marginBottom: "12px",
-      }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          gap: "10px",
-        }}>
+    <div className={styles.card}>
+      <div className={styles.header}>
         <div>
-          <span style={{ fontSize: "12px", color: "#666" }}>
+          <span className={styles.meta}>
             {exercise.day} • {exercise.muscleGroup} • №{exercise.order}
           </span>
-          <h3 style={{ margin: "4px 0" }}>{exercise.name}</h3>
-          <p style={{ fontWeight: "bold", color: "#28a745", margin: "4px 0" }}>
+          <h3 className={styles.name}>{exercise.name}</h3>
+          <p className={styles.stats}>
             {exercise.sets} подх. × {exercise.reps} повт. | Вес:{" "}
             {exercise.weight || "Свой вес"}
           </p>
         </div>
 
-        <div style={{ display: "flex", gap: "6px" }}>
+        <div className={styles.actions}>
           <button
             type="button"
             onClick={() => setIsEditing(true)}
-            style={{ padding: "6px 10px", cursor: "pointer" }}>
+            className={styles.editBtn}>
             Изменить
           </button>
           <button
             type="button"
             onClick={() => dispatch(removeExercise(exercise.id))}
-            style={{
-              padding: "6px 10px",
-              backgroundColor: "#dc3545",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}>
+            className={styles.deleteBtn}>
             Удалить
           </button>
         </div>
       </div>
 
-      {exercise.targetMuscles && (
-        <p style={{ fontSize: "14px", margin: "6px 0" }}>
-          <strong>Мышцы:</strong> {exercise.targetMuscles}
-        </p>
-      )}
-      {exercise.howToDo && (
-        <p style={{ fontSize: "14px", margin: "6px 0" }}>
-          <strong>Техника:</strong> {exercise.howToDo}
-        </p>
-      )}
-      {exercise.handsMode && (
-        <p style={{ fontSize: "14px", margin: "4px 0" }}>
-          <strong>Хват:</strong> {exercise.handsMode}
-        </p>
-      )}
-      {exercise.palmPosition && (
-        <p style={{ fontSize: "14px", margin: "4px 0" }}>
-          <strong>Ладони:</strong> {exercise.palmPosition}
-        </p>
-      )}
-      {exercise.breathing && (
-        <p style={{ fontSize: "14px", margin: "4px 0" }}>
-          <strong>Дыхание:</strong> {exercise.breathing}
-        </p>
+      {hasDetails && (
+        <div className={styles.details}>
+          {exercise.targetMuscles && (
+            <p className={styles.detailItem}>
+              <strong>Мышцы:</strong> {exercise.targetMuscles}
+            </p>
+          )}
+          {exercise.howToDo && (
+            <p className={styles.detailItem}>
+              <strong>Техника:</strong> {exercise.howToDo}
+            </p>
+          )}
+          {exercise.handsMode && (
+            <p className={styles.detailItem}>
+              <strong>Хват:</strong> {exercise.handsMode}
+            </p>
+          )}
+          {exercise.palmPosition && (
+            <p className={styles.detailItem}>
+              <strong>Ладони:</strong> {exercise.palmPosition}
+            </p>
+          )}
+          {exercise.breathing && (
+            <p className={styles.detailItem}>
+              <strong>Дыхание:</strong> {exercise.breathing}
+            </p>
+          )}
+        </div>
       )}
     </div>
   );
