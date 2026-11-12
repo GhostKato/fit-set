@@ -6,10 +6,22 @@ import { SetTracker } from "../../components/SetTracker/SetTracker";
 import { RestTimer } from "../../components/RestTimer/RestTimer";
 import styles from "./WorkoutPage.module.css";
 
+const DAYS_BY_INDEX = [
+  "Воскресенье",
+  "Понедельник",
+  "Вторник",
+  "Среда",
+  "Четверг",
+  "Пятница",
+  "Суббота",
+];
+
 export const WorkoutPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const selectedDay = searchParams.get("day") || "Понедельник";
+
+  const todayName = DAYS_BY_INDEX[new Date().getDay()];
+  const selectedDay = searchParams.get("day") || todayName;
 
   const allExercises = useAppSelector((state) => state.exercises.items);
 
@@ -72,7 +84,13 @@ export const WorkoutPage = () => {
 
       <ExerciseCard exercise={currentExercise} showActions={false} />
 
-      <SetTracker setsState={currentSetsState} onToggleSet={toggleSet} />
+      <SetTracker
+        key={currentExercise.id}
+        setsState={currentSetsState}
+        onToggleSet={toggleSet}
+        unit={currentExercise.unit}
+        target={currentExercise.target}
+      />
 
       <RestTimer />
 

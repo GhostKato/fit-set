@@ -2,7 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addExercise } from "../../redux/exercises/operations";
 import { ExerciseCard } from "../../components/ExerciseCard/ExerciseCard";
-import type { NewExercise } from "../../types/exercise";
+import type { ExerciseUnit, NewExercise } from "../../types/exercise";
 import styles from "./ExercisesPage.module.css";
 
 const ALL_DAYS = [
@@ -23,7 +23,8 @@ const initialFormState: NewExercise = {
   name: "",
   targetMuscles: "",
   sets: 3,
-  reps: 12,
+  target: 12,
+  unit: "reps",
   weight: "",
   howToDo: "",
   handsMode: "",
@@ -39,7 +40,14 @@ export const ExercisesPage = () => {
 
   const [formData, setFormData] = useState<NewExercise>(initialFormState);
   const [selectedDay, setSelectedDay] = useState<string>("Все");
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  // Храним режим открытой формы: 'create', ID редактируемого упражнения или null
+  const [activeForm, setActiveForm] = useState<"create" | string | null>(null);
+
+  const isFormOpen = activeForm === "create";
+
+  const handleToggleCreateForm = () => {
+    setActiveForm((prev) => (prev === "create" ? null : "create"));
+  };
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -48,9 +56,11 @@ export const ExercisesPage = () => {
     setFormData((prev) => ({
       ...prev,
       [name]:
-        name === "sets" || name === "reps" || name === "order"
+        name === "sets" || name === "target" || name === "order"
           ? Number(value)
-          : value,
+          : name === "unit"
+            ? (value as ExerciseUnit)
+            : value,
     }));
   };
 
@@ -65,7 +75,7 @@ export const ExercisesPage = () => {
       dayTitle: prev.dayTitle,
       order: prev.order + 1,
     }));
-    setIsFormOpen(false);
+    setActiveForm(null);
   };
 
   const filteredExercises = items
@@ -78,7 +88,7 @@ export const ExercisesPage = () => {
         <h2 className={styles.title}>Моя программа упражнений</h2>
         <button
           type="button"
-          onClick={() => setIsFormOpen((prev) => !prev)}
+          onClick={handleToggleCreateForm}
           className={`${styles.toggleFormBtn} ${
             isFormOpen ? styles.toggleFormBtnActive : ""
           }`}>
@@ -158,16 +168,28 @@ export const ExercisesPage = () => {
             </label>
 
             <label className={styles.numberGroup}>
-              <span>Повторы:</span>
+              <span className={styles.targetLabel}>
+                {formData.unit === "sec" ? "Секунды:" : "Повторы:"}
+              </span>
               <input
                 type="number"
-                name="reps"
-                value={formData.reps}
+                name="target"
+                value={formData.target}
                 onChange={handleChange}
                 min={1}
                 className={`${styles.input} ${styles.numberInput}`}
               />
             </label>
+
+            <select
+              name="unit"
+              value={formData.unit}
+              onChange={handleChange}
+              className={styles.select}
+              title="Единица измерения">
+              <option value="reps">повт.</option>
+              <option value="sec">сек.</option>
+            </select>
 
             <input
               name="weight"
@@ -249,7 +271,13 @@ export const ExercisesPage = () => {
         </div>
       ) : (
         filteredExercises.map((exercise) => (
-          <ExerciseCard key={exercise.id} exercise={exercise} />
+          <ExerciseCard
+            key={exercise.id}
+            exercise={exercise}
+            isEditing={activeForm === exercise.id}
+            onStartEdit={() => setActiveForm(exercise.id)}
+            onCancelEdit={() => setActiveForm(null)}
+          />
         ))
       )}
     </div>

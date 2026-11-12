@@ -1,12 +1,15 @@
 import { useState, type ChangeEvent } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { editExercise, removeExercise } from "../../redux/exercises/operations";
-import type { Exercise, NewExercise } from "../../types/exercise";
+import type { Exercise, ExerciseUnit, NewExercise } from "../../types/exercise";
 import styles from "./ExerciseCard.module.css";
 
 interface ExerciseCardProps {
   exercise: Exercise;
   showActions?: boolean;
+  isEditing?: boolean;
+  onStartEdit?: () => void;
+  onCancelEdit?: () => void;
 }
 
 const ALL_DAYS = [
@@ -22,9 +25,11 @@ const ALL_DAYS = [
 export const ExerciseCard = ({
   exercise,
   showActions = true,
+  isEditing = false,
+  onStartEdit,
+  onCancelEdit,
 }: ExerciseCardProps) => {
   const dispatch = useAppDispatch();
-  const [isEditing, setIsEditing] = useState(false);
 
   const [formData, setFormData] = useState<NewExercise>({
     day: exercise.day,
@@ -34,13 +39,34 @@ export const ExerciseCard = ({
     name: exercise.name,
     targetMuscles: exercise.targetMuscles,
     sets: exercise.sets,
-    reps: exercise.reps,
+    target: exercise.target,
+    unit: exercise.unit || "reps",
     weight: exercise.weight,
     howToDo: exercise.howToDo,
     handsMode: exercise.handsMode,
     palmPosition: exercise.palmPosition,
     breathing: exercise.breathing,
   });
+
+  const handleOpenEdit = () => {
+    setFormData({
+      day: exercise.day,
+      dayTitle: exercise.dayTitle,
+      muscleGroup: exercise.muscleGroup,
+      order: exercise.order,
+      name: exercise.name,
+      targetMuscles: exercise.targetMuscles,
+      sets: exercise.sets,
+      target: exercise.target,
+      unit: exercise.unit || "reps",
+      weight: exercise.weight,
+      howToDo: exercise.howToDo,
+      handsMode: exercise.handsMode,
+      palmPosition: exercise.palmPosition,
+      breathing: exercise.breathing,
+    });
+    onStartEdit?.();
+  };
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -49,15 +75,17 @@ export const ExerciseCard = ({
     setFormData((prev) => ({
       ...prev,
       [name]:
-        name === "sets" || name === "reps" || name === "order"
+        name === "sets" || name === "target" || name === "order"
           ? Number(value)
-          : value,
+          : name === "unit"
+            ? (value as ExerciseUnit)
+            : value,
     }));
   };
 
   const handleSave = async () => {
     await dispatch(editExercise({ id: exercise.id, fields: formData }));
-    setIsEditing(false);
+    onCancelEdit?.();
   };
 
   const hasDetails = Boolean(
@@ -128,13 +156,22 @@ export const ExerciseCard = ({
             />
             <input
               type="number"
-              name="reps"
-              value={formData.reps}
+              name="target"
+              value={formData.target}
               onChange={handleChange}
-              placeholder="Повторы"
-              title="Повторы"
+              placeholder={formData.unit === "sec" ? "Секунды" : "Повторы"}
+              title={formData.unit === "sec" ? "Секунды" : "Повторы"}
               className={`${styles.input} ${styles.numberInput}`}
             />
+            <select
+              name="unit"
+              value={formData.unit}
+              onChange={handleChange}
+              className={styles.select}
+              title="Единица измерения">
+              <option value="reps">повт.</option>
+              <option value="sec">сек.</option>
+            </select>
             <input
               name="weight"
               value={formData.weight}
@@ -187,7 +224,7 @@ export const ExerciseCard = ({
           </button>
           <button
             type="button"
-            onClick={() => setIsEditing(false)}
+            onClick={() => onCancelEdit?.()}
             className={styles.cancelBtn}>
             Отмена
           </button>
@@ -201,11 +238,14 @@ export const ExerciseCard = ({
       <div className={styles.header}>
         <div>
           <span className={styles.meta}>
-            {exercise.day} • {exercise.muscleGroup} • №{exercise.order}
+            {exercise.day}
+            {exercise.muscleGroup && ` • ${exercise.muscleGroup}`} • №
+            {exercise.order}
           </span>
           <h3 className={styles.name}>{exercise.name}</h3>
           <p className={styles.stats}>
-            {exercise.sets} подх. × {exercise.reps} повт. | Вес:{" "}
+            {exercise.sets} подх. × {exercise.target}{" "}
+            {exercise.unit === "sec" ? "сек." : "повт."} | Вес:{" "}
             {exercise.weight || "Свой вес"}
           </p>
         </div>
@@ -214,7 +254,7 @@ export const ExerciseCard = ({
           <div className={styles.actions}>
             <button
               type="button"
-              onClick={() => setIsEditing(true)}
+              onClick={handleOpenEdit}
               className={styles.editBtn}>
               Изменить
             </button>
@@ -232,7 +272,7 @@ export const ExerciseCard = ({
         <div className={styles.details}>
           {exercise.targetMuscles && (
             <p className={styles.detailItem}>
-              <strong>Рабтающие мышцы:</strong> {exercise.targetMuscles}
+              <strong>Работающие мышцы:</strong> {exercise.targetMuscles}
             </p>
           )}
           {exercise.howToDo && (

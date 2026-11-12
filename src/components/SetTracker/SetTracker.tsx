@@ -1,12 +1,86 @@
+import { useEffect, useState } from "react";
+import type { ExerciseUnit } from "../../types/exercise";
 import styles from "./SetTracker.module.css";
 
 interface SetTrackerProps {
   setsState: boolean[];
   onToggleSet: (index: number) => void;
+  unit?: ExerciseUnit;
+  target?: number;
 }
 
-export const SetTracker = ({ setsState, onToggleSet }: SetTrackerProps) => {
+export const SetTracker = ({
+  setsState,
+  onToggleSet,
+  unit = "reps",
+  target = 0,
+}: SetTrackerProps) => {
   const completedCount = setsState.filter(Boolean).length;
+  const isTimed = unit === "sec" && target > 0;
+
+  const [secondsLeft, setSecondsLeft] = useState(target);
+  const [isRunning, setIsRunning] = useState(false);
+  const [prevConfig, setPrevConfig] = useState({ target, unit });
+
+  if (prevConfig.target !== target || prevConfig.unit !== unit) {
+    setPrevConfig({ target, unit });
+    setIsRunning(false);
+    setSecondsLeft(target);
+  }
+
+  const playSetDoneBeep = () => {
+    const AudioCtx =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext })
+        .webkitAudioContext;
+    if (!AudioCtx) return;
+
+    const ctx = new AudioCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(1046, now);
+    gain.gain.setValueAtTime(1.0, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.45);
+  };
+
+  useEffect(() => {
+    if (!isTimed || !isRunning) return;
+
+    const timerId = window.setInterval(() => {
+      setSecondsLeft((prev) => {
+        if (prev <= 1) {
+          setIsRunning(false);
+          playSetDoneBeep();
+
+          const nextUnfinishedIndex = setsState.findIndex((done) => !done);
+          if (nextUnfinishedIndex !== -1) {
+            onToggleSet(nextUnfinishedIndex);
+          }
+
+          return target;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => window.clearInterval(timerId);
+  }, [isTimed, isRunning, setsState, onToggleSet, target]);
+
+  const formatTime = (totalSeconds: number) => {
+    const mins = Math.floor(totalSeconds / 60);
+    const secs = totalSeconds % 60;
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  };
+
+  const canReset = isRunning || secondsLeft !== target;
 
   return (
     <div className={styles.container}>
@@ -16,6 +90,42 @@ export const SetTracker = ({ setsState, onToggleSet }: SetTrackerProps) => {
           {completedCount} из {setsState.length}
         </span>
       </div>
+
+      {isTimed && (
+        <div
+          className={`${styles.timerBox} ${
+            isRunning ? styles.timerBoxActive : ""
+          }`}>
+          <div className={styles.timerInfo}>
+            <span className={styles.timerLabel}>Таймер подхода</span>
+            <span
+              className={`${styles.timerDigits} ${
+                isRunning ? styles.timerDigitsActive : ""
+              }`}>
+              {formatTime(secondsLeft)}
+            </span>
+          </div>
+
+          <div className={styles.timerActions}>
+            <button
+              type="button"
+              onClick={() => setIsRunning((prev) => !prev)}
+              className={styles.timerStartBtn}>
+              {isRunning ? "Пауза" : "Старт подхода"}
+            </button>
+            <button
+              type="button"
+              disabled={!canReset}
+              onClick={() => {
+                setIsRunning(false);
+                setSecondsLeft(target);
+              }}
+              className={styles.timerResetBtn}>
+              Сброс
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className={styles.grid}>
         {setsState.map((isDone, idx) => (

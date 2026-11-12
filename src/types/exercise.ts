@@ -1,3 +1,4 @@
+export type ExerciseUnit = "reps" | "sec";
 export type Exercise = {
   id: string;
   userId: string;
@@ -8,7 +9,8 @@ export type Exercise = {
   name: string;
   targetMuscles: string;
   sets: number;
-  reps: number;
+  target: number;
+  unit: ExerciseUnit;
   weight: string;
   howToDo: string;
   handsMode: string;

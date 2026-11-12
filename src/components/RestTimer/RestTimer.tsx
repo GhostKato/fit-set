@@ -1,10 +1,45 @@
 import { useEffect, useState } from "react";
+import styles from "./RestTimer.module.css";
 
 const REST_OPTIONS = Array.of(60, 120, 180, 240, 300);
 
 export const RestTimer = () => {
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+
+  const playBeep = () => {
+    const AudioCtx =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext })
+        .webkitAudioContext;
+    if (!AudioCtx) return;
+
+    const ctx = new AudioCtx();
+    const now = ctx.currentTime;
+
+    const beeps = [
+      { start: 0, duration: 0.15, freq: 880 },
+      { start: 0.22, duration: 0.15, freq: 880 },
+      { start: 0.44, duration: 0.35, freq: 1175 },
+    ];
+
+    beeps.forEach(({ start, duration, freq }) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(freq, now + start);
+
+      gain.gain.setValueAtTime(1.0, now + start);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + start + duration);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now + start);
+      osc.stop(now + start + duration);
+    });
+  };
 
   useEffect(() => {
     if (!isRunning || secondsLeft <= 0) return;
@@ -22,21 +57,6 @@ export const RestTimer = () => {
 
     return () => window.clearInterval(timerId);
   }, [isRunning, secondsLeft]);
-
-  const playBeep = () => {
-    const AudioCtx =
-      window.AudioContext ||
-      (window as unknown as { webkitAudioContext: typeof AudioContext })
-        .webkitAudioContext;
-    if (!AudioCtx) return;
-    const ctx = new AudioCtx();
-    const osc = ctx.createOscillator();
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(880, ctx.currentTime);
-    osc.connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.4);
-  };
 
   const startTimer = (seconds: number) => {
     setSecondsLeft(seconds);
@@ -56,77 +76,46 @@ export const RestTimer = () => {
 
   return (
     <div
-      style={{
-        padding: "15px",
-        border: "1px solid #007bff",
-        borderRadius: "8px",
-        marginTop: "20px",
-        textAlign: "center",
-      }}>
-      <h4 style={{ margin: "0 0 10px 0" }}>Таймер отдыха</h4>
+      className={`${styles.container} ${
+        secondsLeft > 0 ? styles.containerActive : ""
+      }`}>
+      <h4 className={styles.heading}>Таймер отдыха</h4>
+
       <div
-        style={{
-          fontSize: "32px",
-          fontWeight: "bold",
-          marginBottom: "12px",
-          color: secondsLeft > 0 ? "#007bff" : "#333",
-        }}>
+        className={`${styles.display} ${
+          secondsLeft > 0 ? styles.displayActive : ""
+        }`}>
         {formatTime(secondsLeft)}
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "8px",
-          flexWrap: "wrap",
-        }}>
+      <div className={styles.presetsGrid}>
         {REST_OPTIONS.map((sec) => (
           <button
             key={sec}
             type="button"
             onClick={() => startTimer(sec)}
-            style={{
-              padding: "8px 14px",
-              backgroundColor: "#007bff",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-            }}>
+            className={styles.presetBtn}>
             {sec / 60} мин
           </button>
         ))}
-
-        {secondsLeft > 0 && (
-          <>
-            <button
-              type="button"
-              onClick={() => setIsRunning((prev) => !prev)}
-              style={{
-                padding: "8px 14px",
-                borderRadius: "6px",
-                border: "1px solid #ccc",
-                cursor: "pointer",
-              }}>
-              {isRunning ? "Пауза" : "Продолжить"}
-            </button>
-            <button
-              type="button"
-              onClick={resetTimer}
-              style={{
-                padding: "8px 14px",
-                borderRadius: "6px",
-                border: "1px solid #dc3545",
-                color: "#dc3545",
-                backgroundColor: "transparent",
-                cursor: "pointer",
-              }}>
-              Сброс
-            </button>
-          </>
-        )}
       </div>
+
+      {secondsLeft > 0 && (
+        <div className={styles.controlsRow}>
+          <button
+            type="button"
+            onClick={() => setIsRunning((prev) => !prev)}
+            className={styles.pauseBtn}>
+            {isRunning ? "Пауза" : "Продолжить"}
+          </button>
+          <button
+            type="button"
+            onClick={resetTimer}
+            className={styles.resetBtn}>
+            Сброс
+          </button>
+        </div>
+      )}
     </div>
   );
 };
