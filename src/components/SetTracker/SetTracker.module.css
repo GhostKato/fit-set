@@ -2,7 +2,7 @@
   background-color: #ffffff;
   border: 1.5px solid #e2e5e9;
   border-radius: 14px;
-  padding: 18px 20px;
+  padding: 18px 24px;
   margin-bottom: 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
@@ -30,16 +30,28 @@
   border-radius: 12px;
 }
 
-.timerBox {
+.contentRow {
   display: flex;
+  flex-direction: column;
+}
+
+/* Когда есть таймер, ставим его слева, а подходы справа */
+.contentRowTimed {
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
+}
+
+.timerBox {
+  display: flex;
+  align-items: center;
+  gap: 18px;
   background-color: #f8f9fa;
   border: 1.5px solid #e2e5e9;
   border-radius: 12px;
   padding: 12px 16px;
-  margin-bottom: 14px;
+  flex-shrink: 0;
   transition:
     border-color 0.2s ease,
     background-color 0.2s ease;
@@ -53,18 +65,21 @@
 .timerInfo {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 2px;
 }
 
 .timerLabel {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: #666666;
   text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .timerDigits {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   color: #1e1e1e;
@@ -81,14 +96,16 @@
 }
 
 .timerStartBtn {
+  width: 136px;
   min-height: 40px;
-  padding: 8px 16px;
+  padding: 8px 12px;
   background-color: #28a745;
   color: #ffffff;
   border: none;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
+  text-align: center;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -130,6 +147,10 @@
   flex-wrap: wrap;
 }
 
+.gridRight {
+  justify-content: flex-end;
+}
+
 .setLabel {
   display: flex;
   align-items: center;
@@ -168,15 +189,20 @@
   cursor: pointer;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .container {
     padding: 16px;
+  }
+
+  .contentRowTimed {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
   }
 
   .timerBox {
     flex-direction: column;
     align-items: stretch;
-    text-align: center;
   }
 
   .timerActions {
@@ -185,7 +211,12 @@
 
   .timerStartBtn,
   .timerResetBtn {
+    width: auto;
     flex: 1;
+  }
+
+  .gridRight {
+    justify-content: center;
   }
 
   .setLabel {

@@ -91,58 +91,63 @@ export const SetTracker = ({
         </span>
       </div>
 
-      {isTimed && (
-        <div
-          className={`${styles.timerBox} ${
-            isRunning ? styles.timerBoxActive : ""
-          }`}>
-          <div className={styles.timerInfo}>
-            <span className={styles.timerLabel}>Таймер подхода</span>
-            <span
-              className={`${styles.timerDigits} ${
-                isRunning ? styles.timerDigitsActive : ""
-              }`}>
-              {formatTime(secondsLeft)}
-            </span>
-          </div>
-
-          <div className={styles.timerActions}>
-            <button
-              type="button"
-              onClick={() => setIsRunning((prev) => !prev)}
-              className={styles.timerStartBtn}>
-              {isRunning ? "Пауза" : "Старт подхода"}
-            </button>
-            <button
-              type="button"
-              disabled={!canReset}
-              onClick={() => {
-                setIsRunning(false);
-                setSecondsLeft(target);
-              }}
-              className={styles.timerResetBtn}>
-              Сброс
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div className={styles.grid}>
-        {setsState.map((isDone, idx) => (
-          <label
-            key={idx}
-            className={`${styles.setLabel} ${
-              isDone ? styles.setLabelDone : ""
+      <div
+        className={`${styles.contentRow} ${
+          isTimed ? styles.contentRowTimed : ""
+        }`}>
+        {isTimed && (
+          <div
+            className={`${styles.timerBox} ${
+              isRunning ? styles.timerBoxActive : ""
             }`}>
-            <input
-              type="checkbox"
-              checked={isDone}
-              onChange={() => onToggleSet(idx)}
-              className={styles.checkbox}
-            />
-            <span>Подход {idx + 1}</span>
-          </label>
-        ))}
+            <div className={styles.timerInfo}>
+              <span className={styles.timerLabel}>Таймер подхода</span>
+              <span
+                className={`${styles.timerDigits} ${
+                  isRunning ? styles.timerDigitsActive : ""
+                }`}>
+                {formatTime(secondsLeft)}
+              </span>
+            </div>
+
+            <div className={styles.timerActions}>
+              <button
+                type="button"
+                onClick={() => setIsRunning((prev) => !prev)}
+                className={styles.timerStartBtn}>
+                {isRunning ? "Пауза" : "Старт подхода"}
+              </button>
+              <button
+                type="button"
+                disabled={!canReset}
+                onClick={() => {
+                  setIsRunning(false);
+                  setSecondsLeft(target);
+                }}
+                className={styles.timerResetBtn}>
+                Сброс
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className={`${styles.grid} ${isTimed ? styles.gridRight : ""}`}>
+          {setsState.map((isDone, idx) => (
+            <label
+              key={idx}
+              className={`${styles.setLabel} ${
+                isDone ? styles.setLabelDone : ""
+              }`}>
+              <input
+                type="checkbox"
+                checked={isDone}
+                onChange={() => onToggleSet(idx)}
+                className={styles.checkbox}
+              />
+              <span>Подход {idx + 1}</span>
+            </label>
+          ))}
+        </div>
       </div>
     </div>
   );

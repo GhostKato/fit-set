@@ -74,48 +74,53 @@ export const RestTimer = () => {
     return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
+  const isActive = secondsLeft > 0;
+
   return (
     <div
       className={`${styles.container} ${
-        secondsLeft > 0 ? styles.containerActive : ""
+        isActive ? styles.containerActive : ""
       }`}>
-      <h4 className={styles.heading}>Таймер отдыха</h4>
-
-      <div
-        className={`${styles.display} ${
-          secondsLeft > 0 ? styles.displayActive : ""
-        }`}>
-        {formatTime(secondsLeft)}
+      <div className={styles.leftSide}>
+        <h4 className={styles.heading}>Таймер отдыха</h4>
+        <div
+          className={`${styles.display} ${
+            isActive ? styles.displayActive : ""
+          }`}>
+          {formatTime(secondsLeft)}
+        </div>
       </div>
 
-      <div className={styles.presetsGrid}>
-        {REST_OPTIONS.map((sec) => (
-          <button
-            key={sec}
-            type="button"
-            onClick={() => startTimer(sec)}
-            className={styles.presetBtn}>
-            {sec / 60} мин
-          </button>
-        ))}
-      </div>
+      <div className={styles.rightSide}>
+        <div className={styles.presetsGrid}>
+          {REST_OPTIONS.map((sec) => (
+            <button
+              key={sec}
+              type="button"
+              onClick={() => startTimer(sec)}
+              className={styles.presetBtn}>
+              {sec / 60} мин
+            </button>
+          ))}
+        </div>
 
-      {secondsLeft > 0 && (
         <div className={styles.controlsRow}>
           <button
             type="button"
+            disabled={!isActive}
             onClick={() => setIsRunning((prev) => !prev)}
             className={styles.pauseBtn}>
-            {isRunning ? "Пауза" : "Продолжить"}
+            {isRunning ? "Пауза" : isActive ? "Продолжить" : "Пауза"}
           </button>
           <button
             type="button"
+            disabled={!isActive}
             onClick={resetTimer}
             className={styles.resetBtn}>
             Сброс
           </button>
         </div>
-      )}
+      </div>
     </div>
   );
 };
