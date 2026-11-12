@@ -1,6 +1,8 @@
 import { useState, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
+import { ExerciseCard } from "../../components/ExerciseCard/ExerciseCard";
+import { SetTracker } from "../../components/SetTracker/SetTracker";
 import { RestTimer } from "../../components/RestTimer/RestTimer";
 import styles from "./WorkoutPage.module.css";
 
@@ -68,66 +70,9 @@ export const WorkoutPage = () => {
         </button>
       </div>
 
-      <div className={styles.exerciseCard}>
-        <span className={styles.muscleBadge}>
-          {currentExercise.muscleGroup}
-        </span>
-        <h2 className={styles.exerciseName}>{currentExercise.name}</h2>
+      <ExerciseCard exercise={currentExercise} showActions={false} />
 
-        <p className={styles.stats}>
-          {currentExercise.sets} подх. × {currentExercise.reps} повт. • Вес:{" "}
-          {currentExercise.weight || "Свой вес"}
-        </p>
-
-        <div className={styles.setsSection}>
-          <h4 className={styles.setsHeading}>Отметьте выполненные подходы:</h4>
-          <div className={styles.setsGrid}>
-            {currentSetsState.map((isDone, idx) => (
-              <label
-                key={idx}
-                className={`${styles.setLabel} ${
-                  isDone ? styles.setLabelDone : ""
-                }`}>
-                <input
-                  type="checkbox"
-                  checked={isDone}
-                  onChange={() => toggleSet(idx)}
-                  className={styles.setCheckbox}
-                />
-                <span>Подход {idx + 1}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-
-        <div className={styles.details}>
-          {currentExercise.targetMuscles && (
-            <p className={styles.detailItem}>
-              <strong>Мышцы:</strong> {currentExercise.targetMuscles}
-            </p>
-          )}
-          {currentExercise.howToDo && (
-            <p className={styles.detailItem}>
-              <strong>Техника:</strong> {currentExercise.howToDo}
-            </p>
-          )}
-          {currentExercise.handsMode && (
-            <p className={styles.detailItem}>
-              <strong>Хват:</strong> {currentExercise.handsMode}
-            </p>
-          )}
-          {currentExercise.palmPosition && (
-            <p className={styles.detailItem}>
-              <strong>Ладони:</strong> {currentExercise.palmPosition}
-            </p>
-          )}
-          {currentExercise.breathing && (
-            <p className={styles.detailItem}>
-              <strong>Дыхание:</strong> {currentExercise.breathing}
-            </p>
-          )}
-        </div>
-      </div>
+      <SetTracker setsState={currentSetsState} onToggleSet={toggleSet} />
 
       <RestTimer />
 

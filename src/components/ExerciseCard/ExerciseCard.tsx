@@ -6,6 +6,7 @@ import styles from "./ExerciseCard.module.css";
 
 interface ExerciseCardProps {
   exercise: Exercise;
+  showActions?: boolean;
 }
 
 const ALL_DAYS = [
@@ -18,7 +19,10 @@ const ALL_DAYS = [
   "Воскресенье",
 ];
 
-export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
+export const ExerciseCard = ({
+  exercise,
+  showActions = true,
+}: ExerciseCardProps) => {
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -64,7 +68,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
     exercise.breathing,
   );
 
-  if (isEditing) {
+  if (isEditing && showActions) {
     return (
       <div className={styles.cardEditing}>
         <h4 className={styles.editTitle}>Редактирование упражнения</h4>
@@ -158,7 +162,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
             name="handsMode"
             value={formData.handsMode}
             onChange={handleChange}
-            placeholder="Хват / режим рук"
+            placeholder="Режим работы рук"
             className={styles.input}
           />
           <input
@@ -206,42 +210,44 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
           </p>
         </div>
 
-        <div className={styles.actions}>
-          <button
-            type="button"
-            onClick={() => setIsEditing(true)}
-            className={styles.editBtn}>
-            Изменить
-          </button>
-          <button
-            type="button"
-            onClick={() => dispatch(removeExercise(exercise.id))}
-            className={styles.deleteBtn}>
-            Удалить
-          </button>
-        </div>
+        {showActions && (
+          <div className={styles.actions}>
+            <button
+              type="button"
+              onClick={() => setIsEditing(true)}
+              className={styles.editBtn}>
+              Изменить
+            </button>
+            <button
+              type="button"
+              onClick={() => dispatch(removeExercise(exercise.id))}
+              className={styles.deleteBtn}>
+              Удалить
+            </button>
+          </div>
+        )}
       </div>
 
       {hasDetails && (
         <div className={styles.details}>
           {exercise.targetMuscles && (
             <p className={styles.detailItem}>
-              <strong>Мышцы:</strong> {exercise.targetMuscles}
+              <strong>Рабтающие мышцы:</strong> {exercise.targetMuscles}
             </p>
           )}
           {exercise.howToDo && (
             <p className={styles.detailItem}>
-              <strong>Техника:</strong> {exercise.howToDo}
+              <strong>Как выполнять:</strong> {exercise.howToDo}
             </p>
           )}
           {exercise.handsMode && (
             <p className={styles.detailItem}>
-              <strong>Хват:</strong> {exercise.handsMode}
+              <strong>Режим работы рук:</strong> {exercise.handsMode}
             </p>
           )}
           {exercise.palmPosition && (
             <p className={styles.detailItem}>
-              <strong>Ладони:</strong> {exercise.palmPosition}
+              <strong>Положение ладоней:</strong> {exercise.palmPosition}
             </p>
           )}
           {exercise.breathing && (

@@ -17,8 +17,8 @@ const ALL_DAYS = [
 
 const initialFormState: NewExercise = {
   day: "Понедельник",
-  dayTitle: "Грудь и Трицепс",
-  muscleGroup: "Грудь",
+  dayTitle: "",
+  muscleGroup: "",
   order: 1,
   name: "",
   targetMuscles: "",
@@ -107,7 +107,7 @@ export const ExercisesPage = () => {
               name="dayTitle"
               value={formData.dayTitle}
               onChange={handleChange}
-              placeholder="Тема дня (Грудь и Трицепс)"
+              placeholder="Тема дня"
               className={`${styles.input} ${styles.flex1}`}
             />
 
@@ -173,7 +173,7 @@ export const ExercisesPage = () => {
               name="weight"
               value={formData.weight}
               onChange={handleChange}
-              placeholder="Рабочий вес (например, 50 кг)"
+              placeholder="Рабочий вес"
               className={`${styles.input} ${styles.flex1}`}
             />
           </div>
@@ -182,7 +182,7 @@ export const ExercisesPage = () => {
             name="targetMuscles"
             value={formData.targetMuscles}
             onChange={handleChange}
-            placeholder="Целевые мышцы (например, Верх груди)"
+            placeholder="Работающие мышцы"
             className={styles.input}
           />
 
@@ -190,7 +190,7 @@ export const ExercisesPage = () => {
             name="howToDo"
             value={formData.howToDo}
             onChange={handleChange}
-            placeholder="Как выполнять (техника)"
+            placeholder="Как выполнять"
             rows={2}
             className={styles.textarea}
           />
@@ -199,7 +199,7 @@ export const ExercisesPage = () => {
             name="handsMode"
             value={formData.handsMode}
             onChange={handleChange}
-            placeholder="Хват / режим рук (например, Широкий хват)"
+            placeholder="Режим работы рук"
             className={styles.input}
           />
 
@@ -207,7 +207,7 @@ export const ExercisesPage = () => {
             name="palmPosition"
             value={formData.palmPosition}
             onChange={handleChange}
-            placeholder="Положение ладоней (например, Прямой хват)"
+            placeholder="Положение ладоней"
             className={styles.input}
           />
 
@@ -215,7 +215,7 @@ export const ExercisesPage = () => {
             name="breathing"
             value={formData.breathing}
             onChange={handleChange}
-            placeholder="Дыхание (например, Выдох на усилии)"
+            placeholder="Дыхание"
             className={styles.input}
           />
 
