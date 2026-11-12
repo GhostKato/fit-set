@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
+import { HomeNutritionCard } from "./components/HomeNutritionCard/HomeNutritionCard";
 import type { UserProfile } from "../../types/user";
 import styles from "./HomePage.module.css";
 
@@ -87,7 +88,9 @@ export const HomePage = ({ user }: HomePageProps) => {
         </div>
       )}
 
-      <h3 className={styles.sectionTitle}>Ваше расписание на неделю</h3>
+      <HomeNutritionCard />
+
+      <h3 className={styles.sectionTitle}>Расписание тренировок</h3>
 
       {activeDays.length === 0 ? (
         <div className={styles.emptyCard}>

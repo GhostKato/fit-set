@@ -3,6 +3,11 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { listenToAuthChanges } from "./services/authOps";
 import { useAppDispatch } from "./redux/hooks";
 import { fetchExercises } from "./redux/exercises/operations";
+import {
+  fetchNutrition,
+  fetchTodaySelection,
+  fetchMealSchedule,
+} from "./redux/nutrition/operations";
 import { AuthPage } from "./pages/AuthPage/AuthPage";
 import { Layout } from "./components/Layout/Layout";
 import { Loader } from "./components/Loader/Loader";
@@ -23,6 +28,9 @@ export default function App() {
         setUser(currentUser);
         setIsCheckingAuth(false);
         dispatch(fetchExercises());
+        dispatch(fetchNutrition());
+        dispatch(fetchTodaySelection());
+        dispatch(fetchMealSchedule());
       },
       () => {
         setUser(null);

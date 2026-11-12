@@ -1,0 +1,253 @@
+.card {
+  background-color: #ffffff;
+  border: 1.5px solid #e2e5e9;
+  border-radius: 14px;
+  padding: 18px;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.cardSelected {
+  border: 2px solid #28a745;
+  background-color: #fbfefc;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.info {
+  flex: 1;
+  text-align: left;
+}
+
+.badgesRow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.categoryBadge {
+  display: inline-block;
+  background-color: #e9f7ef;
+  color: #218838;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.title {
+  margin: 0 0 6px 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+
+.portion {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.note {
+  margin: 6px 0 0 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: #666666;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.editBtn,
+.deleteBtn {
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editBtn {
+  background-color: #f8f9fa;
+  border: 1px solid #dce0e5;
+  color: #333333;
+}
+
+.editBtn:hover {
+  background-color: #e9ecef;
+}
+
+.deleteBtn {
+  background-color: #ffffff;
+  border: 1px solid #f5c2c7;
+  color: #dc3545;
+}
+
+.deleteBtn:hover {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+.mealPickerRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #edf0f2;
+}
+
+.pickerLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666666;
+}
+
+.mealToggleBtn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  border: 1.5px solid #dce0e5;
+  color: #495057;
+  transition: all 0.15s ease;
+}
+
+.mealToggleBtn:hover {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.mealToggleBtnActive {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: #ffffff;
+}
+
+.mealToggleBtnActive:hover {
+  background-color: #218838;
+  color: #ffffff;
+}
+
+.cardEditing {
+  background-color: #ffffff;
+  border: 2px solid #28a745;
+  border-radius: 14px;
+  padding: 18px;
+  text-align: left;
+  box-shadow: 0 4px 16px rgba(40, 167, 69, 0.1);
+}
+
+.editTitle {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+
+.editGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.flex1 {
+  flex: 1;
+  min-width: 160px;
+}
+
+.select,
+.input,
+.textarea {
+  background-color: #f8f9fa;
+  border: 1.5px solid #dce0e5;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 14px;
+  color: #1e1e1e;
+  font-family: inherit;
+}
+
+.select:focus,
+.input:focus,
+.textarea:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: #28a745;
+}
+
+.numberInput {
+  width: 64px;
+  text-align: center;
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cancelBtn {
+  padding: 9px 16px;
+  background-color: #f8f9fa;
+  border: 1.5px solid #dce0e5;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #495057;
+  cursor: pointer;
+}
+
+.cancelBtn:hover {
+  background-color: #e9ecef;
+}
+
+.saveBtn {
+  padding: 9px 18px;
+  background-color: #28a745;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.saveBtn:hover {
+  background-color: #218838;
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

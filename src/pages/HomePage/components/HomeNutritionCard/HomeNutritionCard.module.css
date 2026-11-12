@@ -1,0 +1,125 @@
+.nutritionSection {
+  background-color: #ffffff;
+  border: 1.5px solid #e2e5e9;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.title {
+  margin: 0 0 4px 0;
+  font-size: 19px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+
+.manageBtn {
+  padding: 10px 16px;
+  min-height: 40px;
+  background-color: #e9f7ef;
+  color: #218838;
+  border: 1.5px solid #28a745;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.manageBtn:hover {
+  background-color: #28a745;
+  color: #ffffff;
+}
+
+.emptyBox {
+  background-color: #f8f9fa;
+  border: 1px dashed #cccccc;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.emptyText {
+  margin: 0;
+  font-size: 14px;
+  color: #666666;
+}
+
+.mealsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.mealCard {
+  background-color: #f8f9fa;
+  border: 1px solid #e6e8ec;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.mealTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e6e8ec;
+}
+
+.mealName {
+  font-size: 15px;
+  font-weight: 700;
+  color: #28a745;
+}
+
+.mealTime {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666666;
+}
+
+.mealEmpty {
+  margin: 0;
+  font-size: 13px;
+  color: #888888;
+  font-style: italic;
+}
+
+.mealList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mealItem {
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: #1e1e1e;
+}
+
+@media (max-width: 768px) {
+  .mealsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .manageBtn {
+    width: 100%;
+  }
+}

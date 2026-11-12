@@ -2,46 +2,25 @@
   width: 100%;
 }
 
-.card {
-  background-color: #ffffff;
-  border: 1.5px solid #e2e5e9;
-  border-radius: 16px;
-  padding: 36px 24px;
-  text-align: center;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
-}
-
-.badge {
-  display: inline-block;
-  background-color: #e9f7ef;
-  color: #28a745;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.4px;
-  padding: 6px 14px;
-  border-radius: 20px;
-  margin-bottom: 14px;
-  text-transform: uppercase;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
 }
 
 .title {
-  margin: 0 0 12px 0;
-  font-size: 24px;
+  margin: 0;
+  font-size: 26px;
   font-weight: 800;
   color: #1e1e1e;
 }
 
-.text {
-  margin: 0 auto 24px auto;
-  max-width: 460px;
-  font-size: 15px;
-  line-height: 1.6;
-  color: #666666;
-}
-
-.backBtn {
-  padding: 12px 22px;
-  min-height: 46px;
+.toggleFormBtn {
+  padding: 12px 20px;
+  min-height: 44px;
   background-color: #28a745;
   color: #ffffff;
   border: none;
@@ -54,24 +33,109 @@
     transform 0.1s ease;
 }
 
-.backBtn:hover {
+.toggleFormBtn:hover {
   background-color: #218838;
 }
 
-.backBtn:active {
+.toggleFormBtn:active {
   transform: scale(0.98);
 }
 
+.toggleFormBtnActive {
+  background-color: #6c757d;
+}
+
+.toggleFormBtnActive:hover {
+  background-color: #5a6268;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.filterBtn {
+  background-color: #ffffff;
+  color: #495057;
+  border: 1.5px solid #e2e5e9;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filterBtn:hover {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.filterBtnActive {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: #ffffff;
+}
+
+.filterBtnActive:hover {
+  background-color: #218838;
+  color: #ffffff;
+}
+
+.cardsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.emptyState {
+  padding: 28px 20px;
+  background-color: #f8f9fa;
+  border: 1px dashed #cccccc;
+  border-radius: 14px;
+  text-align: center;
+  color: #666666;
+  font-size: 15px;
+}
+
+.seedBtn {
+  margin-top: 14px;
+  padding: 12px 20px;
+  min-height: 44px;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.seedBtn:hover {
+  background-color: #218838;
+}
+
+.errorText {
+  color: #dc3545;
+  background-color: #fdf2f2;
+  border: 1.5px solid #f5c2c7;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 @media (max-width: 600px) {
-  .card {
-    padding: 28px 18px;
-  }
-
   .title {
-    font-size: 21px;
+    font-size: 22px;
   }
 
-  .backBtn {
+  .toggleFormBtn,
+  .seedBtn {
     width: 100%;
   }
 }
