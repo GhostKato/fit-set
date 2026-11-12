@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import { RestTimer } from "../../components/RestTimer/RestTimer";
@@ -8,11 +8,13 @@ export const WorkoutPage = () => {
   const navigate = useNavigate();
   const selectedDay = searchParams.get("day") || "Понедельник";
 
-  const dayExercises = useAppSelector((state) =>
-    state.exercises.items
+  const allExercises = useAppSelector((state) => state.exercises.items);
+
+  const dayExercises = useMemo(() => {
+    return allExercises
       .filter((item) => item.day === selectedDay)
-      .sort((a, b) => a.order - b.order),
-  );
+      .sort((a, b) => a.order - b.order);
+  }, [allExercises, selectedDay]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completedSets, setCompletedSets] = useState<Record<string, boolean[]>>(

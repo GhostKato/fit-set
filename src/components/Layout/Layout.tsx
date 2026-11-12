@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { logoutUser } from "../../services/authOps";
+import { MusicPlayer } from "../MusicPlayer/MusicPlayer";
 import type { UserProfile } from "../../types/user";
 
 interface LayoutProps {
@@ -8,7 +9,7 @@ interface LayoutProps {
 
 export const Layout = ({ user }: LayoutProps) => {
   return (
-    <div style={{ paddingBottom: "120px" }}>
+    <div style={{ paddingBottom: "160px" }}>
       <header
         style={{
           display: "flex",
@@ -50,6 +51,8 @@ export const Layout = ({ user }: LayoutProps) => {
       <main style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
         <Outlet />
       </main>
+
+      <MusicPlayer />
     </div>
   );
 };

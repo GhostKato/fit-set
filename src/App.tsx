@@ -6,8 +6,9 @@ import { fetchExercises } from "./redux/exercises/operations";
 import { AuthPage } from "./pages/AuthPage/AuthPage";
 import { Layout } from "./components/Layout/Layout";
 import type { UserProfile } from "./types/user";
-import { ExercisesPage } from "./pages/ExercisesPage/ExercisesPage";
+import { HomePage } from "./pages/HomePage/HomePage";
 import { WorkoutPage } from "./pages/WorkoutPage/WorkoutPage";
+import { ExercisesPage } from "./pages/ExercisesPage/ExercisesPage";
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -45,7 +46,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout user={user} />}>
-        <Route index element={<div>Главная страница (выбор дня недели)</div>} />
+        <Route index element={<HomePage user={user} />} />
         <Route path="workout" element={<WorkoutPage />} />
         <Route path="exercises" element={<ExercisesPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />

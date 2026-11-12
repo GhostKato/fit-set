@@ -7,6 +7,16 @@ interface ExerciseCardProps {
   exercise: Exercise;
 }
 
+const ALL_DAYS = [
+  "Понедельник",
+  "Вторник",
+  "Среда",
+  "Четверг",
+  "Пятница",
+  "Суббота",
+  "Воскресенье",
+];
+
 export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false);
@@ -62,12 +72,19 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
             onChange={handleChange}
             placeholder="Название"
           />
-          <div style={{ display: "flex", gap: "8px" }}>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            <select name="day" value={formData.day} onChange={handleChange}>
+              {ALL_DAYS.map((day) => (
+                <option key={day} value={day}>
+                  {day}
+                </option>
+              ))}
+            </select>
             <input
-              name="day"
-              value={formData.day}
+              name="dayTitle"
+              value={formData.dayTitle}
               onChange={handleChange}
-              placeholder="День (Понедельник)"
+              placeholder="Тема дня"
             />
             <input
               name="muscleGroup"
@@ -84,7 +101,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
               style={{ width: "70px" }}
             />
           </div>
-          <div style={{ display: "flex", gap: "8px" }}>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
             <input
               type="number"
               name="sets"

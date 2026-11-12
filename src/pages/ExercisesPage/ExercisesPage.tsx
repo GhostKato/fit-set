@@ -4,10 +4,20 @@ import { addExercise } from "../../redux/exercises/operations";
 import { ExerciseCard } from "../../components/ExerciseCard/ExerciseCard";
 import type { NewExercise } from "../../types/exercise";
 
+const ALL_DAYS = [
+  "Понедельник",
+  "Вторник",
+  "Среда",
+  "Четверг",
+  "Пятница",
+  "Суббота",
+  "Воскресенье",
+];
+
 const initialFormState: NewExercise = {
   day: "Понедельник",
-  dayTitle: "День толкающих мышц",
-  muscleGroup: "ПЛЕЧЕВЫЕ МЫШЦЫ",
+  dayTitle: "Грудь и Трицепс",
+  muscleGroup: "Грудь",
   order: 1,
   name: "",
   targetMuscles: "",
@@ -104,9 +114,11 @@ export const ExercisesPage = () => {
               value={formData.day}
               onChange={handleChange}
               style={{ padding: "8px" }}>
-              <option value="Понедельник">Понедельник</option>
-              <option value="Среда">Среда</option>
-              <option value="Пятница">Пятница</option>
+              {ALL_DAYS.map((day) => (
+                <option key={day} value={day}>
+                  {day}
+                </option>
+              ))}
             </select>
             <input
               name="dayTitle"
@@ -180,7 +192,7 @@ export const ExercisesPage = () => {
             name="targetMuscles"
             value={formData.targetMuscles}
             onChange={handleChange}
-            placeholder="Целевые мышцы (Верх груди)"
+            placeholder="Целевые мышцы (например, Верх груди)"
             style={{ padding: "8px" }}
           />
           <textarea
@@ -195,21 +207,21 @@ export const ExercisesPage = () => {
             name="handsMode"
             value={formData.handsMode}
             onChange={handleChange}
-            placeholder="Режим работы рук (Строго ВМЕСТЕ (одновременно)."
+            placeholder="Хват / режим рук (например, Широкий хват)"
             style={{ padding: "8px" }}
           />
           <input
             name="palmPosition"
             value={formData.palmPosition}
             onChange={handleChange}
-            placeholder="Положение ладоней (Всю дорогу ДРУГ НА ДРУГА (обхватывают верхний блин)."
+            placeholder="Положение ладоней (например, Прямой хват)"
             style={{ padding: "8px" }}
           />
           <input
             name="breathing"
             value={formData.breathing}
             onChange={handleChange}
-            placeholder="Дыхание (Опускаем за голову — Вдох, выжимаем вверх — Выдох.)"
+            placeholder="Дыхание (например, Выдох на усилии)"
             style={{ padding: "8px" }}
           />
 
@@ -236,7 +248,7 @@ export const ExercisesPage = () => {
           marginBottom: "15px",
           flexWrap: "wrap",
         }}>
-        {["Все", "Понедельник", "Среда", "Пятница"].map((day) => (
+        {["Все", ...ALL_DAYS].map((day) => (
           <button
             key={day}
             type="button"
