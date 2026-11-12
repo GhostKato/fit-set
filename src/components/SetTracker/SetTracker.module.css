@@ -35,7 +35,6 @@
   flex-direction: column;
 }
 
-/* Когда есть таймер, ставим его слева, а подходы справа */
 .contentRowTimed {
   flex-direction: row;
   justify-content: space-between;
@@ -107,11 +106,17 @@
   font-weight: 700;
   text-align: center;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.timerStartBtn:hover {
+.timerStartBtn:hover:not(:disabled) {
   background-color: #218838;
+}
+
+.timerStartBtn:disabled {
+  background-color: #f0f2f5;
+  color: #a0a5ab;
+  cursor: not-allowed;
 }
 
 .timerResetBtn {

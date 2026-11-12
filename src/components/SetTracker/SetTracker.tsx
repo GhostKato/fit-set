@@ -16,6 +16,8 @@ export const SetTracker = ({
   target = 0,
 }: SetTrackerProps) => {
   const completedCount = setsState.filter(Boolean).length;
+  const isAllCompleted =
+    setsState.length > 0 && completedCount === setsState.length;
   const isTimed = unit === "sec" && target > 0;
 
   const [secondsLeft, setSecondsLeft] = useState(target);
@@ -24,6 +26,12 @@ export const SetTracker = ({
 
   if (prevConfig.target !== target || prevConfig.unit !== unit) {
     setPrevConfig({ target, unit });
+    setIsRunning(false);
+    setSecondsLeft(target);
+  }
+
+  // Если все подходы отмечены вручную во время отсчета — останавливаем и сбрасываем таймер
+  if (isAllCompleted && (isRunning || secondsLeft !== target)) {
     setIsRunning(false);
     setSecondsLeft(target);
   }
@@ -52,7 +60,7 @@ export const SetTracker = ({
   };
 
   useEffect(() => {
-    if (!isTimed || !isRunning) return;
+    if (!isTimed || !isRunning || isAllCompleted) return;
 
     const timerId = window.setInterval(() => {
       setSecondsLeft((prev) => {
@@ -72,7 +80,7 @@ export const SetTracker = ({
     }, 1000);
 
     return () => window.clearInterval(timerId);
-  }, [isTimed, isRunning, setsState, onToggleSet, target]);
+  }, [isTimed, isRunning, isAllCompleted, setsState, onToggleSet, target]);
 
   const formatTime = (totalSeconds: number) => {
     const mins = Math.floor(totalSeconds / 60);
@@ -80,7 +88,7 @@ export const SetTracker = ({
     return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
-  const canReset = isRunning || secondsLeft !== target;
+  const canReset = !isAllCompleted && (isRunning || secondsLeft !== target);
 
   return (
     <div className={styles.container}>
@@ -113,6 +121,7 @@ export const SetTracker = ({
             <div className={styles.timerActions}>
               <button
                 type="button"
+                disabled={isAllCompleted}
                 onClick={() => setIsRunning((prev) => !prev)}
                 className={styles.timerStartBtn}>
                 {isRunning ? "Пауза" : "Старт подхода"}

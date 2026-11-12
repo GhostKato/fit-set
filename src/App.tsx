@@ -5,6 +5,7 @@ import { useAppDispatch } from "./redux/hooks";
 import { fetchExercises } from "./redux/exercises/operations";
 import { AuthPage } from "./pages/AuthPage/AuthPage";
 import { Layout } from "./components/Layout/Layout";
+import { Loader } from "./components/Loader/Loader";
 import type { UserProfile } from "./types/user";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { WorkoutPage } from "./pages/WorkoutPage/WorkoutPage";
@@ -33,11 +34,7 @@ export default function App() {
   }, [dispatch]);
 
   if (isCheckingAuth) {
-    return (
-      <p style={{ textAlign: "center", marginTop: "50px" }}>
-        Загрузка Fit Set...
-      </p>
-    );
+    return <Loader forceShow />;
   }
 
   if (!user) {
@@ -45,14 +42,17 @@ export default function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<Layout user={user} />}>
-        <Route index element={<HomePage user={user} />} />
-        <Route path="workout" element={<WorkoutPage />} />
-        <Route path="exercises" element={<ExercisesPage />} />
-        <Route path="/nutrition" element={<NutritionPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Route>
-    </Routes>
+    <>
+      <Loader />
+      <Routes>
+        <Route path="/" element={<Layout user={user} />}>
+          <Route index element={<HomePage user={user} />} />
+          <Route path="workout" element={<WorkoutPage />} />
+          <Route path="exercises" element={<ExercisesPage />} />
+          <Route path="nutrition" element={<NutritionPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+    </>
   );
 }

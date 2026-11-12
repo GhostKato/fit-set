@@ -40,7 +40,6 @@ export const ExercisesPage = () => {
 
   const [formData, setFormData] = useState<NewExercise>(initialFormState);
   const [selectedDay, setSelectedDay] = useState<string>("Все");
-  // Храним режим открытой формы: 'create', ID редактируемого упражнения или null
   const [activeForm, setActiveForm] = useState<"create" | string | null>(null);
 
   const isFormOpen = activeForm === "create";
@@ -242,7 +241,7 @@ export const ExercisesPage = () => {
           />
 
           <button type="submit" className={styles.submitBtn}>
-            Сохранить в базу
+            Создать
           </button>
         </form>
       )}
@@ -261,7 +260,6 @@ export const ExercisesPage = () => {
         ))}
       </div>
 
-      {isLoading && <p className={styles.statusText}>Загрузка упражнений...</p>}
       {error && <p className={styles.errorText}>Ошибка: {error}</p>}
 
       {!isLoading && filteredExercises.length === 0 ? (

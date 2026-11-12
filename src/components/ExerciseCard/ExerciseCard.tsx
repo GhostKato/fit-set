@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { editExercise, removeExercise } from "../../redux/exercises/operations";
+import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import type { Exercise, ExerciseUnit, NewExercise } from "../../types/exercise";
 import styles from "./ExerciseCard.module.css";
 
@@ -30,6 +31,7 @@ export const ExerciseCard = ({
   onCancelEdit,
 }: ExerciseCardProps) => {
   const dispatch = useAppDispatch();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [formData, setFormData] = useState<NewExercise>({
     day: exercise.day,
@@ -86,6 +88,11 @@ export const ExerciseCard = ({
   const handleSave = async () => {
     await dispatch(editExercise({ id: exercise.id, fields: formData }));
     onCancelEdit?.();
+  };
+
+  const handleConfirmDelete = async () => {
+    setIsDeleteModalOpen(false);
+    await dispatch(removeExercise(exercise.id));
   };
 
   const hasDetails = Boolean(
@@ -219,14 +226,14 @@ export const ExerciseCard = ({
         </div>
 
         <div className={styles.editActions}>
-          <button type="button" onClick={handleSave} className={styles.saveBtn}>
-            Сохранить
-          </button>
           <button
             type="button"
             onClick={() => onCancelEdit?.()}
             className={styles.cancelBtn}>
             Отмена
+          </button>
+          <button type="button" onClick={handleSave} className={styles.saveBtn}>
+            Сохранить
           </button>
         </div>
       </div>
@@ -234,69 +241,77 @@ export const ExerciseCard = ({
   }
 
   return (
-    <div className={styles.card}>
-      <div className={styles.header}>
-        <div>
-          <span className={styles.meta}>
-            {exercise.day}
-            {exercise.muscleGroup && ` • ${exercise.muscleGroup}`} • №
-            {exercise.order}
-          </span>
-          <h3 className={styles.name}>{exercise.name}</h3>
-          <p className={styles.stats}>
-            {exercise.sets} подх. × {exercise.target}{" "}
-            {exercise.unit === "sec" ? "сек." : "повт."} | Вес:{" "}
-            {exercise.weight || "Свой вес"}
-          </p>
+    <>
+      <div className={styles.card}>
+        <div className={styles.header}>
+          <div>
+            <span className={styles.meta}>
+              {exercise.day}
+              {exercise.muscleGroup && ` • ${exercise.muscleGroup}`} • №
+              {exercise.order}
+            </span>
+            <h3 className={styles.name}>{exercise.name}</h3>
+            <p className={styles.stats}>
+              {exercise.sets} подх. × {exercise.target}{" "}
+              {exercise.unit === "sec" ? "сек." : "повт."} | Вес:{" "}
+              {exercise.weight || "Свой вес"}
+            </p>
+          </div>
+
+          {showActions && (
+            <div className={styles.actions}>
+              <button
+                type="button"
+                onClick={handleOpenEdit}
+                className={styles.editBtn}>
+                Изменить
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsDeleteModalOpen(true)}
+                className={styles.deleteBtn}>
+                Удалить
+              </button>
+            </div>
+          )}
         </div>
 
-        {showActions && (
-          <div className={styles.actions}>
-            <button
-              type="button"
-              onClick={handleOpenEdit}
-              className={styles.editBtn}>
-              Изменить
-            </button>
-            <button
-              type="button"
-              onClick={() => dispatch(removeExercise(exercise.id))}
-              className={styles.deleteBtn}>
-              Удалить
-            </button>
+        {hasDetails && (
+          <div className={styles.details}>
+            {exercise.targetMuscles && (
+              <p className={styles.detailItem}>
+                <strong>Работающие мышцы:</strong> {exercise.targetMuscles}
+              </p>
+            )}
+            {exercise.howToDo && (
+              <p className={styles.detailItem}>
+                <strong>Как выполнять:</strong> {exercise.howToDo}
+              </p>
+            )}
+            {exercise.handsMode && (
+              <p className={styles.detailItem}>
+                <strong>Режим работы рук:</strong> {exercise.handsMode}
+              </p>
+            )}
+            {exercise.palmPosition && (
+              <p className={styles.detailItem}>
+                <strong>Положение ладоней:</strong> {exercise.palmPosition}
+              </p>
+            )}
+            {exercise.breathing && (
+              <p className={styles.detailItem}>
+                <strong>Дыхание:</strong> {exercise.breathing}
+              </p>
+            )}
           </div>
         )}
       </div>
 
-      {hasDetails && (
-        <div className={styles.details}>
-          {exercise.targetMuscles && (
-            <p className={styles.detailItem}>
-              <strong>Работающие мышцы:</strong> {exercise.targetMuscles}
-            </p>
-          )}
-          {exercise.howToDo && (
-            <p className={styles.detailItem}>
-              <strong>Как выполнять:</strong> {exercise.howToDo}
-            </p>
-          )}
-          {exercise.handsMode && (
-            <p className={styles.detailItem}>
-              <strong>Режим работы рук:</strong> {exercise.handsMode}
-            </p>
-          )}
-          {exercise.palmPosition && (
-            <p className={styles.detailItem}>
-              <strong>Положение ладоней:</strong> {exercise.palmPosition}
-            </p>
-          )}
-          {exercise.breathing && (
-            <p className={styles.detailItem}>
-              <strong>Дыхание:</strong> {exercise.breathing}
-            </p>
-          )}
-        </div>
-      )}
-    </div>
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        onCancel={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+      />
+    </>
   );
 };

@@ -1,0 +1,87 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 9998;
+}
+
+.modal {
+  width: 100%;
+  max-width: 380px;
+  background-color: #ffffff;
+  border: 1.5px solid #e2e5e9;
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  animation: modalFadeIn 0.15s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e1e1e;
+}
+
+.subtitle {
+  margin: 0 0 20px 0;
+  font-size: 14px;
+  color: #666666;
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.noBtn,
+.yesBtn {
+  flex: 1;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.noBtn {
+  background-color: #28a745;
+  color: #ffffff;
+}
+
+.noBtn:hover {
+  background-color: #218838;
+}
+
+.yesBtn {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+.yesBtn:hover {
+  background-color: #c82333;
+}
