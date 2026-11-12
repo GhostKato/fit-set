@@ -1,0 +1,89 @@
+.section {
+  width: 100%;
+}
+
+.sectionTitle {
+  margin: 0 0 16px 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1e1e1e;
+}
+
+.emptyCard {
+  padding: 24px 20px;
+  background-color: #f8f9fa;
+  border: 1px dashed #cccccc;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.emptyText {
+  margin: 0 0 14px 0;
+  font-size: 15px;
+  color: #666666;
+}
+
+.addBtn {
+  padding: 12px 20px;
+  min-height: 44px;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.addBtn:hover {
+  background-color: #218838;
+}
+
+.scheduleGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.dayCard {
+  background-color: #ffffff;
+  border: 1.5px solid #e2e5e9;
+  border-radius: 12px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.dayCardToday {
+  border: 2px solid #28a745;
+  background-color: #fbfefc;
+}
+
+.dayTitle {
+  margin: 0 0 6px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+
+.dayAccent {
+  color: #28a745;
+}
+
+.todayTag {
+  font-size: 13px;
+  font-weight: 700;
+  color: #28a745;
+  margin-left: 6px;
+}
+
+.dayCount {
+  margin: 0;
+  font-size: 14px;
+  color: #666666;
+}
+
+@media (max-width: 600px) {
+  .addBtn {
+    width: 100%;
+  }
+}

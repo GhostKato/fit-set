@@ -1,0 +1,80 @@
+.todayCard {
+  background-color: #e9f7ef;
+  border: 2px solid #28a745;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.08);
+}
+
+.todayTitle {
+  margin: 0 0 8px 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1e1e1e;
+}
+
+.todayInfo {
+  margin: 0 0 18px 0;
+  font-size: 15px;
+  color: #333333;
+}
+
+.startBtn {
+  padding: 14px 24px;
+  min-height: 48px;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.startBtn:hover {
+  background-color: #218838;
+}
+
+.startBtn:active {
+  transform: scale(0.98);
+}
+
+.restCard {
+  background-color: #f8f9fa;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 32px;
+}
+
+.restTitle {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+
+.restText {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #666666;
+}
+
+@media (max-width: 600px) {
+  .todayCard {
+    padding: 18px;
+  }
+
+  .todayTitle {
+    font-size: 19px;
+  }
+
+  .startBtn {
+    width: 100%;
+  }
+}

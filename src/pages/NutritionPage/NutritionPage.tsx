@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { seedDefaultNutrition } from "../../redux/nutrition/operations";
-import { NutritionCard } from "../../components/NutritionCard/NutritionCard";
-import { TodayNutritionBoard } from "./components/TodayNutritionBoard/TodayNutritionBoard";
+import { NutritionCard } from "./components/NutritionCard/NutritionCard";
+import { TodayNutritionBoard } from "../../components/TodayNutritionBoard/TodayNutritionBoard";
 import { NutritionCreateForm } from "./components/NutritionCreateForm/NutritionCreateForm";
 import type { NutritionCategory } from "../../types/nutrition";
 import styles from "./NutritionPage.module.css";
@@ -47,6 +47,8 @@ export const NutritionPage = () => {
 
   return (
     <div className={styles.page}>
+      <TodayNutritionBoard isEditable />
+
       <div className={styles.header}>
         <h2 className={styles.title}>Мой рацион питания</h2>
         <button
@@ -55,11 +57,9 @@ export const NutritionPage = () => {
           className={`${styles.toggleFormBtn} ${
             isCreateOpen ? styles.toggleFormBtnActive : ""
           }`}>
-          {isCreateOpen ? "Закрыть форму" : "+ Добавить пункт"}
+          {isCreateOpen ? "Закрыть форму" : "+ Добавить"}
         </button>
       </div>
-
-      <TodayNutritionBoard />
 
       {isCreateOpen && (
         <NutritionCreateForm onSuccess={() => setActiveForm(null)} />

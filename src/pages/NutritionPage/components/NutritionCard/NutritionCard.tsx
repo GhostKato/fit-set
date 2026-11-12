@@ -1,18 +1,18 @@
 import { useState, type ChangeEvent } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import {
   editNutritionItem,
   removeNutritionItem,
   syncTodaySelection,
-} from "../../redux/nutrition/operations";
-import { setDailySelectionOptimistic } from "../../redux/nutrition/slice";
-import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
+} from "../../../../redux/nutrition/operations";
+import { setDailySelectionOptimistic } from "../../../../redux/nutrition/slice";
+import { ConfirmModal } from "../../../../components/ConfirmModal/ConfirmModal";
 import type {
   MealTime,
   NewNutritionItem,
   NutritionCategory,
   NutritionItem,
-} from "../../types/nutrition";
+} from "../../../../types/nutrition";
 import styles from "./NutritionCard.module.css";
 
 interface NutritionCardProps {

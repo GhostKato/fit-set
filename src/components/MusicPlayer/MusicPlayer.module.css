@@ -7,8 +7,79 @@
   color: #ffffff;
   padding: 12px 16px;
   border-top: 2px solid #28a745;
+  border-radius: 0;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.25);
   z-index: 1000;
+  animation: slideInFromBottom 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.floatingEqBtn {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  height: 44px;
+  max-width: calc(100vw - 32px);
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #1a1c1e;
+  border: 2px solid #28a745;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  z-index: 1000;
+  animation: slideInPillFromRight 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    transform 0.15s ease,
+    background-color 0.2s ease;
+}
+
+/* @keyframes slideInPillFromRight {
+  from {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%);
+    opacity: 1;
+  }
+} */
+
+.floatingEqBtn:hover {
+  background-color: #25282c;
+  transform: scale(1.04);
+}
+
+.floatingEqBtn:active {
+  transform: scale(0.96);
+}
+
+.floatingEqBtnPlaying {
+  animation:
+    slideInPillFromRight 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    playGlow 1.8s ease-in-out infinite;
+}
+
+.floatingTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .container {
@@ -27,7 +98,10 @@
 .stationInfo {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 2px;
+  min-width: 0;
+  flex: 1;
 }
 
 .stationMeta {
@@ -38,10 +112,70 @@
   text-transform: uppercase;
 }
 
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+}
+
 .stationTitle {
   font-size: 16px;
   font-weight: 700;
   color: #ffffff;
+}
+
+.equalizer {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.bar {
+  width: 3px;
+  height: 4px;
+  background-color: #4e5358;
+  border-radius: 2px;
+  transition: background-color 0.25s ease;
+}
+
+.equalizerPlaying .bar {
+  background-color: #28a745;
+  animation: eqBounce 0.8s ease-in-out infinite alternate;
+}
+
+.equalizerPlaying .bar:nth-child(1) {
+  animation-duration: 0.65s;
+  animation-delay: 0s;
+}
+
+.equalizerPlaying .bar:nth-child(2) {
+  animation-duration: 0.85s;
+  animation-delay: 0.2s;
+}
+
+.equalizerPlaying .bar:nth-child(3) {
+  animation-duration: 0.55s;
+  animation-delay: 0.1s;
+}
+
+.equalizerPlaying .bar:nth-child(4) {
+  animation-duration: 0.75s;
+  animation-delay: 0.3s;
+}
+
+@keyframes eqBounce {
+  0% {
+    height: 3px;
+  }
+  50% {
+    height: 14px;
+  }
+  100% {
+    height: 6px;
+  }
 }
 
 .errorMsg {
@@ -58,7 +192,7 @@
 
 .controlBtn {
   min-height: 38px;
-  padding: 8px 12px;
+  padding: 8px 18px;
   background-color: #2e3236;
   color: #ffffff;
   border: none;
@@ -80,7 +214,7 @@
 
 .playBtn {
   background-color: #28a745;
-  padding: 8px 18px;
+  padding: 8px 25px;
   font-weight: 700;
 }
 
@@ -88,16 +222,37 @@
   background-color: #218838;
 }
 
-.toggleBtn {
+.playBtnActive {
+  animation: playGlow 1.8s ease-in-out infinite;
+}
+
+@keyframes playGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(40, 167, 69, 0);
+  }
+}
+
+.toggleBtn,
+.minimizeBtn {
   background-color: transparent;
   border: 1.5px solid #4e5358;
+  padding: 10px 10px;
   font-size: 13px;
   font-weight: 600;
 }
 
-.toggleBtn:hover {
+.toggleBtn:hover,
+.minimizeBtn:hover {
   border-color: #ffffff;
   background-color: rgba(255, 255, 255, 0.08);
+}
+
+.minimizeBtn {
+  font-size: 13px;
 }
 
 .stationsList {
@@ -107,6 +262,18 @@
   margin-top: 12px;
   padding-top: 12px;
   border-top: 1px solid #2e3236;
+  animation: slideUpFade 0.2s ease-out;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .stationChip {
@@ -144,5 +311,14 @@
 
   .playBtn {
     flex: 1;
+  }
+
+  .floatingEqBtn {
+    width: 44px;
+    padding: 0;
+  }
+
+  .floatingTitle {
+    display: none;
   }
 }

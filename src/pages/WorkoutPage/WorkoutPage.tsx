@@ -2,8 +2,8 @@ import { useState, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import { ExerciseCard } from "../../components/ExerciseCard/ExerciseCard";
-import { SetTracker } from "../../components/SetTracker/SetTracker";
-import { RestTimer } from "../../components/RestTimer/RestTimer";
+import { SetTracker } from "./components/SetTracker/SetTracker";
+import { RestTimer } from "./components/RestTimer/RestTimer";
 import styles from "./WorkoutPage.module.css";
 
 const DAYS_BY_INDEX = [
@@ -30,6 +30,10 @@ export const WorkoutPage = () => {
       .filter((item) => item.day === selectedDay)
       .sort((a, b) => a.order - b.order);
   }, [allExercises, selectedDay]);
+
+  const customDayTitle = useMemo(() => {
+    return dayExercises.find((item) => item.dayTitle?.trim())?.dayTitle?.trim();
+  }, [dayExercises]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completedSets, setCompletedSets] = useState<Record<string, boolean[]>>(
@@ -72,7 +76,9 @@ export const WorkoutPage = () => {
     <div className={styles.page}>
       <div className={styles.topBar}>
         <span className={styles.progressText}>
-          {selectedDay} • Упражнение {currentIndex + 1} из {dayExercises.length}
+          {selectedDay}
+          {customDayTitle ? ` • ${customDayTitle}` : ""} • Упражнение{" "}
+          {currentIndex + 1} из {dayExercises.length}
         </span>
         <button
           type="button"

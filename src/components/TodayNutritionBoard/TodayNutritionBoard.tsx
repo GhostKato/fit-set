@@ -1,18 +1,26 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   syncTodaySelection,
   updateMealSchedule,
-} from "../../../../redux/nutrition/operations";
-import { setDailySelectionOptimistic } from "../../../../redux/nutrition/slice";
-import { EMPTY_DAILY_SELECTION } from "../../../../services/nutritionOps";
-import type { MealTime } from "../../../../types/nutrition";
+} from "../../redux/nutrition/operations";
+import { setDailySelectionOptimistic } from "../../redux/nutrition/slice";
+import { EMPTY_DAILY_SELECTION } from "../../services/nutritionOps";
+import type { MealTime } from "../../types/nutrition";
 import styles from "./TodayNutritionBoard.module.css";
+
+interface TodayNutritionBoardProps {
+  isEditable?: boolean;
+}
 
 const MEAL_ORDER: MealTime[] = ["Завтрак", "Обед", "Ужин"];
 
-export const TodayNutritionBoard = () => {
+export const TodayNutritionBoard = ({
+  isEditable = false,
+}: TodayNutritionBoardProps) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { items, dailySelection, schedule } = useAppSelector(
     (state) => state.nutrition,
   );
@@ -43,6 +51,7 @@ export const TodayNutritionBoard = () => {
   };
 
   const startEditingSchedule = (mealKey: MealTime) => {
+    if (!isEditable) return;
     setEditingScheduleMeal(mealKey);
     setScheduleInput(schedule[mealKey] || "");
   };
@@ -71,12 +80,21 @@ export const TodayNutritionBoard = () => {
       <div className={styles.todayBoardHeader}>
         <h3 className={styles.todayBoardTitle}>Мой рацион на сегодня</h3>
 
-        {totalSelectedCount > 0 && (
+        {isEditable ? (
+          totalSelectedCount > 0 && (
+            <button
+              type="button"
+              onClick={handleClearToday}
+              className={styles.clearBtn}>
+              Очистить всё
+            </button>
+          )
+        ) : (
           <button
             type="button"
-            onClick={handleClearToday}
-            className={styles.clearBtn}>
-            Очистить всё
+            onClick={() => navigate("/nutrition")}
+            className={styles.editPlanBtn}>
+            Изменить рацион
           </button>
         )}
       </div>
@@ -93,7 +111,7 @@ export const TodayNutritionBoard = () => {
               <div className={styles.todayMealTop}>
                 <span className={styles.todayMealName}>{mealKey}</span>
 
-                {editingScheduleMeal === mealKey ? (
+                {isEditable && editingScheduleMeal === mealKey ? (
                   <div className={styles.scheduleEditBox}>
                     <input
                       type="text"
@@ -115,7 +133,7 @@ export const TodayNutritionBoard = () => {
                       ✕
                     </button>
                   </div>
-                ) : (
+                ) : isEditable ? (
                   <button
                     type="button"
                     onClick={() => startEditingSchedule(mealKey)}
@@ -123,6 +141,10 @@ export const TodayNutritionBoard = () => {
                     title="Изменить время приёма пищи">
                     🕒 {schedule[mealKey]}
                   </button>
+                ) : (
+                  <span className={styles.mealScheduleText}>
+                    🕒 {schedule[mealKey]}
+                  </span>
                 )}
               </div>
 
@@ -137,15 +159,18 @@ export const TodayNutritionBoard = () => {
                           <strong>{prod.title}</strong>
                           {prod.portion ? ` (${prod.portion})` : ""}
                         </span>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleToggleMealForToday(prod.id, mealKey)
-                          }
-                          className={styles.removeTagBtn}
-                          title="Убрать из приёма пищи">
-                          ✕
-                        </button>
+
+                        {isEditable && (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleToggleMealForToday(prod.id, mealKey)
+                            }
+                            className={styles.removeTagBtn}
+                            title="Убрать из приёма пищи">
+                            ✕
+                          </button>
+                        )}
                       </li>
                     ) : null,
                   )}

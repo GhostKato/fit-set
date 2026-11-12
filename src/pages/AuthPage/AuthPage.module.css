@@ -84,17 +84,11 @@
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    transform 0.1s ease;
+  transition: background-color 0.2s ease;
 }
 
 .submitBtn:hover {
   background-color: #218838;
-}
-
-.submitBtn:active {
-  transform: scale(0.99);
 }
 
 .switchBtn {

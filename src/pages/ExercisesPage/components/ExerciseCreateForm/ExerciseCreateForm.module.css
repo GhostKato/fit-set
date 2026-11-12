@@ -1,0 +1,100 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #ffffff;
+  border: 1.5px solid #e2e5e9;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.formTitle {
+  margin: 0 0 4px 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.input,
+.select,
+.textarea {
+  padding: 10px 12px;
+  border: 1.5px solid #dcdcdc;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #1e1e1e;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #28a745;
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.flex1 {
+  flex: 1 1 160px;
+}
+
+.flex2 {
+  flex: 2 1 240px;
+}
+
+.numberGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444444;
+}
+
+.targetLabel {
+  display: inline-block;
+  min-width: 78px;
+}
+
+.numberInput {
+  width: 72px;
+  text-align: center;
+}
+
+.submitBtn {
+  padding: 12px;
+  min-height: 46px;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.submitBtn:hover {
+  background-color: #218838;
+}
+
+@media (max-width: 600px) {
+  .form {
+    padding: 16px;
+  }
+}

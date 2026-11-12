@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { ExerciseUnit } from "../../types/exercise";
+import type { ExerciseUnit } from "../../../../types/exercise";
 import styles from "./SetTracker.module.css";
 
 interface SetTrackerProps {

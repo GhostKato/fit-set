@@ -13,9 +13,10 @@
 
 .title {
   margin: 0;
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 800;
   color: #1e1e1e;
+  text-align: left;
 }
 
 .toggleFormBtn {
@@ -28,17 +29,11 @@
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    transform 0.1s ease;
+  transition: background-color 0.2s ease;
 }
 
 .toggleFormBtn:hover {
   background-color: #218838;
-}
-
-.toggleFormBtn:active {
-  transform: scale(0.98);
 }
 
 .toggleFormBtnActive {
@@ -130,8 +125,14 @@
 }
 
 @media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .title {
     font-size: 22px;
+    text-align: center;
   }
 
   .toggleFormBtn,
