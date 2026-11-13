@@ -49,20 +49,20 @@
 
 .contentRow {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  min-height: 72px;
+  gap: 20px;
 }
 
 .contentRowTimed {
-  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  gap: 20px;
 }
 
 .timerBox {
   display: flex;
   align-items: center;
   gap: 18px;
+  min-height: 72px;
   background-color: #f8f9fa;
   border: 1.5px solid #e2e5e9;
   border-radius: 12px;
@@ -84,6 +84,7 @@
   align-items: center;
   text-align: center;
   gap: 2px;
+  min-width: 96px;
 }
 
 .timerLabel {
@@ -92,6 +93,7 @@
   color: #666666;
   text-transform: uppercase;
   letter-spacing: 0.3px;
+  white-space: nowrap;
 }
 
 .timerDigits {
@@ -163,14 +165,10 @@
 }
 
 .grid {
-  display: flex;
-  justify-content: flex-start;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(126px, 1fr));
   gap: 10px;
-  flex-wrap: wrap;
-}
-
-.gridRight {
-  justify-content: flex-end;
 }
 
 .setLabel {
@@ -179,13 +177,14 @@
   justify-content: center;
   gap: 8px;
   min-height: 44px;
-  padding: 10px 16px;
+  padding: 10px 14px;
   border: 1.5px solid #e2e5e9;
   border-radius: 10px;
   background-color: #f8f9fa;
   color: #1e1e1e;
   font-size: 14px;
   font-weight: 700;
+  white-space: nowrap;
   cursor: pointer;
   user-select: none;
   transition: all 0.15s ease;
@@ -213,11 +212,16 @@
   height: 17px;
   accent-color: #1e7e34;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 @media (max-width: 900px) {
   .container {
     padding: 18px 16px;
+  }
+
+  .contentRow {
+    min-height: auto;
   }
 
   .contentRowTimed {
@@ -241,11 +245,7 @@
     flex: 1;
   }
 
-  .gridRight {
-    justify-content: flex-start;
-  }
-
-  .setLabel {
-    flex: 1 1 calc(50% - 10px);
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

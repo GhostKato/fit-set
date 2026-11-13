@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import { ExerciseCard } from "../../components/ExerciseCard/ExerciseCard";
@@ -26,12 +26,38 @@ const formatDayAccusative = (day: string): string => {
   return map[lower] || lower;
 };
 
+interface SavedWorkoutProgress {
+  currentIndex: number;
+  completedSets: Record<string, boolean[]>;
+}
+
+const getStorageKey = (day: string) => `fitset_workout_progress_${day}`;
+
+const loadSavedProgress = (day: string): SavedWorkoutProgress => {
+  try {
+    const raw = localStorage.getItem(getStorageKey(day));
+    if (!raw) return { currentIndex: 0, completedSets: {} };
+    const parsed = JSON.parse(raw) as SavedWorkoutProgress;
+    return {
+      currentIndex:
+        typeof parsed.currentIndex === "number" ? parsed.currentIndex : 0,
+      completedSets:
+        parsed.completedSets && typeof parsed.completedSets === "object"
+          ? parsed.completedSets
+          : {},
+    };
+  } catch {
+    return { currentIndex: 0, completedSets: {} };
+  }
+};
+
 export const WorkoutPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const todayName = DAYS_BY_INDEX[new Date().getDay()];
   const selectedDay = searchParams.get("day") || todayName;
+  const storageKey = getStorageKey(selectedDay);
 
   const allExercises = useAppSelector((state) => state.exercises.items);
 
@@ -45,10 +71,32 @@ export const WorkoutPage = () => {
     return dayExercises.find((item) => item.dayTitle?.trim())?.dayTitle?.trim();
   }, [dayExercises]);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [completedSets, setCompletedSets] = useState<Record<string, boolean[]>>(
-    {},
+  const [currentIndex, setCurrentIndex] = useState<number>(
+    () => loadSavedProgress(selectedDay).currentIndex,
   );
+  const [completedSets, setCompletedSets] = useState<Record<string, boolean[]>>(
+    () => loadSavedProgress(selectedDay).completedSets,
+  );
+  const [loadedDay, setLoadedDay] = useState<string>(selectedDay);
+
+  if (loadedDay !== selectedDay) {
+    const restored = loadSavedProgress(selectedDay);
+    setLoadedDay(selectedDay);
+    setCurrentIndex(restored.currentIndex);
+    setCompletedSets(restored.completedSets);
+  }
+
+  useEffect(() => {
+    try {
+      const payload: SavedWorkoutProgress = {
+        currentIndex,
+        completedSets,
+      };
+      localStorage.setItem(storageKey, JSON.stringify(payload));
+    } catch {
+      // Игнорируем ошибку, если localStorage переполнен или недоступен
+    }
+  }, [storageKey, currentIndex, completedSets]);
 
   const progressPercent = useMemo(() => {
     const totalSets = dayExercises.reduce((sum, ex) => sum + ex.sets, 0);
@@ -61,6 +109,25 @@ export const WorkoutPage = () => {
 
     return Math.round((doneSets / totalSets) * 100);
   }, [dayExercises, completedSets]);
+
+  const handleResetProgress = () => {
+    try {
+      localStorage.removeItem(storageKey);
+    } catch {
+      // Игнорируем ошибку доступа к localStorage
+    }
+    setCurrentIndex(0);
+    setCompletedSets({});
+  };
+
+  const handleFinishWorkout = () => {
+    try {
+      localStorage.removeItem(storageKey);
+    } catch {
+      // Игнорируем ошибку доступа к localStorage
+    }
+    navigate("/");
+  };
 
   if (dayExercises.length === 0) {
     return (
@@ -101,6 +168,9 @@ export const WorkoutPage = () => {
   };
 
   const isLastExercise = safeIndex === dayExercises.length - 1;
+  const hasAnyProgress =
+    safeIndex > 0 ||
+    Object.values(completedSets).some((sets) => sets.some(Boolean));
 
   return (
     <div className={styles.page}>
@@ -110,12 +180,22 @@ export const WorkoutPage = () => {
           {customDayTitle ? ` • ${customDayTitle}` : ""}
         </h2>
 
-        <button
-          type="button"
-          onClick={() => navigate("/")}
-          className={styles.finishTopBtn}>
-          Завершить
-        </button>
+        <div className={styles.headerActions}>
+          <button
+            type="button"
+            disabled={!hasAnyProgress}
+            onClick={handleResetProgress}
+            className={styles.resetTopBtn}>
+            Сбросить
+          </button>
+
+          <button
+            type="button"
+            onClick={handleFinishWorkout}
+            className={styles.finishTopBtn}>
+            Завершить
+          </button>
+        </div>
       </div>
 
       <div className={styles.progressCard}>
@@ -158,7 +238,9 @@ export const WorkoutPage = () => {
         <button
           type="button"
           onClick={() =>
-            isLastExercise ? navigate("/") : setCurrentIndex((prev) => prev + 1)
+            isLastExercise
+              ? handleFinishWorkout()
+              : setCurrentIndex((prev) => prev + 1)
           }
           className={styles.nextBtn}>
           {isLastExercise ? "Завершить тренировку" : "Следующее упражнение →"}

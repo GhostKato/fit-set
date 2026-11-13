@@ -3,7 +3,7 @@ import styles from "./RestTimer.module.css";
 
 const REST_OPTIONS = Array.of(60, 120, 180, 240, 300);
 
-const createBeepWavUrl = (): string => {
+const createBeepWavDataUrl = (): string => {
   const sampleRate = 22050;
   const duration = 0.85;
   const numSamples = Math.floor(sampleRate * duration);
@@ -54,8 +54,12 @@ const createBeepWavUrl = (): string => {
     view.setInt16(44 + i * 2, intSample, true);
   }
 
-  const blob = new Blob([buffer], { type: "audio/wav" });
-  return URL.createObjectURL(blob);
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return `data:audio/wav;base64,${btoa(binary)}`;
 };
 
 export const RestTimer = () => {
@@ -64,20 +68,16 @@ export const RestTimer = () => {
   const [isRunning, setIsRunning] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const audioUrlRef = useRef<string | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
-    const url = createBeepWavUrl();
-    audioUrlRef.current = url;
-
-    const audio = new Audio(url);
+    const dataUrl = createBeepWavDataUrl();
+    const audio = new Audio(dataUrl);
     audio.preload = "auto";
     audioRef.current = audio;
 
     return () => {
       audio.pause();
-      URL.revokeObjectURL(url);
     };
   }, []);
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ExerciseUnit } from "../../../../types/exercise";
 import styles from "./SetTracker.module.css";
 
@@ -8,6 +8,64 @@ interface SetTrackerProps {
   unit?: ExerciseUnit;
   target?: number;
 }
+
+const createSetDoneWavDataUrl = (): string => {
+  const sampleRate = 22050;
+  const duration = 0.45;
+  const numSamples = Math.floor(sampleRate * duration);
+  const buffer = new ArrayBuffer(44 + numSamples * 2);
+  const view = new DataView(buffer);
+
+  const writeString = (offset: number, str: string) => {
+    for (let i = 0; i < str.length; i++) {
+      view.setUint8(offset + i, str.charCodeAt(i));
+    }
+  };
+
+  writeString(0, "RIFF");
+  view.setUint32(4, 36 + numSamples * 2, true);
+  writeString(8, "WAVE");
+  writeString(12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true);
+  view.setUint16(32, 2, true);
+  view.setUint16(34, 16, true);
+  writeString(36, "data");
+  view.setUint32(40, numSamples * 2, true);
+
+  const notes = [
+    { start: 0, end: 0.14, freq: 880 },
+    { start: 0.18, end: 0.42, freq: 1175 },
+  ];
+
+  for (let i = 0; i < numSamples; i++) {
+    const t = i / sampleRate;
+    let sample = 0;
+
+    for (const note of notes) {
+      if (t >= note.start && t <= note.end) {
+        const localT = t - note.start;
+        const noteLen = note.end - note.start;
+        const envelope = Math.min(1, localT * 40) * (1 - localT / noteLen);
+        sample = Math.sin(2 * Math.PI * note.freq * t) * envelope * 0.85;
+        break;
+      }
+    }
+
+    const intSample = Math.max(-1, Math.min(1, sample)) * 32767;
+    view.setInt16(44 + i * 2, intSample, true);
+  }
+
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return `data:audio/wav;base64,${btoa(binary)}`;
+};
 
 export const SetTracker = ({
   setsState,
@@ -24,6 +82,20 @@ export const SetTracker = ({
   const [isRunning, setIsRunning] = useState(false);
   const [prevConfig, setPrevConfig] = useState({ target, unit });
 
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  useEffect(() => {
+    const dataUrl = createSetDoneWavDataUrl();
+    const audio = new Audio(dataUrl);
+    audio.preload = "auto";
+    audioRef.current = audio;
+
+    return () => {
+      audio.pause();
+    };
+  }, []);
+
   if (prevConfig.target !== target || prevConfig.unit !== unit) {
     setPrevConfig({ target, unit });
     setIsRunning(false);
@@ -35,14 +107,44 @@ export const SetTracker = ({
     setSecondsLeft(target);
   }
 
-  const playSetDoneBeep = () => {
+  const unlockAudio = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = 0;
+      audio
+        .play()
+        .then(() => {
+          audio.pause();
+          audio.currentTime = 0;
+          audio.volume = 1;
+        })
+        .catch(() => {
+          audio.volume = 1;
+        });
+    }
+
     const AudioCtx =
       window.AudioContext ||
       (window as unknown as { webkitAudioContext: typeof AudioContext })
         .webkitAudioContext;
     if (!AudioCtx) return;
 
-    const ctx = new AudioCtx();
+    if (!audioCtxRef.current) {
+      audioCtxRef.current = new AudioCtx();
+    }
+    if (audioCtxRef.current.state === "suspended") {
+      audioCtxRef.current.resume().catch(() => {});
+    }
+  };
+
+  const playFallbackWebAudio = () => {
+    const ctx = audioCtxRef.current;
+    if (!ctx) return;
+
+    if (ctx.state === "suspended") {
+      ctx.resume().catch(() => {});
+    }
+
     const now = ctx.currentTime;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
@@ -56,6 +158,19 @@ export const SetTracker = ({
     gain.connect(ctx.destination);
     osc.start(now);
     osc.stop(now + 0.45);
+  };
+
+  const playSetDoneBeep = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = 1;
+      audio.currentTime = 0;
+      audio.play().catch(() => {
+        playFallbackWebAudio();
+      });
+    } else {
+      playFallbackWebAudio();
+    }
   };
 
   useEffect(() => {
@@ -80,6 +195,13 @@ export const SetTracker = ({
 
     return () => window.clearInterval(timerId);
   }, [isTimed, isRunning, isAllCompleted, setsState, onToggleSet, target]);
+
+  const handleToggleTimer = () => {
+    if (!isRunning) {
+      unlockAudio();
+    }
+    setIsRunning((prev) => !prev);
+  };
 
   const formatTime = (totalSeconds: number) => {
     const mins = Math.floor(totalSeconds / 60);
@@ -130,7 +252,7 @@ export const SetTracker = ({
               <button
                 type="button"
                 disabled={isAllCompleted}
-                onClick={() => setIsRunning((prev) => !prev)}
+                onClick={handleToggleTimer}
                 className={styles.timerStartBtn}>
                 {isRunning ? "Пауза" : "Старт подхода"}
               </button>
@@ -148,7 +270,7 @@ export const SetTracker = ({
           </div>
         )}
 
-        <div className={`${styles.grid} ${isTimed ? styles.gridRight : ""}`}>
+        <div className={styles.grid}>
           {setsState.map((isDone, idx) => (
             <label
               key={idx}
