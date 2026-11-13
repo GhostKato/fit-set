@@ -1,118 +1,230 @@
-import { useState, useRef, useEffect } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  type MouseEvent,
+} from "react";
+import { PRESET_STATIONS } from "../../data/radioStations";
+import { PlayerDrawer } from "./components/PlayerDrawer/PlayerDrawer";
+import type { LocalTrack, PlayerMode } from "../../types/player";
 import styles from "./MusicPlayer.module.css";
 
-interface Station {
-  id: number;
-  title: string;
-  genre: string;
-  url: string;
-}
-
-const NIGHTRIDE_HOST = "https://stream.nightride.fm";
-
-const PRESET_STATIONS: Station[] = [
-  // --- Киберпанк, Синтвейв и Бейс ---
-  {
-    id: 1,
-    title: "Datawave FM",
-    genre: "Cyberpunk / Gym",
-    url: `${NIGHTRIDE_HOST}/datawave.mp3`,
-  },
-  {
-    id: 2,
-    title: "Darksynth FM",
-    genre: "Aggressive Synth",
-    url: `${NIGHTRIDE_HOST}/darksynth.mp3`,
-  },
-  {
-    id: 3,
-    title: "Nightride FM",
-    genre: "Synthwave / Phonk",
-    url: `${NIGHTRIDE_HOST}/nightride.mp3`,
-  },
-  {
-    id: 4,
-    title: "Rekt FM",
-    genre: "Drum & Bass / Breakbeat",
-    url: `${NIGHTRIDE_HOST}/rekt.mp3`,
-  },
-  {
-    id: 5,
-    title: "EBSM Radio",
-    genre: "Dark / Industrial",
-    url: `${NIGHTRIDE_HOST}/ebsm.mp3`,
-  },
-  {
-    id: 6,
-    title: "Horrorsynth",
-    genre: "Heavy Synth",
-    url: `${NIGHTRIDE_HOST}/horrorsynth.mp3`,
-  },
-  {
-    id: 7,
-    title: "Spacesynth FM",
-    genre: "Space / Cardio",
-    url: `${NIGHTRIDE_HOST}/spacesynth.mp3`,
-  },
-  {
-    id: 8,
-    title: "Chillsynth FM",
-    genre: "Synth / Stretching",
-    url: `${NIGHTRIDE_HOST}/chillsynth.mp3`,
-  },
-];
-
 export const MusicPlayer = () => {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const playerRef = useRef<HTMLDivElement | null>(null);
+  const radioAudioRef = useRef<HTMLAudioElement | null>(null);
+  const localAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  const [mode, setMode] = useState<PlayerMode>("radio");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [localTracks, setLocalTracks] = useState<LocalTrack[]>([]);
+  const [localIndex, setLocalIndex] = useState<number>(0);
+  const [isShuffle, setIsShuffle] = useState<boolean>(false);
+
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMinimized, setIsMinimized] = useState<boolean>(true);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
 
   const currentStation = PRESET_STATIONS[currentIndex];
+  const currentLocalTrack = localTracks[localIndex] ?? null;
+
+  const activeTitle =
+    mode === "radio"
+      ? currentStation.title
+      : (currentLocalTrack?.title ?? "Треки не выбраны");
+
+  const activeMeta =
+    mode === "radio"
+      ? `РАДИО #${currentStation.id} • ${currentStation.genre}`
+      : localTracks.length > 0
+        ? `МОЯ МУЗЫКА • ${localIndex + 1} из ${localTracks.length}`
+        : "МОЯ МУЗЫКА • ВЫБЕРИТЕ ТРЕКИ";
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    if (isMinimized || isCollapsed) return;
 
+    const handleClickOutside = (event: PointerEvent) => {
+      const target = event.target as Node | null;
+      if (playerRef.current && target && !playerRef.current.contains(target)) {
+        setIsMinimized(true);
+      }
+    };
+
+    document.addEventListener("pointerdown", handleClickOutside);
+    return () => {
+      document.removeEventListener("pointerdown", handleClickOutside);
+    };
+  }, [isMinimized, isCollapsed]);
+
+  useEffect(() => {
+    return () => {
+      localTracks.forEach((track) => URL.revokeObjectURL(track.url));
+    };
+  }, [localTracks]);
+
+  useEffect(() => {
+    const radioAudio = radioAudioRef.current;
+    const localAudio = localAudioRef.current;
+    if (!radioAudio) return;
+
+    if (mode !== "radio") {
+      radioAudio.pause();
+      return;
+    }
+
+    localAudio?.pause();
     setErrorMsg("");
+
     if (isPlaying) {
-      audio.load();
-      audio.play().catch(() => {
+      radioAudio.load();
+      radioAudio.play().catch(() => {
         setIsPlaying(false);
         setErrorMsg("Не удалось запустить поток. Попробуйте другую станцию.");
       });
     } else {
-      audio.pause();
+      radioAudio.pause();
     }
-  }, [currentIndex, isPlaying]);
+  }, [mode, currentIndex, isPlaying]);
 
+  useEffect(() => {
+    const localAudio = localAudioRef.current;
+    const radioAudio = radioAudioRef.current;
+    if (!localAudio) return;
+
+    if (mode !== "local") {
+      localAudio.pause();
+      return;
+    }
+
+    radioAudio?.pause();
+    setErrorMsg("");
+
+    if (!currentLocalTrack) {
+      localAudio.pause();
+      setIsPlaying(false);
+      return;
+    }
+
+    if (isPlaying) {
+      localAudio.load();
+      localAudio.play().catch(() => {
+        setIsPlaying(false);
+        setErrorMsg("Не удалось воспроизвести этот аудиофайл.");
+      });
+    } else {
+      localAudio.pause();
+    }
+  }, [mode, localIndex, currentLocalTrack, isPlaying]);
   const togglePlay = () => {
+    if (mode === "local" && localTracks.length === 0) {
+      setIsMinimized(false);
+      setErrorMsg("Сначала выберите папку или аудиофайлы.");
+      return;
+    }
     setIsPlaying((prev) => !prev);
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % PRESET_STATIONS.length);
-    setIsPlaying(true);
-  };
+  const handleNext = useCallback(() => {
+    if (mode === "radio") {
+      setCurrentIndex((prev) => (prev + 1) % PRESET_STATIONS.length);
+      setIsPlaying(true);
+      return;
+    }
 
-  const handlePrev = () => {
-    setCurrentIndex(
-      (prev) => (prev - 1 + PRESET_STATIONS.length) % PRESET_STATIONS.length,
+    if (localTracks.length === 0) return;
+
+    setLocalIndex((prev) => {
+      if (isShuffle && localTracks.length > 1) {
+        let next = prev;
+        while (next === prev) {
+          next = Math.floor(Math.random() * localTracks.length);
+        }
+        return next;
+      }
+      return (prev + 1) % localTracks.length;
+    });
+    setIsPlaying(true);
+  }, [mode, localTracks.length, isShuffle]);
+
+  const handlePrev = useCallback(() => {
+    if (mode === "radio") {
+      setCurrentIndex(
+        (prev) => (prev - 1 + PRESET_STATIONS.length) % PRESET_STATIONS.length,
+      );
+      setIsPlaying(true);
+      return;
+    }
+
+    if (localTracks.length === 0) return;
+
+    setLocalIndex(
+      (prev) => (prev - 1 + localTracks.length) % localTracks.length,
     );
     setIsPlaying(true);
+  }, [mode, localTracks.length]);
+
+  useEffect(() => {
+    if (!("mediaSession" in navigator)) return;
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: activeTitle,
+      artist: mode === "radio" ? currentStation.genre : "Fit Set • Моя музыка",
+      album: "Fit Set Player",
+    });
+
+    navigator.mediaSession.setActionHandler("play", () => setIsPlaying(true));
+    navigator.mediaSession.setActionHandler("pause", () => setIsPlaying(false));
+    navigator.mediaSession.setActionHandler("previoustrack", handlePrev);
+    navigator.mediaSession.setActionHandler("nexttrack", handleNext);
+  }, [activeTitle, mode, currentStation.genre, handlePrev, handleNext]);
+
+  const handleLoadLocalTracks = (newTracks: LocalTrack[]) => {
+    localTracks.forEach((track) => URL.revokeObjectURL(track.url));
+    setLocalTracks(newTracks);
+    setLocalIndex(0);
+    setMode("local");
+    setErrorMsg("");
+    setIsPlaying(true);
   };
 
+  const handleSwitchMode = (nextMode: PlayerMode) => {
+    if (nextMode === mode) return;
+    setErrorMsg("");
+    setMode(nextMode);
+    if (nextMode === "local" && localTracks.length === 0) {
+      setIsPlaying(false);
+    }
+  };
+
+  const handleTopBarClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (!isMinimized) return;
+    const target = event.target as HTMLElement;
+    if (target.closest("button")) return;
+    setIsMinimized(false);
+  };
   return (
     <>
       <audio
-        ref={audioRef}
+        ref={radioAudioRef}
         src={currentStation.url}
         preload="none"
         onError={() => {
+          if (mode !== "radio") return;
           setIsPlaying(false);
           setErrorMsg("Станция временно недоступна. Переключите волну.");
+        }}
+      />
+
+      <audio
+        ref={localAudioRef}
+        src={currentLocalTrack?.url}
+        preload="none"
+        onEnded={handleNext}
+        onError={() => {
+          if (mode !== "local" || !currentLocalTrack) return;
+          setIsPlaying(false);
+          setErrorMsg("Ошибка чтения файла.");
         }}
       />
 
@@ -123,7 +235,7 @@ export const MusicPlayer = () => {
           className={`${styles.floatingEqBtn} ${
             isPlaying ? styles.floatingEqBtnPlaying : ""
           }`}
-          title={`Развернуть плеер (${currentStation.title})`}
+          title={`Развернуть плеер (${activeTitle})`}
           aria-label="Развернуть плеер">
           <div
             className={`${styles.equalizer} ${
@@ -135,16 +247,23 @@ export const MusicPlayer = () => {
             <span className={styles.bar} />
             <span className={styles.bar} />
           </div>
-          <span className={styles.floatingTitle}>{currentStation.title}</span>
+          <span className={styles.floatingTitle}>{activeTitle}</span>
         </button>
       ) : (
-        <div className={styles.player}>
+        <div ref={playerRef} className={styles.player}>
           <div className={styles.container}>
-            <div className={styles.topBar}>
+            <div
+              onClick={handleTopBarClick}
+              className={`${styles.topBar} ${
+                isMinimized ? styles.topBarExpandable : ""
+              }`}
+              title={
+                isMinimized
+                  ? "Нажмите, чтобы открыть список станций и треков"
+                  : undefined
+              }>
               <div className={styles.stationInfo}>
-                <span className={styles.stationMeta}>
-                  РАДИО #{currentStation.id} • {currentStation.genre}
-                </span>
+                <span className={styles.stationMeta}>{activeMeta}</span>
                 <div className={styles.titleRow}>
                   <div
                     className={`${styles.equalizer} ${
@@ -156,9 +275,7 @@ export const MusicPlayer = () => {
                     <span className={styles.bar} />
                     <span className={styles.bar} />
                   </div>
-                  <div className={styles.stationTitle}>
-                    {currentStation.title}
-                  </div>
+                  <div className={styles.stationTitle}>{activeTitle}</div>
                 </div>
                 {errorMsg && <div className={styles.errorMsg}>{errorMsg}</div>}
               </div>
@@ -190,15 +307,10 @@ export const MusicPlayer = () => {
 
                 <button
                   type="button"
-                  onClick={() => setIsMinimized((prev) => !prev)}
-                  className={`${styles.controlBtn} ${styles.toggleBtn}`}
-                  title="Список станций">
-                  {isMinimized ? "☰" : "✕"}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setIsCollapsed(true)}
+                  onClick={() => {
+                    setIsMinimized(true);
+                    setIsCollapsed(true);
+                  }}
                   className={`${styles.controlBtn} ${styles.minimizeBtn}`}
                   title="Свернуть плеер вправо">
                   ▶
@@ -207,22 +319,25 @@ export const MusicPlayer = () => {
             </div>
 
             {!isMinimized && (
-              <div className={styles.stationsList}>
-                {PRESET_STATIONS.map((station, idx) => (
-                  <button
-                    key={station.id}
-                    type="button"
-                    onClick={() => {
-                      setCurrentIndex(idx);
-                      setIsPlaying(true);
-                    }}
-                    className={`${styles.stationChip} ${
-                      idx === currentIndex ? styles.stationChipActive : ""
-                    }`}>
-                    {station.id}. {station.title}
-                  </button>
-                ))}
-              </div>
+              <PlayerDrawer
+                mode={mode}
+                onSwitchMode={handleSwitchMode}
+                currentIndex={currentIndex}
+                onSelectStation={(idx) => {
+                  setCurrentIndex(idx);
+                  setIsPlaying(true);
+                }}
+                localTracks={localTracks}
+                localIndex={localIndex}
+                onSelectLocalTrack={(idx) => {
+                  setLocalIndex(idx);
+                  setIsPlaying(true);
+                }}
+                onLoadLocalTracks={handleLoadLocalTracks}
+                onError={(msg) => setErrorMsg(msg)}
+                isShuffle={isShuffle}
+                onToggleShuffle={() => setIsShuffle((prev) => !prev)}
+              />
             )}
           </div>
         </div>

@@ -1,0 +1,70 @@
+.drawer {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #2e3236;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.controlsRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.addBtn {
+  min-width: 155px;
+  min-height: 38px;
+  flex: 1;
+  padding: 6px 14px;
+  background-color: #1a1c1e;
+  color: #4cd964;
+  border: 1.5px solid #28a745;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.addBtn:hover {
+  background-color: rgba(40, 167, 69, 0.15);
+}
+
+.addBtn:active {
+  transform: scale(0.98);
+}
+
+.shuffleBtn {
+  min-height: 38px;
+  padding: 6px 14px;
+  background-color: #1a1c1e;
+  color: #e4e6eb;
+  border: 1.5px solid #4e5358;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.shuffleBtn:hover {
+  background-color: #232629;
+  border-color: #28a745;
+}
+
+.shuffleBtnActive {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: #ffffff;
+}

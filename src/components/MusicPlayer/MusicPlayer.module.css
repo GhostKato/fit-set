@@ -96,6 +96,10 @@
   flex-wrap: wrap;
 }
 
+.topBarExpandable {
+  cursor: pointer;
+}
+
 .stationInfo {
   display: flex;
   flex-direction: column;
@@ -124,8 +128,10 @@
   font-size: 16px;
   font-weight: 700;
   color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
 .equalizer {
   display: inline-flex;
   align-items: flex-end;
@@ -237,7 +243,6 @@
   }
 }
 
-.toggleBtn,
 .minimizeBtn {
   background-color: transparent;
   border: 1.5px solid #4e5358;
@@ -246,58 +251,9 @@
   font-weight: 600;
 }
 
-.toggleBtn:hover,
 .minimizeBtn:hover {
   border-color: #ffffff;
   background-color: rgba(255, 255, 255, 0.08);
-}
-
-.minimizeBtn {
-  font-size: 13px;
-}
-
-.stationsList {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #2e3236;
-  animation: slideUpFade 0.2s ease-out;
-}
-
-@keyframes slideUpFade {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.stationChip {
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 600;
-  border-radius: 16px;
-  border: 1.5px solid #3d4247;
-  background-color: #25282b;
-  color: #e0e0e0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.stationChip:hover {
-  border-color: #28a745;
-  color: #ffffff;
-}
-
-.stationChipActive {
-  border-color: #28a745;
-  background-color: #28a745;
-  color: #ffffff;
 }
 
 @media (max-width: 640px) {
