@@ -63,7 +63,7 @@ export const WorkoutPage = () => {
 
   const dayExercises = useMemo(() => {
     return allExercises
-      .filter((item) => item.day === selectedDay)
+      .filter((item) => item.isActive && item.day === selectedDay)
       .sort((a, b) => a.order - b.order);
   }, [allExercises, selectedDay]);
 
@@ -138,8 +138,9 @@ export const WorkoutPage = () => {
 
         <div className={styles.emptyState}>
           <p className={styles.emptyText}>
-            На <strong>{formatDayAccusative(selectedDay)}</strong> упражнений
-            пока нет. Добавьте их в свою программу, чтобы начать тренировку.
+            На <strong>{formatDayAccusative(selectedDay)}</strong> активных
+            упражнений пока нет. Добавьте или активируйте их в своей программе,
+            чтобы начать тренировку.
           </p>
           <button
             type="button"

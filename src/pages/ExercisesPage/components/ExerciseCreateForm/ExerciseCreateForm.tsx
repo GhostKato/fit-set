@@ -2,6 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { addExercise } from "../../../../redux/exercises/operations";
 import { CustomSelect } from "../../../../components/CustomSelect/CustomSelect";
+import { StatusToggle } from "../../../../components/StatusToggle/StatusToggle";
 import type { ExerciseUnit, NewExercise } from "../../../../types/exercise";
 import styles from "./ExerciseCreateForm.module.css";
 
@@ -39,6 +40,7 @@ const initialFormState: NewExercise = {
   handsMode: "",
   palmPosition: "",
   breathing: "",
+  isActive: true,
 };
 
 export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
@@ -97,6 +99,16 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
           onChange={handleChange}
           placeholder="Группа мышц"
           className={`${styles.input} ${styles.flex1}`}
+        />
+
+        <StatusToggle
+          checked={formData.isActive}
+          onChange={(nextValue) =>
+            setFormData((prev) => ({ ...prev, isActive: nextValue }))
+          }
+          size="md"
+          label="Статус:"
+          labelPosition="left"
         />
       </div>
 

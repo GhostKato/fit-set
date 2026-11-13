@@ -15,6 +15,8 @@ const ALL_DAYS = [
   "Воскресенье",
 ];
 
+const INACTIVE_TAB = "Не активные";
+
 export const ExercisesPage = () => {
   const dispatch = useAppDispatch();
   const { items, isLoading, error } = useAppSelector(
@@ -31,7 +33,11 @@ export const ExercisesPage = () => {
   };
 
   const filteredExercises = items
-    .filter((item) => (selectedDay === "Все" ? true : item.day === selectedDay))
+    .filter((item) => {
+      if (selectedDay === INACTIVE_TAB) return !item.isActive;
+      if (!item.isActive) return false;
+      return selectedDay === "Все" ? true : item.day === selectedDay;
+    })
     .sort((a, b) => a.order - b.order);
 
   return (
@@ -53,7 +59,7 @@ export const ExercisesPage = () => {
       )}
 
       <div className={styles.filters}>
-        {["Все", ...ALL_DAYS].map((day) => (
+        {["Все", ...ALL_DAYS, INACTIVE_TAB].map((day) => (
           <button
             key={day}
             type="button"
@@ -83,7 +89,9 @@ export const ExercisesPage = () => {
         </div>
       ) : filteredExercises.length === 0 ? (
         <div className={styles.emptyState}>
-          На день «{selectedDay}» пока нет добавленных упражнений.
+          {selectedDay === INACTIVE_TAB
+            ? "Неактивных упражнений пока нет."
+            : `На день «${selectedDay}» пока нет активных упражнений.`}
         </div>
       ) : (
         filteredExercises.map((exercise) => (

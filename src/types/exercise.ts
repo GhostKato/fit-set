@@ -16,6 +16,7 @@ export type Exercise = {
   handsMode: string;
   palmPosition: string;
   breathing: string;
+  isActive: boolean;
 };
 
 export type NewExercise = Omit<Exercise, "id" | "userId">;

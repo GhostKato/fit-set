@@ -18,6 +18,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "Всю дорогу ДРУГ НА ДРУГА (обхватывают верхний блин).",
     breathing: "Опускаем за голову — Вдох, выжимаем вверх — Выдох.",
+    isActive: true,
   },
   {
     day: "Понедельник",
@@ -36,6 +37,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "Всю дорогу ОТ СЕБЯ (прямой хват).",
     breathing: "Опускаем к низу груди — Вдох, выжимаем вверх — Выдох.",
+    isActive: true,
   },
   {
     day: "Понедельник",
@@ -54,6 +56,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "Всю дорогу ОТ СЕБЯ (прямой хват).",
     breathing: "Опускаем — Вдох, выжимаем вверх — Выдох.",
+    isActive: true,
   },
   {
     day: "Понедельник",
@@ -73,6 +76,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     palmPosition: "",
     breathing:
       "Опускаемся до касания грудью пола — Вдох, мощно отжимаемся вверх — Выдох.",
+    isActive: true,
   },
   {
     day: "Понедельник",
@@ -91,6 +95,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "Всю дорогу ДРУГ НА ДРУГА (нейтральный хват).",
     breathing: "Разводим — Вдох, сводим — Выдох.",
+    isActive: true,
   },
   {
     day: "Понедельник",
@@ -110,6 +115,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     palmPosition:
       "В нижней точке ДРУГ НА ДРУГА (нейтральный), при подъеме разворачиваются К ПОЛУ (мизинцы капельку выше).",
     breathing: "Опускаем — Вдох, поднимаем в стороны — Выдох.",
+    isActive: true,
   },
   {
     day: "Понедельник",
@@ -128,6 +134,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "Всю дорогу ОТ СЕБЯ (прямой хват).",
     breathing: "Опускаем к плечам — Вдох, выжимаем вверх — Выдох.",
+    isActive: true,
   },
   {
     day: "Понедельник",
@@ -142,10 +149,11 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     unit: "reps",
     weight: "3 кг.",
     howToDo:
-      "Поднимите гантели к плечам (ладони смотрят вперед от себя). Выжимайте гантели вертикально над головой, но в самой верхней точке локти до конца не выпрямляйте — оставляйте их мягкими, чтобы удерживать нагрузку в дельтах. В нижней точке опускайте гантели плавно строго до уровня ушей или подбородка (ниже опускать вредно для плечевого сустава), не ударяя их друг о друга вверху.",
+      "Лежа на спине на диване или полу (голова слегка на весу), положите легкий блин на лоб через полотенце и придерживайте его пальцами обеих рук. В нижней точке плавно опускайте голову назад, но не переразгибайте шею слишком сильно и не расслабляйте мышцы, сохраняя постоянный контроль. Плавно поднимайте голову вверх, прижимая подбородок к груди, но в верхней точке не делайте резких рывков и не пытайтесь с силой вдавить подбородок в тело — движение должно быть мягким и осознанным.",
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "Всю дорогу ДРУГ НА ДРУГА (нейтральный хват).",
     breathing: "Опускаем голову — Вдох, поднимаем к груди — Выдох.",
+    isActive: true,
   },
   {
     day: "Среда",
@@ -164,6 +172,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "Всю дорогу ДРУГ НА ДРУГА (нейтральный хват).",
     breathing: "Опускаем таз вниз — Вдох, выталкиваем вверх — Выдох.",
+    isActive: true,
   },
   {
     day: "Среда",
@@ -182,6 +191,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "Всю дорогу ДРУГ НА ДРУГА (нейтральный хват).",
     breathing: "Наклоняемся вниз — Вдох, выпрямляемся вверх — Выдох.",
+    isActive: true,
   },
   {
     day: "Среда",
@@ -200,6 +210,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "Всю дорогу ДРУГ НА ДРУГА (нейтральный хват).",
     breathing: "Вдох, встаем вверх — Выдох.",
+    isActive: true,
   },
   {
     day: "Среда",
@@ -218,6 +229,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "",
     palmPosition: "",
     breathing: "",
+    isActive: true,
   },
   {
     day: "Среда",
@@ -236,6 +248,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "Всю дорогу ДРУГ НА ДРУГА (нейтральный хват).",
     breathing: "Опускаемся вниз — Вдох, поднимаемся на носки — Выдох.",
+    isActive: true,
   },
   {
     day: "Среда",
@@ -254,6 +267,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "",
     palmPosition: "",
     breathing: "Лежим на полу — Вдох, скручиваемся вверх — Выдох.",
+    isActive: true,
   },
   {
     day: "Среда",
@@ -273,6 +287,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
       "Строго ПООЧЕРЕДНО (сначала подход на левый бок, затем на правый)",
     palmPosition: "",
     breathing: "Лежим на полу — Вдох, скручиваемся вверх к потолку — Выдох.",
+    isActive: true,
   },
   {
     day: "Среда",
@@ -292,6 +307,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     palmPosition: "",
     breathing:
       "Подъем корпуса и ног (напряжение) — Вдох, опускание вниз — Выдох.",
+    isActive: true,
   },
   {
     day: "Пятница",
@@ -310,6 +326,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "Всю дорогу ДРУГ НА ДРУГА (нейтральный хват).",
     breathing: "Гантели внизу — Вдох, тянем к животу — Выдох.",
+    isActive: true,
   },
   {
     day: "Пятница",
@@ -328,6 +345,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ПООЧЕРЕДНО (сначала одна рука, затем вторая).",
     palmPosition: "Всю дорогу ДРУГ НА ДРУГА (нейтральный хват).",
     breathing: "Опускаем гантель — Вдох, тянем к карману — Выдох.",
+    isActive: true,
   },
   {
     day: "Пятница",
@@ -347,6 +365,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     palmPosition:
       "Сначала ДРУГ НА ДРУГА (нейтральный хват) по мере подъёма поворачивают ВВЕРХ.",
     breathing: "Руки внизу — Вдох, поднимаем к плечам — Выдох.",
+    isActive: true,
   },
   {
     day: "Пятница",
@@ -365,6 +384,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ПООЧЕРЕДНО (сначала одна рука, затем вторая).",
     palmPosition: "Всю дорогу ДРУГ НА ДРУГА (нейтральный хват).",
     breathing: "Руки внизу — Вдох, поднимаем — Выдох.",
+    isActive: true,
   },
   {
     day: "Пятница",
@@ -383,6 +403,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "ВВЕРХ.",
     breathing: "Опускаем кисти — Вдох, подкручиваем вверх — Выдох.",
+    isActive: true,
   },
   {
     day: "Пятница",
@@ -401,6 +422,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "ВНИЗ.",
     breathing: "Опускаем кисти — Вдох, поднимаем вверх — Выдох.",
+    isActive: true,
   },
   {
     day: "Пятница",
@@ -420,6 +442,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     palmPosition:
       "В нижней точке ДРУГ НА ДРУГА (нейтральный хват), при подъёме разворачиваются К ПОЛУ.",
     breathing: "Опускаем — Вдох, разводим в стороны — Выдох.",
+    isActive: true,
   },
   {
     day: "Пятница",
@@ -438,5 +461,6 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     handsMode: "Строго ВМЕСТЕ (одновременно).",
     palmPosition: "Всю дорогу ДРУГ НА ДРУГА (нейтральный хват).",
     breathing: "Опускаем плечи — Вдох, жмем к ушам — Выдох.",
+    isActive: true,
   },
 ];

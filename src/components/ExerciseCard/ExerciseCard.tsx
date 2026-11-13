@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../redux/hooks";
-import { removeExercise } from "../../redux/exercises/operations";
+import { editExercise, removeExercise } from "../../redux/exercises/operations";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
+import { StatusToggle } from "../StatusToggle/StatusToggle";
 import { ExerciseEditForm } from "../../pages/ExercisesPage/components/ExerciseEditForm/ExerciseEditForm";
 import type { Exercise } from "../../types/exercise";
 import styles from "./ExerciseCard.module.css";
@@ -24,6 +25,15 @@ export const ExerciseCard = ({
   const dispatch = useAppDispatch();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  const handleToggleActive = (nextValue: boolean) => {
+    dispatch(
+      editExercise({
+        id: exercise.id,
+        fields: { isActive: nextValue },
+      }),
+    );
+  };
+
   const handleConfirmDelete = async () => {
     setIsDeleteModalOpen(false);
     await dispatch(removeExercise(exercise.id));
@@ -45,7 +55,10 @@ export const ExerciseCard = ({
 
   return (
     <>
-      <div className={styles.card}>
+      <div
+        className={`${styles.card} ${
+          !exercise.isActive ? styles.cardInactive : ""
+        }`}>
         <div className={styles.header}>
           <div>
             <span className={styles.meta}>
@@ -63,6 +76,11 @@ export const ExerciseCard = ({
 
           {showActions && (
             <div className={styles.actions}>
+              <StatusToggle
+                checked={exercise.isActive}
+                onChange={handleToggleActive}
+                size="sm"
+              />
               <button
                 type="button"
                 onClick={() => onStartEdit?.()}

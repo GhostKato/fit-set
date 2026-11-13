@@ -1,0 +1,105 @@
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.wrapperDisabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.track:disabled {
+  cursor: not-allowed;
+}
+
+.sm {
+  width: 52px;
+  height: 29px;
+  border-radius: 8px;
+}
+
+.md {
+  width: 66px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+.trackActive {
+  background-color: #e9f7ef;
+  border: 1px solid #b7e4c7;
+}
+
+.trackActive:hover:not(:disabled) {
+  border-color: #28a745;
+}
+
+.trackInactive {
+  background-color: #fff5f5;
+  border: 1px solid #f5c2c7;
+}
+
+.trackInactive:hover:not(:disabled) {
+  border-color: #dc3545;
+}
+
+.thumb {
+  position: absolute;
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s ease;
+}
+
+.sm .thumb {
+  width: 21px;
+  height: 21px;
+  border-radius: 5px;
+  left: 3px;
+}
+
+.md .thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  left: 5px;
+}
+
+.sm .thumbActive {
+  transform: translateX(23px);
+}
+
+.md .thumbActive {
+  transform: translateX(26px);
+}
+
+.thumbActive {
+  background-color: #28a745;
+}
+
+.thumbInactive {
+  background-color: #dc3545;
+  transform: translateX(0);
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #444444;
+  white-space: nowrap;
+}

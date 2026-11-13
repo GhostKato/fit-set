@@ -24,12 +24,19 @@ export const WorkoutScheduleBoard = ({
 }: WorkoutScheduleBoardProps) => {
   const navigate = useNavigate();
 
+  const activeExercises = useMemo(
+    () => exercises.filter((item) => item.isActive),
+    [exercises],
+  );
+
   const activeDays = useMemo(() => {
-    const uniqueDays = Array.from(new Set(exercises.map((item) => item.day)));
+    const uniqueDays = Array.from(
+      new Set(activeExercises.map((item) => item.day)),
+    );
     return uniqueDays.sort(
       (a, b) => WEEK_ORDER.indexOf(a) - WEEK_ORDER.indexOf(b),
     );
-  }, [exercises]);
+  }, [activeExercises]);
 
   return (
     <section className={styles.section}>
@@ -38,19 +45,21 @@ export const WorkoutScheduleBoard = ({
       {activeDays.length === 0 ? (
         <div className={styles.emptyCard}>
           <p className={styles.emptyText}>
-            У вас пока нет добавленных упражнений.
+            У вас пока нет активных упражнений.
           </p>
           <button
             type="button"
             onClick={() => navigate("/exercises")}
             className={styles.addBtn}>
-            Добавить упражнения
+            Перейти к упражнениям
           </button>
         </div>
       ) : (
         <div className={styles.scheduleGrid}>
           {activeDays.map((day) => {
-            const dayExercises = exercises.filter((item) => item.day === day);
+            const dayExercises = activeExercises.filter(
+              (item) => item.day === day,
+            );
             const customTitle =
               dayExercises
                 .find((item) => item.dayTitle?.trim())
@@ -66,7 +75,6 @@ export const WorkoutScheduleBoard = ({
                 <h4 className={styles.dayTitle}>
                   {day} —{" "}
                   <span className={styles.dayAccent}>{customTitle}</span>
-                  {isToday && <span className={styles.todayTag}></span>}
                 </h4>
                 <p className={styles.dayCount}>
                   Упражнений в программе: <strong>{dayExercises.length}</strong>
