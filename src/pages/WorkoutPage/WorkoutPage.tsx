@@ -16,6 +16,16 @@ const DAYS_BY_INDEX = [
   "Суббота",
 ];
 
+const formatDayAccusative = (day: string): string => {
+  const lower = day.toLowerCase();
+  const map: Record<string, string> = {
+    среда: "среду",
+    пятница: "пятницу",
+    суббота: "субботу",
+  };
+  return map[lower] || lower;
+};
+
 export const WorkoutPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -40,6 +50,18 @@ export const WorkoutPage = () => {
     {},
   );
 
+  const progressPercent = useMemo(() => {
+    const totalSets = dayExercises.reduce((sum, ex) => sum + ex.sets, 0);
+    if (totalSets === 0) return 0;
+
+    const doneSets = dayExercises.reduce((sum, ex) => {
+      const setsArr = completedSets[ex.id] || [];
+      return sum + setsArr.filter(Boolean).length;
+    }, 0);
+
+    return Math.round((doneSets / totalSets) * 100);
+  }, [dayExercises, completedSets]);
+
   if (dayExercises.length === 0) {
     return (
       <div className={styles.page}>
@@ -49,8 +71,8 @@ export const WorkoutPage = () => {
 
         <div className={styles.emptyState}>
           <p className={styles.emptyText}>
-            На <strong>{selectedDay}</strong> упражнений пока нет. Добавьте их в
-            свою программу, чтобы начать тренировку.
+            На <strong>{formatDayAccusative(selectedDay)}</strong> упражнений
+            пока нет. Добавьте их в свою программу, чтобы начать тренировку.
           </p>
           <button
             type="button"
@@ -63,7 +85,8 @@ export const WorkoutPage = () => {
     );
   }
 
-  const currentExercise = dayExercises[currentIndex];
+  const safeIndex = Math.min(currentIndex, dayExercises.length - 1);
+  const currentExercise = dayExercises[safeIndex];
   const currentSetsState =
     completedSets[currentExercise.id] ||
     Array(currentExercise.sets).fill(false);
@@ -77,23 +100,15 @@ export const WorkoutPage = () => {
     }));
   };
 
-  const isLastExercise = currentIndex === dayExercises.length - 1;
-  const progressPercent = Math.round(
-    ((currentIndex + 1) / dayExercises.length) * 100,
-  );
+  const isLastExercise = safeIndex === dayExercises.length - 1;
 
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <div>
-          <h2 className={styles.title}>
-            {selectedDay}
-            {customDayTitle ? ` • ${customDayTitle}` : ""}
-          </h2>
-          <span className={styles.subtitle}>
-            Упражнение {currentIndex + 1} из {dayExercises.length}
-          </span>
-        </div>
+        <h2 className={styles.title}>
+          {selectedDay}
+          {customDayTitle ? ` • ${customDayTitle}` : ""}
+        </h2>
 
         <button
           type="button"
@@ -103,11 +118,20 @@ export const WorkoutPage = () => {
         </button>
       </div>
 
-      <div className={styles.progressTrack}>
-        <div
-          className={styles.progressFill}
-          style={{ width: `${progressPercent}%` }}
-        />
+      <div className={styles.progressCard}>
+        <div className={styles.progressInfo}>
+          <span className={styles.progressLabel}>
+            Упражнение {safeIndex + 1} из {dayExercises.length}
+          </span>
+          <span className={styles.progressPercent}>{progressPercent}%</span>
+        </div>
+
+        <div className={styles.progressTrack}>
+          <div
+            className={styles.progressFill}
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
       </div>
 
       <ExerciseCard exercise={currentExercise} showActions={false} />
@@ -125,8 +149,8 @@ export const WorkoutPage = () => {
       <div className={styles.navBar}>
         <button
           type="button"
-          disabled={currentIndex === 0}
-          onClick={() => setCurrentIndex((prev) => prev - 1)}
+          disabled={safeIndex === 0}
+          onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
           className={styles.prevBtn}>
           ← Назад
         </button>

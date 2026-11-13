@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { addExercise } from "../../../../redux/exercises/operations";
+import { CustomSelect } from "../../../../components/CustomSelect/CustomSelect";
 import type { ExerciseUnit, NewExercise } from "../../../../types/exercise";
 import styles from "./ExerciseCreateForm.module.css";
 
@@ -16,6 +17,11 @@ const ALL_DAYS = [
   "Пятница",
   "Суббота",
   "Воскресенье",
+];
+
+const UNIT_OPTIONS = [
+  { value: "reps", label: "повт." },
+  { value: "sec", label: "сек." },
 ];
 
 const initialFormState: NewExercise = {
@@ -40,7 +46,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
   const [formData, setFormData] = useState<NewExercise>(initialFormState);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -48,9 +54,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
       [name]:
         name === "sets" || name === "target" || name === "order"
           ? Number(value)
-          : name === "unit"
-            ? (value as ExerciseUnit)
-            : value,
+          : value,
     }));
   };
 
@@ -73,17 +77,11 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
       <h3 className={styles.formTitle}>Новое упражнение</h3>
 
       <div className={styles.row}>
-        <select
-          name="day"
+        <CustomSelect
           value={formData.day}
-          onChange={handleChange}
-          className={styles.select}>
-          {ALL_DAYS.map((day) => (
-            <option key={day} value={day}>
-              {day}
-            </option>
-          ))}
-        </select>
+          options={ALL_DAYS}
+          onChange={(val) => setFormData((prev) => ({ ...prev, day: val }))}
+        />
 
         <input
           name="dayTitle"
@@ -153,15 +151,14 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
           />
         </label>
 
-        <select
-          name="unit"
+        <CustomSelect
           value={formData.unit}
-          onChange={handleChange}
-          className={styles.select}
-          title="Единица измерения">
-          <option value="reps">повт.</option>
-          <option value="sec">сек.</option>
-        </select>
+          options={UNIT_OPTIONS}
+          title="Единица измерения"
+          onChange={(val) =>
+            setFormData((prev) => ({ ...prev, unit: val as ExerciseUnit }))
+          }
+        />
 
         <input
           name="weight"

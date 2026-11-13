@@ -4,6 +4,7 @@ import styles from "./ConfirmModal.module.css";
 interface ConfirmModalProps {
   isOpen: boolean;
   title?: string;
+  subtitle?: string;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -11,11 +12,14 @@ interface ConfirmModalProps {
 export const ConfirmModal = ({
   isOpen,
   title = "Подтвердить удаление?",
+  subtitle,
   onConfirm,
   onCancel,
 }: ConfirmModalProps) => {
   useEffect(() => {
     if (!isOpen) return;
+
+    document.body.style.overflow = "hidden";
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -24,7 +28,10 @@ export const ConfirmModal = ({
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [isOpen, onCancel]);
 
   if (!isOpen) return null;
@@ -43,13 +50,14 @@ export const ConfirmModal = ({
       aria-modal="true">
       <div className={styles.modal}>
         <h3 className={styles.title}>{title}</h3>
+        {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
 
         <div className={styles.actions}>
-          <button type="button" onClick={onConfirm} className={styles.yesBtn}>
-            Да
-          </button>
           <button type="button" onClick={onCancel} className={styles.noBtn}>
             Нет
+          </button>
+          <button type="button" onClick={onConfirm} className={styles.yesBtn}>
+            Да
           </button>
         </div>
       </div>

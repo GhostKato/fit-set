@@ -1,78 +1,72 @@
 .form {
-  background-color: #ffffff;
-  border: 1.5px solid #e2e5e9;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 24px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  background-color: #ffffff;
+  border: 1.5px solid #e2e5e9;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .formTitle {
   margin: 0 0 4px 0;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: #1e1e1e;
 }
 
 .row {
   display: flex;
+  align-items: center;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.flex1 {
-  flex: 1;
-  min-width: 180px;
-}
-
-.select,
 .input,
 .textarea {
-  background-color: #f8f9fa;
-  border: 1.5px solid #dce0e5;
-  border-radius: 10px;
   padding: 10px 12px;
+  border: 1.5px solid #dcdcdc;
+  border-radius: 10px;
   font-size: 14px;
-  color: #1e1e1e;
   font-family: inherit;
-  transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease;
+  color: #1e1e1e;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease;
 }
 
-.select:focus,
 .input:focus,
 .textarea:focus {
   outline: none;
-  background-color: #ffffff;
   border-color: #28a745;
-}
-
-.numberGroup {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #495057;
-}
-
-.numberInput {
-  width: 68px;
-  text-align: center;
 }
 
 .textarea {
   resize: vertical;
 }
 
+.flex1 {
+  flex: 1 1 160px;
+}
+
+.numberGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444444;
+}
+
+.numberInput {
+  width: 72px;
+  text-align: center;
+}
+
 .submitBtn {
-  align-self: flex-end;
-  padding: 12px 20px;
-  min-height: 44px;
+  padding: 12px;
+  min-height: 46px;
   background-color: #28a745;
   color: #ffffff;
   border: none;
@@ -80,6 +74,7 @@
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
+  margin-top: 4px;
   transition: background-color 0.2s ease;
 }
 
@@ -88,8 +83,7 @@
 }
 
 @media (max-width: 600px) {
-  .submitBtn {
-    align-self: stretch;
-    width: 100%;
+  .form {
+    padding: 16px;
   }
 }

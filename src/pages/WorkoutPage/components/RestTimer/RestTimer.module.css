@@ -166,7 +166,11 @@
   height: 100%;
   background-color: #28a745;
   border-radius: 999px;
-  transition: width 0.4s linear;
+  transition: width 1s linear;
+}
+
+.progressFillPaused {
+  transition: none;
 }
 
 @media (max-width: 900px) {

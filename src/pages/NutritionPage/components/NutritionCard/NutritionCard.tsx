@@ -1,18 +1,13 @@
-import { useState, type ChangeEvent } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import {
-  editNutritionItem,
   removeNutritionItem,
   syncTodaySelection,
 } from "../../../../redux/nutrition/operations";
 import { setDailySelectionOptimistic } from "../../../../redux/nutrition/slice";
 import { ConfirmModal } from "../../../../components/ConfirmModal/ConfirmModal";
-import type {
-  MealTime,
-  NewNutritionItem,
-  NutritionCategory,
-  NutritionItem,
-} from "../../../../types/nutrition";
+import { NutritionEditForm } from "../NutritionEditForm/NutritionEditForm";
+import type { MealTime, NutritionItem } from "../../../../types/nutrition";
 import styles from "./NutritionCard.module.css";
 
 interface NutritionCardProps {
@@ -23,17 +18,6 @@ interface NutritionCardProps {
 }
 
 const MEAL_ORDER: MealTime[] = ["Завтрак", "Обед", "Ужин"];
-
-const CATEGORY_ORDER: NutritionCategory[] = [
-  "Простые углеводы",
-  "Сложные углеводы",
-  "Белок",
-  "Жиры",
-  "Клетчатка",
-  "Соус",
-  "Коктейли",
-  "Десерт",
-];
 
 export const NutritionCard = ({
   item,
@@ -47,14 +31,6 @@ export const NutritionCard = ({
   );
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-
-  const [editData, setEditData] = useState<NewNutritionItem>({
-    category: item.category,
-    title: item.title,
-    portion: item.portion,
-    note: item.note,
-    order: item.order,
-  });
 
   const handleToggleMealForToday = (mealKey: MealTime) => {
     const currentList = dailySelection[mealKey] ?? [];
@@ -72,22 +48,6 @@ export const NutritionCard = ({
     dispatch(syncTodaySelection(nextSelection));
   };
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    setEditData((prev) => ({
-      ...prev,
-      [name]: name === "order" ? Number(value) : value,
-    }));
-  };
-
-  const handleSave = async () => {
-    if (!editData.title.trim()) return;
-    await dispatch(editNutritionItem({ id: item.id, fields: editData }));
-    onCancelEdit();
-  };
-
   const handleConfirmDelete = () => {
     setIsConfirmOpen(false);
     dispatch(removeNutritionItem(item.id));
@@ -98,72 +58,7 @@ export const NutritionCard = ({
   );
 
   if (isEditing) {
-    return (
-      <div className={styles.cardEditing}>
-        <h4 className={styles.editTitle}>Редактирование пункта</h4>
-        <div className={styles.editGrid}>
-          <div className={styles.row}>
-            <select
-              name="category"
-              value={editData.category}
-              onChange={handleChange}
-              className={`${styles.select} ${styles.flex1}`}>
-              {CATEGORY_ORDER.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-
-            <input
-              type="number"
-              name="order"
-              value={editData.order}
-              onChange={handleChange}
-              min={1}
-              className={`${styles.input} ${styles.numberInput}`}
-            />
-          </div>
-
-          <input
-            name="title"
-            value={editData.title}
-            onChange={handleChange}
-            placeholder="Название"
-            className={styles.input}
-          />
-
-          <input
-            name="portion"
-            value={editData.portion}
-            onChange={handleChange}
-            placeholder="Порция / граммовка"
-            className={styles.input}
-          />
-
-          <textarea
-            name="note"
-            value={editData.note}
-            onChange={handleChange}
-            placeholder="Примечание"
-            rows={2}
-            className={styles.textarea}
-          />
-        </div>
-
-        <div className={styles.editActions}>
-          <button
-            type="button"
-            onClick={onCancelEdit}
-            className={styles.cancelBtn}>
-            Отмена
-          </button>
-          <button type="button" onClick={handleSave} className={styles.saveBtn}>
-            Сохранить
-          </button>
-        </div>
-      </div>
-    );
+    return <NutritionEditForm item={item} onCancel={onCancelEdit} />;
   }
 
   return (

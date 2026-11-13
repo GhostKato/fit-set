@@ -34,14 +34,14 @@
 }
 
 .title {
-  margin: 0 0 8px 0;
-  font-size: 20px;
+  margin: 0 0 20px 0;
+  font-size: 19px;
   font-weight: 800;
   color: #1e1e1e;
 }
 
 .subtitle {
-  margin: 0 0 20px 0;
+  margin: -12px 0 20px 0;
   font-size: 14px;
   color: #666666;
   line-height: 1.4;
@@ -50,7 +50,7 @@
 .actions {
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .noBtn,
@@ -58,30 +58,38 @@
   flex: 1;
   min-height: 44px;
   padding: 10px 16px;
-  border: none;
   border-radius: 10px;
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
   transition:
     background-color 0.2s ease,
+    border-color 0.2s ease,
     transform 0.1s ease;
 }
 
 .noBtn {
-  background-color: #28a745;
-  color: #ffffff;
+  background-color: #f4f6f8;
+  color: #444444;
+  border: 1.5px solid #dcdcdc;
 }
 
 .noBtn:hover {
-  background-color: #218838;
+  background-color: #e2e5e9;
+  color: #1e1e1e;
 }
 
 .yesBtn {
   background-color: #dc3545;
   color: #ffffff;
+  border: none;
 }
 
 .yesBtn:hover {
   background-color: #c82333;
+}
+
+.noBtn:active,
+.yesBtn:active {
+  transform: scale(0.98);
 }

@@ -143,112 +143,6 @@
   color: #ffffff;
 }
 
-/* Режим редактирования */
-.cardEditing {
-  background-color: #ffffff;
-  border: 2px solid #28a745;
-  border-radius: 14px;
-  padding: 20px;
-  box-shadow: 0 6px 16px rgba(40, 167, 69, 0.08);
-  text-align: left;
-}
-
-.editTitle {
-  margin: 0 0 14px 0;
-  font-size: 17px;
-  font-weight: 800;
-  text-align: center;
-  color: #1e1e1e;
-}
-
-.editGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.flex1 {
-  flex: 1 1 160px;
-}
-
-.select,
-.input,
-.textarea {
-  padding: 10px 12px;
-  border: 1.5px solid #dcdcdc;
-  border-radius: 10px;
-  font-size: 14px;
-  font-family: inherit;
-  color: #1e1e1e;
-  background-color: #ffffff;
-  transition: border-color 0.2s ease;
-}
-
-.select:focus,
-.input:focus,
-.textarea:focus {
-  outline: none;
-  border-color: #28a745;
-}
-
-.textarea {
-  resize: vertical;
-}
-
-.numberInput {
-  width: 72px;
-  text-align: center;
-}
-
-.editActions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.cancelBtn {
-  padding: 10px 18px;
-  min-height: 42px;
-  background-color: #f4f6f8;
-  color: #444444;
-  border: 1.5px solid #dcdcdc;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.cancelBtn:hover {
-  background-color: #e2e5e9;
-  color: #1e1e1e;
-}
-
-.saveBtn {
-  padding: 10px 20px;
-  min-height: 42px;
-  background-color: #28a745;
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.saveBtn:hover {
-  background-color: #218838;
-}
-
 @media (max-width: 600px) {
   .header {
     flex-direction: column;
@@ -260,15 +154,6 @@
 
   .editBtn,
   .deleteBtn {
-    flex: 1;
-  }
-
-  .editActions {
-    width: 100%;
-  }
-
-  .saveBtn,
-  .cancelBtn {
     flex: 1;
   }
 }

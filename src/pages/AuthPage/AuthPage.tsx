@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import { loginUser, registerUser } from "../../services/authOps";
 import styles from "./AuthPage.module.css";
 
@@ -7,22 +7,32 @@ export const AuthPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleToggleMode = () => {
+    setIsRegister((prev) => !prev);
+    setError("");
+  };
+
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    setIsLoading(true);
 
     try {
       if (isRegister) {
-        await registerUser(name, email, password);
+        await registerUser(name.trim(), email.trim(), password);
       } else {
-        await loginUser(email, password);
+        await loginUser(email.trim(), password);
       }
     } catch {
       setError(
-        "Ошибка входа: проверьте email, пароль (минимум 6 символов) или интернет.",
+        "Ошибка входа: проверьте email, пароль (минимум 6 символов) или подключение к интернету.",
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -45,6 +55,7 @@ export const AuthPage = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
+              disabled={isLoading}
               className={styles.input}
             />
           )}
@@ -55,28 +66,47 @@ export const AuthPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={isLoading}
             className={styles.input}
           />
 
-          <input
-            type="password"
-            placeholder="Пароль (от 6 символов)"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className={styles.input}
-          />
+          <div className={styles.passwordWrapper}>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Пароль (от 6 символов)"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={isLoading}
+              className={`${styles.input} ${styles.passwordInput}`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className={styles.togglePasswordBtn}
+              tabIndex={-1}>
+              {showPassword ? "Скрыть" : "Показать"}
+            </button>
+          </div>
 
           {error && <p className={styles.error}>{error}</p>}
 
-          <button type="submit" className={styles.submitBtn}>
-            {isRegister ? "Создать аккаунт" : "Войти"}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={styles.submitBtn}>
+            {isLoading
+              ? "Загрузка..."
+              : isRegister
+                ? "Создать аккаунт"
+                : "Войти"}
           </button>
         </form>
 
         <button
           type="button"
-          onClick={() => setIsRegister((prev) => !prev)}
+          onClick={handleToggleMode}
+          disabled={isLoading}
           className={styles.switchBtn}>
           {isRegister
             ? "Уже есть аккаунт? Войти"

@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { logoutUser } from "../../services/authOps";
+import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { MusicPlayer } from "../MusicPlayer/MusicPlayer";
 import type { UserProfile } from "../../types/user";
 import styles from "./Layout.module.css";
@@ -9,8 +11,15 @@ interface LayoutProps {
 }
 
 export const Layout = ({ user }: LayoutProps) => {
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
   const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
     isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
+
+  const handleConfirmLogout = () => {
+    setIsLogoutModalOpen(false);
+    logoutUser();
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -36,7 +45,7 @@ export const Layout = ({ user }: LayoutProps) => {
             <span className={styles.userName}>{user.name || user.email}</span>
             <button
               type="button"
-              onClick={logoutUser}
+              onClick={() => setIsLogoutModalOpen(true)}
               className={styles.logoutBtn}>
               Выйти
             </button>
@@ -49,6 +58,13 @@ export const Layout = ({ user }: LayoutProps) => {
       </main>
 
       <MusicPlayer />
+
+      <ConfirmModal
+        isOpen={isLogoutModalOpen}
+        title="Выйти из аккаунта?"
+        onConfirm={handleConfirmLogout}
+        onCancel={() => setIsLogoutModalOpen(false)}
+      />
     </div>
   );
 };

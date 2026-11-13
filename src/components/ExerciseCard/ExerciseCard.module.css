@@ -104,6 +104,7 @@
   padding: 20px;
   margin-bottom: 14px;
   box-shadow: 0 6px 16px rgba(40, 167, 69, 0.08);
+  text-align: left;
 }
 
 .editTitle {
@@ -128,7 +129,6 @@
 }
 
 .input,
-.select,
 .textarea {
   padding: 10px 12px;
   border: 1.5px solid #dcdcdc;
@@ -141,7 +141,6 @@
 }
 
 .input:focus,
-.select:focus,
 .textarea:focus {
   outline: none;
   border-color: #28a745;
@@ -155,12 +154,29 @@
   flex: 1 1 160px;
 }
 
+.flex2 {
+  flex: 2 1 240px;
+}
+
+.numberGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444444;
+}
+
+.targetLabel {
+  display: inline-block;
+  min-width: 78px;
+}
+
 .numberInput {
   width: 72px;
   text-align: center;
 }
 
-/* Кнопки справа, сначала Отмена, затем Сохранить */
 .editActions {
   display: flex;
   justify-content: flex-end;

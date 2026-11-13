@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { addNutritionItem } from "../../../../redux/nutrition/operations";
+import { CustomSelect } from "../../../../components/CustomSelect/CustomSelect";
 import type {
   NewNutritionItem,
   NutritionCategory,
@@ -37,7 +38,7 @@ export const NutritionCreateForm = ({
   const [formData, setFormData] = useState<NewNutritionItem>(initialFormState);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -64,17 +65,17 @@ export const NutritionCreateForm = ({
       <h3 className={styles.formTitle}>Новый пункт меню</h3>
 
       <div className={styles.row}>
-        <select
-          name="category"
+        <CustomSelect
           value={formData.category}
-          onChange={handleChange}
-          className={`${styles.select} ${styles.flex1}`}>
-          {CATEGORY_ORDER.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
+          options={CATEGORY_ORDER}
+          onChange={(val) =>
+            setFormData((prev) => ({
+              ...prev,
+              category: val as NutritionCategory,
+            }))
+          }
+          className={styles.flex1}
+        />
 
         <label className={styles.numberGroup}>
           <span>№:</span>

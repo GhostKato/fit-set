@@ -13,8 +13,8 @@
   background-color: #ffffff;
   padding: 32px 24px;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  border: 1px solid #eaeaea;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  border: 1.5px solid #e2e5e9;
 }
 
 .brand {
@@ -32,22 +32,25 @@
 
 .title {
   text-align: center;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
-  color: #555555;
+  color: #666666;
   margin: 0 0 24px 0;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .input {
   width: 100%;
   padding: 12px 14px;
-  font-size: 16px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #1e1e1e;
+  background-color: #ffffff;
   border: 1.5px solid #dcdcdc;
   border-radius: 10px;
   outline: none;
@@ -59,17 +62,54 @@
 
 .input:focus {
   border-color: #28a745;
-  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.12);
+}
+
+.input:disabled {
+  background-color: #f8f9fa;
+  color: #888888;
+}
+
+.passwordWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordInput {
+  padding-right: 84px;
+}
+
+.togglePasswordBtn {
+  position: absolute;
+  right: 10px;
+  padding: 4px 8px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #666666;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.togglePasswordBtn:hover {
+  color: #28a745;
+  background-color: #f4f6f8;
 }
 
 .error {
   margin: 0;
   padding: 10px 12px;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
   color: #dc3545;
   background-color: #fff5f5;
   border: 1px solid #f5c2c7;
-  border-radius: 8px;
+  border-radius: 10px;
   line-height: 1.4;
 }
 
@@ -81,18 +121,29 @@
   color: #ffffff;
   border: none;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
 }
 
-.submitBtn:hover {
+.submitBtn:hover:not(:disabled) {
   background-color: #218838;
 }
 
+.submitBtn:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.submitBtn:disabled {
+  background-color: #8fd19e;
+  cursor: not-allowed;
+}
+
 .switchBtn {
-  margin-top: 18px;
+  margin-top: 16px;
   width: 100%;
   padding: 8px;
   background: none;
@@ -104,15 +155,20 @@
   transition: opacity 0.2s ease;
 }
 
-.switchBtn:hover {
+.switchBtn:hover:not(:disabled) {
   text-decoration: underline;
   opacity: 0.85;
+}
+
+.switchBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 @media (max-width: 480px) {
   .card {
     padding: 24px 18px;
-    border-radius: 12px;
+    border-radius: 14px;
   }
 
   .brand {

@@ -294,7 +294,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
       "Подъем корпуса и ног (напряжение) — Вдох, опускание вниз — Выдох.",
   },
   {
-    day: "Среда",
+    day: "Пятница",
     dayTitle: "День тяг",
     muscleGroup: "СПИНА",
     order: 1,
@@ -312,7 +312,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     breathing: "Гантели внизу — Вдох, тянем к животу — Выдох.",
   },
   {
-    day: "Среда",
+    day: "Пятница",
     dayTitle: "День тяг",
     muscleGroup: "СПИНА",
     order: 2,

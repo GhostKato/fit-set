@@ -7,7 +7,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   text-align: left;
 }
 
@@ -18,22 +18,14 @@
   color: #1e1e1e;
 }
 
-.subtitle {
-  display: inline-block;
-  margin-top: 4px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #28a745;
-}
-
 .finishTopBtn {
-  padding: 10px 16px;
-  min-height: 40px;
+  padding: 10.5px 20px;
+  min-height: 44px;
   background-color: #ffffff;
   color: #dc3545;
   border: 1.5px solid #f5c2c7;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -45,13 +37,44 @@
   border-color: #dc3545;
 }
 
+.progressCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 50px;
+  padding: 0 18px;
+  margin-bottom: 14px;
+  background-color: #ffffff;
+  border: 1.5px solid #e2e5e9;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.progressInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.progressLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: #28a745;
+}
+
+.progressPercent {
+  font-size: 12px;
+  font-weight: 700;
+  color: #666666;
+}
+
 .progressTrack {
   width: 100%;
-  height: 6px;
+  height: 5px;
   background-color: #e9ecef;
   border-radius: 999px;
   overflow: hidden;
-  margin-bottom: 18px;
 }
 
 .progressFill {
@@ -99,7 +122,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 14px;
 }
 
 .prevBtn {
