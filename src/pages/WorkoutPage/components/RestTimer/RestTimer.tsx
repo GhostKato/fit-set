@@ -4,6 +4,7 @@ import styles from "./RestTimer.module.css";
 const REST_OPTIONS = Array.of(60, 120, 180, 240, 300);
 
 export const RestTimer = () => {
+  const [totalDuration, setTotalDuration] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -48,6 +49,7 @@ export const RestTimer = () => {
       setSecondsLeft((prev) => {
         if (prev <= 1) {
           setIsRunning(false);
+          setTotalDuration(0);
           playBeep();
           return 0;
         }
@@ -59,6 +61,7 @@ export const RestTimer = () => {
   }, [isRunning, secondsLeft]);
 
   const startTimer = (seconds: number) => {
+    setTotalDuration(seconds);
     setSecondsLeft(seconds);
     setIsRunning(true);
   };
@@ -66,6 +69,7 @@ export const RestTimer = () => {
   const resetTimer = () => {
     setIsRunning(false);
     setSecondsLeft(0);
+    setTotalDuration(0);
   };
 
   const formatTime = (totalSeconds: number) => {
@@ -75,52 +79,72 @@ export const RestTimer = () => {
   };
 
   const isActive = secondsLeft > 0;
+  const progressPercent =
+    isActive && totalDuration > 0
+      ? Math.round((secondsLeft / totalDuration) * 100)
+      : 0;
 
   return (
     <div
       className={`${styles.container} ${
         isActive ? styles.containerActive : ""
       }`}>
-      <div className={styles.leftSide}>
-        <h4 className={styles.heading}>Таймер отдыха</h4>
-        <div
-          className={`${styles.display} ${
-            isActive ? styles.displayActive : ""
-          }`}>
-          {formatTime(secondsLeft)}
+      <div className={styles.mainRow}>
+        <div className={styles.leftSide}>
+          <span className={styles.meta}>Таймер отдыха</span>
+          <div
+            className={`${styles.display} ${
+              isActive ? styles.displayActive : ""
+            }`}>
+            {formatTime(secondsLeft)}
+          </div>
         </div>
-      </div>
 
-      <div className={styles.rightSide}>
-        <div className={styles.presetsGrid}>
-          {REST_OPTIONS.map((sec) => (
+        <div className={styles.rightSide}>
+          <div className={styles.presetsGrid}>
+            {REST_OPTIONS.map((sec) => {
+              const isSelectedPreset = isActive && totalDuration === sec;
+              return (
+                <button
+                  key={sec}
+                  type="button"
+                  onClick={() => startTimer(sec)}
+                  className={`${styles.presetBtn} ${
+                    isSelectedPreset ? styles.presetBtnActive : ""
+                  }`}>
+                  {sec / 60} мин
+                </button>
+              );
+            })}
+          </div>
+
+          <div className={styles.controlsRow}>
             <button
-              key={sec}
               type="button"
-              onClick={() => startTimer(sec)}
-              className={styles.presetBtn}>
-              {sec / 60} мин
+              disabled={!isActive}
+              onClick={() => setIsRunning((prev) => !prev)}
+              className={styles.pauseBtn}>
+              {isRunning ? "Пауза" : isActive ? "Продолжить" : "Пауза"}
             </button>
-          ))}
-        </div>
-
-        <div className={styles.controlsRow}>
-          <button
-            type="button"
-            disabled={!isActive}
-            onClick={() => setIsRunning((prev) => !prev)}
-            className={styles.pauseBtn}>
-            {isRunning ? "Пауза" : isActive ? "Продолжить" : "Пауза"}
-          </button>
-          <button
-            type="button"
-            disabled={!isActive}
-            onClick={resetTimer}
-            className={styles.resetBtn}>
-            Сброс
-          </button>
+            <button
+              type="button"
+              disabled={!isActive}
+              onClick={resetTimer}
+              className={styles.resetBtn}>
+              Сброс
+            </button>
+          </div>
         </div>
       </div>
+
+      {isActive && (
+        <div className={styles.progressTrack}>
+          <div
+            className={styles.progressFill}
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+      )}
     </div>
   );
 };

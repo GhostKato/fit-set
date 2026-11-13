@@ -30,7 +30,6 @@ export const SetTracker = ({
     setSecondsLeft(target);
   }
 
-  // Если все подходы отмечены вручную во время отсчета — останавливаем и сбрасываем таймер
   if (isAllCompleted && (isRunning || secondsLeft !== target)) {
     setIsRunning(false);
     setSecondsLeft(target);
@@ -91,11 +90,20 @@ export const SetTracker = ({
   const canReset = !isAllCompleted && (isRunning || secondsLeft !== target);
 
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container} ${
+        isAllCompleted ? styles.containerDone : ""
+      }`}>
       <div className={styles.header}>
-        <h4 className={styles.heading}>Отметьте выполненные подходы:</h4>
-        <span className={styles.counter}>
-          {completedCount} из {setsState.length}
+        <span className={styles.meta}>Трекинг подходов</span>
+
+        <span
+          className={`${styles.counter} ${
+            isAllCompleted ? styles.counterDone : ""
+          }`}>
+          {isAllCompleted
+            ? `✓ Выполнено (${completedCount} из ${setsState.length})`
+            : `${completedCount} из ${setsState.length}`}
         </span>
       </div>
 

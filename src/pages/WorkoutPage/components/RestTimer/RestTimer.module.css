@@ -1,13 +1,9 @@
 .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
   background-color: #ffffff;
   border: 1.5px solid #e2e5e9;
   border-radius: 14px;
-  padding: 18px 24px;
-  margin-bottom: 16px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   transition:
     border-color 0.2s ease,
@@ -16,33 +12,43 @@
 
 .containerActive {
   border-color: #28a745;
-  background-color: #f8fdf9;
+  background-color: #fbfefc;
+}
+
+.mainRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
 }
 
 .leftSide {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  gap: 4px;
+  gap: 2px;
+  min-width: 116px;
   flex-shrink: 0;
 }
 
-.heading {
-  margin: 0;
-  font-size: 14px;
+.meta {
+  display: block;
+  font-size: 12px;
   font-weight: 700;
   color: #666666;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  white-space: nowrap;
 }
 
 .display {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   color: #1e1e1e;
   line-height: 1.1;
+  text-align: center;
 }
 
 .displayActive {
@@ -66,22 +72,32 @@
 }
 
 .presetBtn {
-  min-height: 40px;
   padding: 8px 14px;
-  background-color: #f4f6f8;
-  color: #1e1e1e;
+  background-color: #ffffff;
+  color: #555555;
   border: 1.5px solid #e2e5e9;
-  border-radius: 10px;
-  font-size: 14px;
+  border-radius: 20px;
+  font-size: 13px;
   font-weight: 700;
+  white-space: nowrap;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .presetBtn:hover {
-  background-color: #e9f7ef;
   border-color: #28a745;
   color: #28a745;
+}
+
+.presetBtnActive {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: #ffffff;
+}
+
+.presetBtnActive:hover {
+  background-color: #218838;
+  color: #ffffff;
 }
 
 .controlsRow {
@@ -91,7 +107,7 @@
 
 .pauseBtn,
 .resetBtn {
-  width: 124px;
+  width: 118px;
   min-height: 40px;
   padding: 8px 12px;
   border-radius: 10px;
@@ -137,11 +153,35 @@
   cursor: not-allowed;
 }
 
+.progressTrack {
+  width: 100%;
+  height: 4px;
+  background-color: #e9ecef;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 14px;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #28a745;
+  border-radius: 999px;
+  transition: width 0.4s linear;
+}
+
 @media (max-width: 900px) {
   .container {
+    padding: 18px 16px;
+  }
+
+  .mainRow {
     flex-direction: column;
     align-items: stretch;
-    padding: 16px;
+  }
+
+  .leftSide {
+    align-items: center;
+    text-align: center;
   }
 
   .rightSide {

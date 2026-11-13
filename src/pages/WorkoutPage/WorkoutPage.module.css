@@ -2,22 +2,82 @@
   width: 100%;
 }
 
-.emptyCard {
-  text-align: center;
-  padding: 32px 20px;
-  background-color: #f8f9fa;
-  border: 1.5px dashed #cccccc;
-  border-radius: 14px;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  text-align: left;
 }
 
-.emptyTitle {
-  margin: 0 0 16px 0;
-  font-size: 20px;
-  font-weight: 700;
+.title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
   color: #1e1e1e;
 }
 
-.addBtn {
+.subtitle {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #28a745;
+}
+
+.finishTopBtn {
+  padding: 10px 16px;
+  min-height: 40px;
+  background-color: #ffffff;
+  color: #dc3545;
+  border: 1.5px solid #f5c2c7;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.finishTopBtn:hover {
+  background-color: #dc3545;
+  color: #ffffff;
+  border-color: #dc3545;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 6px;
+  background-color: #e9ecef;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #28a745;
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 32px 20px;
+  background-color: #f8f9fa;
+  border: 1.5px dashed #dcdcdc;
+  border-radius: 14px;
+  color: #666666;
+  font-size: 15px;
+}
+
+.emptyText {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.primaryBtn {
+  margin-top: 14px;
   padding: 12px 20px;
   min-height: 44px;
   background-color: #28a745;
@@ -30,144 +90,8 @@
   transition: background-color 0.2s ease;
 }
 
-.addBtn:hover {
+.primaryBtn:hover {
   background-color: #218838;
-}
-
-.topBar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.progressText {
-  font-size: 15px;
-  font-weight: 700;
-  color: #28a745;
-}
-
-.finishTopBtn {
-  padding: 8px 14px;
-  min-height: 38px;
-  background-color: #ffffff;
-  color: #dc3545;
-  border: 1.5px solid #dc3545;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.finishTopBtn:hover {
-  background-color: #dc3545;
-  color: #ffffff;
-}
-
-.exerciseCard {
-  background-color: #ffffff;
-  border: 1.5px solid #e2e5e9;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
-}
-
-.muscleBadge {
-  display: inline-block;
-  padding: 4px 10px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #555555;
-  background-color: #f0f2f5;
-  border-radius: 8px;
-  margin-bottom: 8px;
-}
-
-.exerciseName {
-  margin: 0 0 10px 0;
-  font-size: 24px;
-  font-weight: 800;
-  color: #1e1e1e;
-  line-height: 1.25;
-}
-
-.stats {
-  margin: 0 0 20px 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: #28a745;
-}
-
-.setsSection {
-  margin-bottom: 22px;
-}
-
-.setsHeading {
-  margin: 0 0 10px 0;
-  font-size: 15px;
-  font-weight: 700;
-  color: #333333;
-}
-
-.setsGrid {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.setLabel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 46px;
-  padding: 10px 16px;
-  border: 2px solid #28a745;
-  border-radius: 10px;
-  background-color: #ffffff;
-  color: #1e1e1e;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.15s ease;
-}
-
-.setLabel:hover {
-  background-color: #e9f7ef;
-}
-
-.setLabelDone {
-  background-color: #28a745;
-  color: #ffffff;
-}
-
-.setLabelDone:hover {
-  background-color: #218838;
-}
-
-.setCheckbox {
-  width: 18px;
-  height: 18px;
-  accent-color: #1e7e34;
-  cursor: pointer;
-}
-
-.details {
-  border-top: 1.5px solid #f0f0f0;
-  padding-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.detailItem {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.55;
-  color: #333333;
 }
 
 .navBar {
@@ -175,15 +99,15 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 20px;
 }
 
 .prevBtn {
-  padding: 14px 20px;
-  min-height: 48px;
-  background-color: #ffffff;
-  color: #1e1e1e;
-  border: 1.5px solid #cccccc;
+  padding: 12px 20px;
+  min-height: 44px;
+  background-color: #f4f6f8;
+  color: #444444;
+  border: 1.5px solid #dcdcdc;
   border-radius: 10px;
   font-size: 15px;
   font-weight: 700;
@@ -192,8 +116,8 @@
 }
 
 .prevBtn:hover:not(:disabled) {
-  background-color: #f4f6f8;
-  border-color: #999999;
+  background-color: #e2e5e9;
+  color: #1e1e1e;
 }
 
 .prevBtn:disabled {
@@ -204,13 +128,13 @@
 .nextBtn {
   flex: 1;
   max-width: 280px;
-  padding: 14px 22px;
-  min-height: 48px;
+  padding: 12px 22px;
+  min-height: 44px;
   background-color: #28a745;
   color: #ffffff;
   border: none;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
   transition:
@@ -227,20 +151,14 @@
 }
 
 @media (max-width: 600px) {
-  .exerciseCard {
-    padding: 18px;
+  .header {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .exerciseName {
-    font-size: 20px;
-  }
-
-  .stats {
-    font-size: 16px;
-  }
-
-  .setLabel {
-    flex: 1 1 calc(50% - 10px);
+  .finishTopBtn,
+  .primaryBtn {
+    width: 100%;
   }
 
   .navBar {

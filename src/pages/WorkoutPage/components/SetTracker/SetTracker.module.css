@@ -2,23 +2,34 @@
   background-color: #ffffff;
   border: 1.5px solid #e2e5e9;
   border-radius: 14px;
-  padding: 18px 24px;
+  padding: 18px 20px;
   margin-bottom: 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  text-align: left;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.containerDone {
+  border-color: #28a745;
+  background-color: #fbfefc;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   margin-bottom: 14px;
 }
 
-.heading {
-  margin: 0;
-  font-size: 16px;
+.meta {
+  display: block;
+  font-size: 12px;
   font-weight: 700;
-  color: #1e1e1e;
+  color: #666666;
+  text-transform: uppercase;
 }
 
 .counter {
@@ -26,8 +37,14 @@
   font-weight: 700;
   color: #28a745;
   background-color: #e9f7ef;
-  padding: 4px 10px;
-  border-radius: 12px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.counterDone {
+  background-color: #28a745;
+  color: #ffffff;
 }
 
 .contentRow {
@@ -147,7 +164,7 @@
 
 .grid {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 10px;
   flex-wrap: wrap;
 }
@@ -161,13 +178,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 46px;
+  min-height: 44px;
   padding: 10px 16px;
-  border: 2px solid #28a745;
+  border: 1.5px solid #e2e5e9;
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: #f8f9fa;
   color: #1e1e1e;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   user-select: none;
@@ -176,27 +193,31 @@
 
 .setLabel:hover {
   background-color: #e9f7ef;
+  border-color: #28a745;
+  color: #28a745;
 }
 
 .setLabelDone {
   background-color: #28a745;
+  border-color: #28a745;
   color: #ffffff;
 }
 
 .setLabelDone:hover {
   background-color: #218838;
+  color: #ffffff;
 }
 
 .checkbox {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   accent-color: #1e7e34;
   cursor: pointer;
 }
 
 @media (max-width: 900px) {
   .container {
-    padding: 16px;
+    padding: 18px 16px;
   }
 
   .contentRowTimed {
@@ -221,11 +242,10 @@
   }
 
   .gridRight {
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .setLabel {
     flex: 1 1 calc(50% - 10px);
-    max-width: 220px;
   }
 }

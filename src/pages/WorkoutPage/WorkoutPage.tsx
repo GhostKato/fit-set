@@ -42,16 +42,23 @@ export const WorkoutPage = () => {
 
   if (dayExercises.length === 0) {
     return (
-      <div className={styles.emptyCard}>
-        <h2 className={styles.emptyTitle}>
-          На {selectedDay} упражнений пока нет
-        </h2>
-        <button
-          type="button"
-          onClick={() => navigate("/exercises")}
-          className={styles.addBtn}>
-          Добавить упражнения
-        </button>
+      <div className={styles.page}>
+        <div className={styles.header}>
+          <h2 className={styles.title}>Тренировка • {selectedDay}</h2>
+        </div>
+
+        <div className={styles.emptyState}>
+          <p className={styles.emptyText}>
+            На <strong>{selectedDay}</strong> упражнений пока нет. Добавьте их в
+            свою программу, чтобы начать тренировку.
+          </p>
+          <button
+            type="button"
+            onClick={() => navigate("/exercises")}
+            className={styles.primaryBtn}>
+            Перейти к упражнениям
+          </button>
+        </div>
       </div>
     );
   }
@@ -71,21 +78,36 @@ export const WorkoutPage = () => {
   };
 
   const isLastExercise = currentIndex === dayExercises.length - 1;
+  const progressPercent = Math.round(
+    ((currentIndex + 1) / dayExercises.length) * 100,
+  );
 
   return (
     <div className={styles.page}>
-      <div className={styles.topBar}>
-        <span className={styles.progressText}>
-          {selectedDay}
-          {customDayTitle ? ` • ${customDayTitle}` : ""} • Упражнение{" "}
-          {currentIndex + 1} из {dayExercises.length}
-        </span>
+      <div className={styles.header}>
+        <div>
+          <h2 className={styles.title}>
+            {selectedDay}
+            {customDayTitle ? ` • ${customDayTitle}` : ""}
+          </h2>
+          <span className={styles.subtitle}>
+            Упражнение {currentIndex + 1} из {dayExercises.length}
+          </span>
+        </div>
+
         <button
           type="button"
           onClick={() => navigate("/")}
           className={styles.finishTopBtn}>
           Завершить
         </button>
+      </div>
+
+      <div className={styles.progressTrack}>
+        <div
+          className={styles.progressFill}
+          style={{ width: `${progressPercent}%` }}
+        />
       </div>
 
       <ExerciseCard exercise={currentExercise} showActions={false} />

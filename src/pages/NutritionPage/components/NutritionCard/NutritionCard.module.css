@@ -2,9 +2,9 @@
   background-color: #ffffff;
   border: 1.5px solid #e2e5e9;
   border-radius: 14px;
-  padding: 18px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   text-align: left;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   transition:
     border-color 0.2s ease,
     background-color 0.2s ease;
@@ -27,42 +27,34 @@
   text-align: left;
 }
 
-.badgesRow {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
-}
-
-.categoryBadge {
-  display: inline-block;
-  background-color: #e9f7ef;
-  color: #218838;
+.meta {
+  display: block;
   font-size: 12px;
   font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
+  color: #666666;
+  text-transform: uppercase;
+  margin-bottom: 4px;
 }
 
-.title {
+.name {
   margin: 0 0 6px 0;
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   color: #1e1e1e;
 }
 
 .portion {
-  margin: 0 0 4px 0;
+  margin: 0;
   font-size: 14px;
-  font-weight: 600;
-  color: #333333;
+  font-weight: 700;
+  color: #28a745;
 }
 
 .note {
-  margin: 6px 0 0 0;
-  font-size: 13.5px;
+  margin: 10px 0 0 0;
+  font-size: 14px;
   line-height: 1.45;
-  color: #666666;
+  color: #333333;
 }
 
 .actions {
@@ -71,35 +63,40 @@
   flex-shrink: 0;
 }
 
-.editBtn,
-.deleteBtn {
-  padding: 7px 12px;
+.editBtn {
+  padding: 6px 12px;
+  background-color: #f4f6f8;
+  color: #1e1e1e;
+  border: 1px solid #dcdcdc;
   border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.editBtn {
-  background-color: #f8f9fa;
-  border: 1px solid #dce0e5;
-  color: #333333;
+  transition: all 0.15s ease;
 }
 
 .editBtn:hover {
-  background-color: #e9ecef;
+  background-color: #e9f7ef;
+  border-color: #28a745;
+  color: #28a745;
 }
 
 .deleteBtn {
+  padding: 6px 12px;
   background-color: #ffffff;
-  border: 1px solid #f5c2c7;
   color: #dc3545;
+  border: 1px solid #f5c2c7;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
 .deleteBtn:hover {
   background-color: #dc3545;
   color: #ffffff;
+  border-color: #dc3545;
 }
 
 .mealPickerRow {
@@ -109,7 +106,7 @@
   flex-wrap: wrap;
   margin-top: 14px;
   padding-top: 12px;
-  border-top: 1px solid #edf0f2;
+  border-top: 1px solid #f0f2f5;
 }
 
 .pickerLabel {
@@ -146,19 +143,21 @@
   color: #ffffff;
 }
 
+/* Режим редактирования */
 .cardEditing {
   background-color: #ffffff;
   border: 2px solid #28a745;
   border-radius: 14px;
-  padding: 18px;
+  padding: 20px;
+  box-shadow: 0 6px 16px rgba(40, 167, 69, 0.08);
   text-align: left;
-  box-shadow: 0 4px 16px rgba(40, 167, 69, 0.1);
 }
 
 .editTitle {
-  margin: 0 0 12px 0;
-  font-size: 16px;
-  font-weight: 700;
+  margin: 0 0 14px 0;
+  font-size: 17px;
+  font-weight: 800;
+  text-align: center;
   color: #1e1e1e;
 }
 
@@ -170,71 +169,80 @@
 
 .row {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .flex1 {
-  flex: 1;
-  min-width: 160px;
+  flex: 1 1 160px;
 }
 
 .select,
 .input,
 .textarea {
-  background-color: #f8f9fa;
-  border: 1.5px solid #dce0e5;
-  border-radius: 8px;
-  padding: 9px 12px;
+  padding: 10px 12px;
+  border: 1.5px solid #dcdcdc;
+  border-radius: 10px;
   font-size: 14px;
-  color: #1e1e1e;
   font-family: inherit;
+  color: #1e1e1e;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease;
 }
 
 .select:focus,
 .input:focus,
 .textarea:focus {
   outline: none;
-  background-color: #ffffff;
   border-color: #28a745;
 }
 
+.textarea {
+  resize: vertical;
+}
+
 .numberInput {
-  width: 64px;
+  width: 72px;
   text-align: center;
 }
 
 .editActions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 10px;
+  margin-top: 16px;
 }
 
 .cancelBtn {
-  padding: 9px 16px;
-  background-color: #f8f9fa;
-  border: 1.5px solid #dce0e5;
-  border-radius: 8px;
+  padding: 10px 18px;
+  min-height: 42px;
+  background-color: #f4f6f8;
+  color: #444444;
+  border: 1.5px solid #dcdcdc;
+  border-radius: 10px;
   font-size: 14px;
-  font-weight: 600;
-  color: #495057;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .cancelBtn:hover {
-  background-color: #e9ecef;
+  background-color: #e2e5e9;
+  color: #1e1e1e;
 }
 
 .saveBtn {
-  padding: 9px 18px;
+  padding: 10px 20px;
+  min-height: 42px;
   background-color: #28a745;
+  color: #ffffff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
-  color: #ffffff;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .saveBtn:hover {
@@ -248,6 +256,19 @@
 
   .actions {
     width: 100%;
-    justify-content: flex-end;
+  }
+
+  .editBtn,
+  .deleteBtn {
+    flex: 1;
+  }
+
+  .editActions {
+    width: 100%;
+  }
+
+  .saveBtn,
+  .cancelBtn {
+    flex: 1;
   }
 }

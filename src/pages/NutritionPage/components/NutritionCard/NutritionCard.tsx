@@ -174,13 +174,16 @@ export const NutritionCard = ({
         }`}>
         <div className={styles.header}>
           <div className={styles.info}>
-            <div className={styles.badgesRow}>
-              <span className={styles.categoryBadge}>{item.category}</span>
-            </div>
-
-            <h4 className={styles.title}>{item.title}</h4>
-            {item.portion && <p className={styles.portion}>{item.portion}</p>}
-            {item.note && <p className={styles.note}>{item.note}</p>}
+            <span className={styles.meta}>{item.category}</span>
+            <h3 className={styles.name}>{item.title}</h3>
+            {item.portion && (
+              <p className={styles.portion}>Порция: {item.portion}</p>
+            )}
+            {item.note && (
+              <p className={styles.note}>
+                <strong>Заметка:</strong> {item.note}
+              </p>
+            )}
           </div>
 
           <div className={styles.actions}>
@@ -200,7 +203,7 @@ export const NutritionCard = ({
         </div>
 
         <div className={styles.mealPickerRow}>
-          <span className={styles.pickerLabel}>Выбрать на сегодня:</span>
+          <span className={styles.pickerLabel}>Выбрать сегодня на:</span>
           {MEAL_ORDER.map((mealKey) => {
             const isAdded = dailySelection[mealKey]?.includes(item.id);
             return (
