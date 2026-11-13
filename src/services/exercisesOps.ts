@@ -7,9 +7,11 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  writeBatch,
 } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import type { Exercise, NewExercise } from "../types/exercise";
+import { DEFAULT_EXERCISES } from "../data/defaultExercises";
 
 export const fetchUserExercises = async (): Promise<Exercise[]> => {
   const userId = auth.currentUser?.uid;
@@ -43,4 +45,22 @@ export const updateExercise = async (
 export const deleteExercise = async (id: string): Promise<void> => {
   const docRef = doc(db, "exercises", id);
   await deleteDoc(docRef);
+};
+
+export const seedDefaultExercisesToDb = async (): Promise<Exercise[]> => {
+  const userId = auth.currentUser?.uid;
+  if (!userId) throw new Error("Пользователь не авторизован");
+
+  const batch = writeBatch(db);
+  const createdItems: Exercise[] = [];
+
+  DEFAULT_EXERCISES.forEach((item) => {
+    const docRef = doc(collection(db, "exercises"));
+    const fullItem = { ...item, userId };
+    batch.set(docRef, fullItem);
+    createdItems.push({ id: docRef.id, ...fullItem });
+  });
+
+  await batch.commit();
+  return createdItems;
 };

@@ -89,11 +89,29 @@
 .emptyState {
   text-align: center;
   padding: 32px 20px;
-  background-color: #ffffff;
+  background-color: #f8f9fa;
   border: 1.5px dashed #dcdcdc;
   border-radius: 14px;
   color: #666666;
   font-size: 15px;
+}
+
+.seedBtn {
+  margin-top: 14px;
+  padding: 12px 20px;
+  min-height: 44px;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.seedBtn:hover {
+  background-color: #218838;
 }
 
 @media (max-width: 600px) {
@@ -102,7 +120,8 @@
     align-items: stretch;
   }
 
-  .toggleFormBtn {
+  .toggleFormBtn,
+  .seedBtn {
     width: 100%;
   }
 }

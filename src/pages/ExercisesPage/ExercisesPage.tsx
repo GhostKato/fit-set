@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { seedDefaultExercises } from "../../redux/exercises/operations";
 import { ExerciseCard } from "../../components/ExerciseCard/ExerciseCard";
 import { ExerciseCreateForm } from "./components/ExerciseCreateForm/ExerciseCreateForm";
 import styles from "./ExercisesPage.module.css";
@@ -15,6 +16,7 @@ const ALL_DAYS = [
 ];
 
 export const ExercisesPage = () => {
+  const dispatch = useAppDispatch();
   const { items, isLoading, error } = useAppSelector(
     (state) => state.exercises,
   );
@@ -66,10 +68,22 @@ export const ExercisesPage = () => {
 
       {error && <p className={styles.errorText}>Ошибка: {error}</p>}
 
-      {!isLoading && filteredExercises.length === 0 ? (
+      {!isLoading && items.length === 0 ? (
         <div className={styles.emptyState}>
-          Пока нет упражнений. Нажмите «+ Добавить упражнение», чтобы создать
-          первое.
+          <p>
+            Ваша программа упражнений пока пуста. Вы можете загрузить свою
+            базовую программу одной кнопкой или добавить упражнения вручную.
+          </p>
+          <button
+            type="button"
+            onClick={() => dispatch(seedDefaultExercises())}
+            className={styles.seedBtn}>
+            Загрузить мою базовую программу
+          </button>
+        </div>
+      ) : filteredExercises.length === 0 ? (
+        <div className={styles.emptyState}>
+          На день «{selectedDay}» пока нет добавленных упражнений.
         </div>
       ) : (
         filteredExercises.map((exercise) => (

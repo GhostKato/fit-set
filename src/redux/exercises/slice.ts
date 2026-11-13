@@ -4,6 +4,7 @@ import {
   addExercise,
   editExercise,
   removeExercise,
+  seedDefaultExercises,
 } from "./operations";
 import type { Exercise } from "../../types/exercise";
 
@@ -45,12 +46,16 @@ const exercisesSlice = createSlice({
       .addCase(removeExercise.fulfilled, (state, action) => {
         state.items = state.items.filter((item) => item.id !== action.payload);
       })
+      .addCase(seedDefaultExercises.fulfilled, (state, action) => {
+        state.items.push(...action.payload);
+      })
       .addMatcher(
         isAnyOf(
           fetchExercises.pending,
           addExercise.pending,
           editExercise.pending,
           removeExercise.pending,
+          seedDefaultExercises.pending,
         ),
         (state) => {
           state.isLoading = true;
@@ -63,6 +68,7 @@ const exercisesSlice = createSlice({
           addExercise.fulfilled,
           editExercise.fulfilled,
           removeExercise.fulfilled,
+          seedDefaultExercises.fulfilled,
         ),
         (state) => {
           state.isLoading = false;
@@ -74,6 +80,7 @@ const exercisesSlice = createSlice({
           addExercise.rejected,
           editExercise.rejected,
           removeExercise.rejected,
+          seedDefaultExercises.rejected,
         ),
         (state, action) => {
           state.isLoading = false;

@@ -4,6 +4,7 @@ import {
   createExercise,
   updateExercise,
   deleteExercise,
+  seedDefaultExercisesToDb,
 } from "../../services/exercisesOps";
 import type { Exercise, NewExercise } from "../../types/exercise";
 
@@ -52,6 +53,18 @@ export const removeExercise = createAsyncThunk<
   try {
     await deleteExercise(id);
     return id;
+  } catch (error) {
+    return thunkAPI.rejectWithValue((error as Error).message);
+  }
+});
+
+export const seedDefaultExercises = createAsyncThunk<
+  Exercise[],
+  void,
+  { rejectValue: string }
+>("exercises/seedDefault", async (_, thunkAPI) => {
+  try {
+    return await seedDefaultExercisesToDb();
   } catch (error) {
     return thunkAPI.rejectWithValue((error as Error).message);
   }

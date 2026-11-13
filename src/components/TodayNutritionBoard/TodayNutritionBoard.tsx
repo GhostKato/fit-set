@@ -75,6 +75,10 @@ export const TodayNutritionBoard = ({
     (dailySelection.Обед?.length ?? 0) +
     (dailySelection.Ужин?.length ?? 0);
 
+  if (totalSelectedCount === 0) {
+    return null;
+  }
+
   return (
     <section className={styles.todayBoard}>
       <div className={styles.todayBoardHeader}>
