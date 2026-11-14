@@ -2,8 +2,8 @@
   background-color: #ffffff;
   border: 1.5px solid #e2e5e9;
   border-radius: 14px;
-  padding: 10px 18px;
-  margin-bottom: 8px;
+  padding: 12px 20px;
+  margin-bottom: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   text-align: left;
   transition:
@@ -21,7 +21,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .meta {
@@ -58,8 +58,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 34px;
-  padding: 5px 12px;
+  min-height: 36px;
+  padding: 5px 14px;
   border: 1.5px solid #e2e5e9;
   border-radius: 999px;
   background-color: #f8f9fa;
@@ -100,12 +100,12 @@
 
 @media (min-width: 2200px) {
   .container {
-    padding: 18px 24px;
-    margin-bottom: 16px;
+    padding: 24px 32px;
+    margin-bottom: 24px;
   }
 
   .header {
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
 
   .meta {
@@ -118,11 +118,11 @@
   }
 
   .pillsGrid {
-    gap: 12px;
+    gap: 14px;
   }
 
   .setPill {
-    min-height: 46px;
-    font-size: 16px;
+    min-height: 48px;
+    font-size: 16.5px;
   }
 }

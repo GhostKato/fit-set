@@ -10,7 +10,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   text-align: left;
 }
 
@@ -78,12 +78,12 @@
   gap: 8px;
   overflow-x: auto;
   padding-bottom: 2px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .filterBtn {
-  min-width: 48px;
-  padding: 6px 13px;
+  min-width: 50px;
+  padding: 6px 14px;
   background-color: #ffffff;
   color: #555555;
   border: 1.5px solid #e2e5e9;
@@ -121,9 +121,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 40px;
-  padding: 0 16px;
-  margin-bottom: 8px;
+  height: 46px;
+  padding: 0 20px;
+  margin-bottom: 12px;
   background-color: #ffffff;
   border: 1.5px solid #e2e5e9;
   border-radius: 14px;
@@ -134,7 +134,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
 
 .progressLabel {
@@ -144,7 +144,7 @@
 }
 
 .progressPercent {
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 700;
   color: #666666;
 }
@@ -154,7 +154,7 @@
   align-items: center;
   gap: 6px;
   width: 100%;
-  height: 5px;
+  height: 8px;
 }
 
 .segment {
@@ -209,13 +209,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 8px;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 .mainActionBtn {
   width: 270px;
   padding: 10px 22px;
-  min-height: 40px;
+  min-height: 42px;
   background-color: #28a745;
   color: #ffffff;
   border: none;
@@ -254,7 +255,7 @@
 
 @media (min-width: 2200px) {
   .header {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   .title {
@@ -275,7 +276,7 @@
 
   .filters {
     gap: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   .filterBtn {
@@ -285,26 +286,30 @@
   }
 
   .progressCard {
-    height: 54px;
-    padding: 0 24px;
-    margin-bottom: 16px;
+    height: 66px;
+    padding: 0 28px;
+    margin-bottom: 24px;
+  }
+
+  .progressInfo {
+    margin-bottom: 9px;
   }
 
   .progressLabel {
-    font-size: 15px;
+    font-size: 15.5px;
   }
 
   .progressPercent {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .segmentsTrack {
-    height: 7px;
+    height: 11px;
   }
 
   .navBar {
-    margin-top: auto;
-    padding-top: 12px;
+    margin-top: 0;
+    padding-top: 0;
   }
 
   .mainActionBtn {

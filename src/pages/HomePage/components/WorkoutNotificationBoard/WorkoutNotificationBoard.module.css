@@ -2,8 +2,8 @@
   background-color: #e9f7ef;
   border: 2px solid #28a745;
   border-radius: 14px;
-  padding: 14px 18px;
-  margin-bottom: 10px;
+  padding: 14px 20px;
+  margin-bottom: 12px;
   box-shadow: 0 6px 20px rgba(40, 167, 69, 0.08);
 }
 
@@ -15,7 +15,7 @@
 }
 
 .todayInfo {
-  margin: 0 0 10px 0;
+  margin: 0 0 12px 0;
   font-size: 14px;
   color: #333333;
 }
@@ -47,8 +47,8 @@
   background-color: #f8f9fa;
   border: 1.5px solid #e0e0e0;
   border-radius: 14px;
-  padding: 14px 18px;
-  margin-bottom: 10px;
+  padding: 14px 20px;
+  margin-bottom: 12px;
 }
 
 .restTitle {
@@ -68,23 +68,23 @@
 @media (min-width: 2200px) {
   .todayCard,
   .restCard {
-    padding: 20px 24px;
-    margin-bottom: 16px;
+    padding: 26px 32px;
+    margin-bottom: 24px;
   }
 
   .todayTitle,
   .restTitle {
-    font-size: 22px;
-    margin-bottom: 6px;
+    font-size: 23px;
+    margin-bottom: 8px;
   }
 
   .todayInfo,
   .restText {
-    font-size: 16.5px;
+    font-size: 17px;
   }
 
   .todayInfo {
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
 
   .startBtn {

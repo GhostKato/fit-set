@@ -2,7 +2,7 @@
   background-color: #ffffff;
   border: 1.5px solid #e2e5e9;
   border-radius: 14px;
-  padding: 12px 18px;
+  padding: 12px 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   text-align: left;
   transition:
@@ -53,7 +53,7 @@
 .note {
   margin: 8px 0 0 0;
   font-size: 13.5px;
-  line-height: 1.38;
+  line-height: 1.4;
   color: #333333;
 }
 
@@ -148,7 +148,7 @@
 
 @media (min-width: 2200px) {
   .card {
-    padding: 20px 24px;
+    padding: 26px 32px;
   }
 
   .meta {
@@ -157,13 +157,13 @@
   }
 
   .name {
-    font-size: 22px;
-    margin-bottom: 6px;
+    font-size: 23px;
+    margin-bottom: 8px;
   }
 
   .portion,
   .note {
-    font-size: 16.5px;
+    font-size: 17px;
   }
 
   .editBtn,
@@ -173,8 +173,8 @@
   }
 
   .mealPickerRow {
-    margin-top: 14px;
-    padding-top: 12px;
+    margin-top: 16px;
+    padding-top: 14px;
   }
 
   .pickerLabel,

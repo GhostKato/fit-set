@@ -7,7 +7,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .title {
@@ -47,11 +47,11 @@
   gap: 8px;
   overflow-x: auto;
   padding-bottom: 2px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .filterBtn {
-  padding: 6px 13px;
+  padding: 6px 14px;
   background-color: #ffffff;
   color: #555555;
   border: 1.5px solid #e2e5e9;
@@ -81,7 +81,7 @@
 .cardsList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .emptyState {
@@ -119,14 +119,14 @@
   border: 1.5px solid #f5c2c7;
   border-radius: 12px;
   padding: 10px 16px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   font-size: 14px;
   font-weight: 600;
 }
 
 @media (min-width: 2200px) {
   .header {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   .title {
@@ -141,7 +141,7 @@
 
   .filters {
     gap: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
   }
 
   .filterBtn {
@@ -150,7 +150,7 @@
   }
 
   .cardsList {
-    gap: 14px;
+    gap: 24px;
   }
 
   .errorText,
