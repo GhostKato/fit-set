@@ -17,17 +17,24 @@
   color: #1e1e1e;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .toggleFormBtn {
   padding: 8px 16px;
   min-height: 38px;
   background-color: #28a745;
   color: #ffffff;
-  border: none;
+  border: 1.5px solid transparent;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
+  white-space: nowrap;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .toggleFormBtn:hover {
@@ -35,11 +42,40 @@
 }
 
 .toggleFormBtnActive {
-  background-color: #6c757d;
+  background-color: #ffffff;
+  color: #444444;
+  border-color: #ced4da;
 }
 
 .toggleFormBtnActive:hover {
-  background-color: #5a6268;
+  background-color: #f4f6f8;
+  color: #1e1e1e;
+  border-color: #adb5bd;
+}
+
+.deleteAllBtn {
+  padding: 8px 16px;
+  min-height: 38px;
+  background-color: #ffffff;
+  color: #dc3545;
+  border: 1.5px solid #f5c2c7;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.deleteAllBtn:hover:not(:disabled) {
+  background-color: #dc3545;
+  color: #ffffff;
+  border-color: #dc3545;
+}
+
+.deleteAllBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .filters {
@@ -125,7 +161,8 @@
     font-size: 28px;
   }
 
-  .toggleFormBtn {
+  .toggleFormBtn,
+  .deleteAllBtn {
     min-height: 48px;
     padding: 10px 22px;
     font-size: 17px;
@@ -160,7 +197,15 @@
     align-items: stretch;
   }
 
+  .headerActions {
+    width: 100%;
+  }
+
   .toggleFormBtn,
+  .deleteAllBtn {
+    flex: 1;
+  }
+
   .seedBtn {
     width: 100%;
   }

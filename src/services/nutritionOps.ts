@@ -87,6 +87,32 @@ export const deleteNutritionFromDb = async (id: string): Promise<void> => {
   await deleteDoc(doc(db, COLLECTION_NAME, id));
 };
 
+export const deleteAllUserNutrition = async (): Promise<void> => {
+  const user = auth.currentUser;
+  if (!user) throw new Error("Пользователь не авторизован");
+
+  const q = query(
+    collection(db, COLLECTION_NAME),
+    where("userId", "==", user.uid),
+  );
+  const snapshot = await getDocs(q);
+
+  const batch = writeBatch(db);
+  snapshot.docs.forEach((docSnap) => {
+    batch.delete(docSnap.ref);
+  });
+
+  const today = new Date().toISOString().split("T")[0];
+  const dailyDocRef = doc(db, DAILY_COLLECTION, getTodayDocId(user.uid));
+  batch.set(dailyDocRef, {
+    userId: user.uid,
+    date: today,
+    selection: EMPTY_DAILY_SELECTION,
+  });
+
+  await batch.commit();
+};
+
 export const seedDefaultNutritionToDb = async (): Promise<NutritionItem[]> => {
   const user = auth.currentUser;
   if (!user) throw new Error("Пользователь не авторизован");

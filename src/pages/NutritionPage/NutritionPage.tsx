@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { seedDefaultNutrition } from "../../redux/nutrition/operations";
+import {
+  removeAllNutrition,
+  seedDefaultNutrition,
+} from "../../redux/nutrition/operations";
 import { NutritionCard } from "./components/NutritionCard/NutritionCard";
 import { TodayNutritionBoard } from "../../components/TodayNutritionBoard/TodayNutritionBoard";
+import { ConfirmModal } from "../../components/ConfirmModal/ConfirmModal";
 import { NutritionCreateForm } from "./components/NutritionCreateForm/NutritionCreateForm";
 import type { NutritionCategory } from "../../types/nutrition";
 import styles from "./NutritionPage.module.css";
@@ -29,11 +33,18 @@ export const NutritionPage = () => {
 
   const [selectedTab, setSelectedTab] = useState<CategoryFilterTab>("Все");
   const [activeForm, setActiveForm] = useState<"create" | string | null>(null);
+  const [isDeleteAllOpen, setIsDeleteAllOpen] = useState(false);
 
   const isCreateOpen = activeForm === "create";
 
   const handleToggleCreateForm = () => {
     setActiveForm((prev) => (prev === "create" ? null : "create"));
+  };
+
+  const handleConfirmDeleteAll = () => {
+    setIsDeleteAllOpen(false);
+    setActiveForm(null);
+    dispatch(removeAllNutrition());
   };
 
   const matchesTab = (item: { category: NutritionCategory }) => {
@@ -51,14 +62,25 @@ export const NutritionPage = () => {
 
       <div className={styles.header}>
         <h2 className={styles.title}>Мой рацион питания</h2>
-        <button
-          type="button"
-          onClick={handleToggleCreateForm}
-          className={`${styles.toggleFormBtn} ${
-            isCreateOpen ? styles.toggleFormBtnActive : ""
-          }`}>
-          {isCreateOpen ? "Закрыть форму" : "+ Добавить"}
-        </button>
+
+        <div className={styles.headerActions}>
+          <button
+            type="button"
+            disabled={items.length === 0 || isLoading}
+            onClick={() => setIsDeleteAllOpen(true)}
+            className={styles.deleteAllBtn}>
+            Удалить всё
+          </button>
+
+          <button
+            type="button"
+            onClick={handleToggleCreateForm}
+            className={`${styles.toggleFormBtn} ${
+              isCreateOpen ? styles.toggleFormBtnActive : ""
+            }`}>
+            {isCreateOpen ? "Закрыть форму" : "+ Добавить"}
+          </button>
+        </div>
       </div>
 
       {isCreateOpen && (
@@ -111,6 +133,13 @@ export const NutritionPage = () => {
           ))}
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={isDeleteAllOpen}
+        title="Удалить всё?"
+        onConfirm={handleConfirmDeleteAll}
+        onCancel={() => setIsDeleteAllOpen(false)}
+      />
     </div>
   );
 };

@@ -4,6 +4,7 @@ import {
   addNutritionToDb,
   updateNutritionInDb,
   deleteNutritionFromDb,
+  deleteAllUserNutrition,
   seedDefaultNutritionToDb,
   getTodaySelectionFromDb,
   saveTodaySelectionToDb,
@@ -62,6 +63,18 @@ export const removeNutritionItem = createAsyncThunk<
   try {
     await deleteNutritionFromDb(id);
     return id;
+  } catch (error) {
+    return rejectWithValue((error as Error).message);
+  }
+});
+
+export const removeAllNutrition = createAsyncThunk<
+  void,
+  void,
+  { rejectValue: string }
+>("nutrition/deleteAll", async (_, { rejectWithValue }) => {
+  try {
+    await deleteAllUserNutrition();
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }

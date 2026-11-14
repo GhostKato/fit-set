@@ -47,6 +47,22 @@ export const deleteExercise = async (id: string): Promise<void> => {
   await deleteDoc(docRef);
 };
 
+export const deleteAllUserExercises = async (): Promise<void> => {
+  const userId = auth.currentUser?.uid;
+  if (!userId) throw new Error("Пользователь не авторизован");
+
+  const q = query(collection(db, "exercises"), where("userId", "==", userId));
+  const snapshot = await getDocs(q);
+  if (snapshot.empty) return;
+
+  const batch = writeBatch(db);
+  snapshot.docs.forEach((docSnap) => {
+    batch.delete(docSnap.ref);
+  });
+
+  await batch.commit();
+};
+
 export const seedDefaultExercisesToDb = async (): Promise<Exercise[]> => {
   const userId = auth.currentUser?.uid;
   if (!userId) throw new Error("Пользователь не авторизован");

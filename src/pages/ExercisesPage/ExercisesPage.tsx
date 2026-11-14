@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { seedDefaultExercises } from "../../redux/exercises/operations";
+import {
+  removeAllExercises,
+  seedDefaultExercises,
+} from "../../redux/exercises/operations";
 import { ExerciseCard } from "../../components/ExerciseCard/ExerciseCard";
+import { ConfirmModal } from "../../components/ConfirmModal/ConfirmModal";
 import { ExerciseCreateForm } from "./components/ExerciseCreateForm/ExerciseCreateForm";
 import styles from "./ExercisesPage.module.css";
 
@@ -25,11 +29,18 @@ export const ExercisesPage = () => {
 
   const [selectedDay, setSelectedDay] = useState<string>("Все");
   const [activeForm, setActiveForm] = useState<"create" | string | null>(null);
+  const [isDeleteAllOpen, setIsDeleteAllOpen] = useState(false);
 
   const isFormOpen = activeForm === "create";
 
   const handleToggleCreateForm = () => {
     setActiveForm((prev) => (prev === "create" ? null : "create"));
+  };
+
+  const handleConfirmDeleteAll = () => {
+    setIsDeleteAllOpen(false);
+    setActiveForm(null);
+    dispatch(removeAllExercises());
   };
 
   const filteredExercises = items
@@ -44,14 +55,25 @@ export const ExercisesPage = () => {
     <div className={styles.page}>
       <div className={styles.header}>
         <h2 className={styles.title}>Моя программа упражнений</h2>
-        <button
-          type="button"
-          onClick={handleToggleCreateForm}
-          className={`${styles.toggleFormBtn} ${
-            isFormOpen ? styles.toggleFormBtnActive : ""
-          }`}>
-          {isFormOpen ? "Закрыть форму" : "+ Добавить"}
-        </button>
+
+        <div className={styles.headerActions}>
+          <button
+            type="button"
+            disabled={items.length === 0 || isLoading}
+            onClick={() => setIsDeleteAllOpen(true)}
+            className={styles.deleteAllBtn}>
+            Удалить всё
+          </button>
+
+          <button
+            type="button"
+            onClick={handleToggleCreateForm}
+            className={`${styles.toggleFormBtn} ${
+              isFormOpen ? styles.toggleFormBtnActive : ""
+            }`}>
+            {isFormOpen ? "Закрыть форму" : "+ Добавить"}
+          </button>
+        </div>
       </div>
 
       {isFormOpen && (
@@ -104,6 +126,13 @@ export const ExercisesPage = () => {
           />
         ))
       )}
+
+      <ConfirmModal
+        isOpen={isDeleteAllOpen}
+        title="Удалить всё?"
+        onConfirm={handleConfirmDeleteAll}
+        onCancel={() => setIsDeleteAllOpen(false)}
+      />
     </div>
   );
 };

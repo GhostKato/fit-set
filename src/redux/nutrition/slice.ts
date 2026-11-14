@@ -4,6 +4,7 @@ import {
   addNutritionItem,
   editNutritionItem,
   removeNutritionItem,
+  removeAllNutrition,
   seedDefaultNutrition,
   fetchTodaySelection,
   syncTodaySelection,
@@ -87,6 +88,10 @@ const nutritionSlice = createSlice({
         state.dailySelection.Ужин = state.dailySelection.Ужин.filter(
           (id) => id !== deletedId,
         );
+      })
+      .addCase(removeAllNutrition.fulfilled, (state) => {
+        state.items = [];
+        state.dailySelection = EMPTY_DAILY_SELECTION;
       })
       .addCase(seedDefaultNutrition.fulfilled, (state, action) => {
         state.items = action.payload;
