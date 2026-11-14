@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Check, X } from "lucide-react";
+import { Check, X, Clock } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   syncTodaySelection,
@@ -146,11 +146,13 @@ export const TodayNutritionBoard = ({
                     onClick={() => startEditingSchedule(mealKey)}
                     className={styles.mealScheduleBtn}
                     title="Изменить время приёма пищи">
-                    🕒 {schedule[mealKey]}
+                    <Clock size={14} strokeWidth={2.2} />
+                    <span>{schedule[mealKey]}</span>
                   </button>
                 ) : (
                   <span className={styles.mealScheduleText}>
-                    🕒 {schedule[mealKey]}
+                    <Clock size={14} strokeWidth={2.2} />
+                    <span>{schedule[mealKey]}</span>
                   </span>
                 )}
               </div>

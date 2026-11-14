@@ -100,6 +100,7 @@
 .mealScheduleBtn {
   display: inline-flex;
   align-items: center;
+  gap: 5px;
   height: 26px;
   background: transparent;
   border: none;
@@ -122,6 +123,7 @@
 .mealScheduleText {
   display: inline-flex;
   align-items: center;
+  gap: 5px;
   height: 26px;
   color: #666666;
   font-size: 13px;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Check, Plus } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import {
   removeNutritionItem,
@@ -109,7 +110,17 @@ export const NutritionCard = ({
                 className={`${styles.mealToggleBtn} ${
                   isAdded ? styles.mealToggleBtnActive : ""
                 }`}>
-                {isAdded ? `✓ ${mealKey}` : `+ ${mealKey}`}
+                {isAdded ? (
+                  <>
+                    <Check size={14} strokeWidth={2.5} />
+                    <span>{mealKey}</span>
+                  </>
+                ) : (
+                  <>
+                    <Plus size={14} strokeWidth={2.5} />
+                    <span>{mealKey}</span>
+                  </>
+                )}
               </button>
             );
           })}

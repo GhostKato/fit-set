@@ -116,6 +116,9 @@
 }
 
 .mealToggleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   padding: 6px 12px;
   border-radius: 8px;
   font-size: 13px;

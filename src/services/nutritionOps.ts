@@ -37,7 +37,7 @@ export const EMPTY_DAILY_SELECTION: DailyMealSelection = {
 };
 
 const getTodayDocId = (userId: string) => {
-  const today = new Date().toISOString().split("T");
+  const today = new Date().toISOString().split("T")[0];
   return `${userId}_${today}`;
 };
 
@@ -129,10 +129,11 @@ export const saveTodaySelectionToDb = async (
   const user = auth.currentUser;
   if (!user) throw new Error("Пользователь не авторизован");
 
+  const today = new Date().toISOString().split("T")[0];
   const docRef = doc(db, DAILY_COLLECTION, getTodayDocId(user.uid));
   await setDoc(docRef, {
     userId: user.uid,
-    date: new Date().toISOString().split("T"),
+    date: today,
     selection,
   });
 
