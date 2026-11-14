@@ -184,7 +184,6 @@ export const WorkoutPage = () => {
     if (!currentExercise) return;
 
     if (phase === "work") {
-      playWorkoutSignal("setDone");
       const currentSets =
         completedSets[currentExercise.id] ||
         Array(currentExercise.sets).fill(false);
@@ -198,11 +197,14 @@ export const WorkoutPage = () => {
       const isLastEx = safeIndex >= dayExercises.length - 1;
 
       if (allDoneNow && isLastEx) {
+        playWorkoutSignal("workoutDone");
         setIsAutoRunning(false);
         setPhase("idle");
         setSecondsLeft(0);
         return;
       }
+
+      playWorkoutSignal(allDoneNow ? "exerciseDone" : "setDone");
 
       if (allDoneNow) {
         setCurrentIndex(safeIndex + 1);
@@ -218,7 +220,7 @@ export const WorkoutPage = () => {
     }
 
     if (phase === "restSet" || phase === "restExercise") {
-      playWorkoutSignal("restDone");
+      playWorkoutSignal("workStart");
       if (timingConfig.mode === "auto" && isAutoRunning) {
         const workSec = getWorkDuration(safeIndex);
         setPhase("work");
@@ -251,6 +253,12 @@ export const WorkoutPage = () => {
           window.setTimeout(handleTimerTickComplete, 0);
           return 0;
         }
+        if (
+          (phase === "restSet" || phase === "restExercise") &&
+          prev - 1 === 10
+        ) {
+          playWorkoutSignal("prepare");
+        }
         return prev - 1;
       });
     }, 1000);
@@ -261,12 +269,12 @@ export const WorkoutPage = () => {
     if (!currentExercise) return;
 
     if (phase !== "manualWorking") {
+      playWorkoutSignal("workStart");
       setPhase("manualWorking");
       setSecondsLeft(0);
       return;
     }
 
-    playWorkoutSignal("setDone");
     const currentSets =
       completedSets[currentExercise.id] ||
       Array(currentExercise.sets).fill(false);
@@ -280,10 +288,13 @@ export const WorkoutPage = () => {
     const isLastEx = safeIndex >= dayExercises.length - 1;
 
     if (allDoneNow && isLastEx) {
+      playWorkoutSignal("workoutDone");
       setPhase("idle");
       setSecondsLeft(0);
       return;
     }
+
+    playWorkoutSignal(allDoneNow ? "exerciseDone" : "setDone");
 
     if (allDoneNow) {
       setCurrentIndex(safeIndex + 1);
@@ -314,6 +325,7 @@ export const WorkoutPage = () => {
     setCurrentIndex(targetExIdx);
 
     const workSec = getWorkDuration(targetExIdx);
+    playWorkoutSignal("workStart");
     setIsAutoRunning(true);
     setPhase("work");
     setTotalDuration(workSec);
@@ -400,22 +412,28 @@ export const WorkoutPage = () => {
     safeIndex > 0 ||
     phase !== "idle" ||
     Object.values(completedSets).some((sets) => sets.some(Boolean));
+  const isPrepareRest =
+    (phase === "restSet" || phase === "restExercise") &&
+    secondsLeft > 0 &&
+    secondsLeft <= 10;
 
   const statusHint = isWorkoutCompleted
     ? "Тренировка выполнена! Нажмите «Закончить тренировку»"
-    : phase === "manualWorking"
-      ? "Выполняйте подход и нажмите «Закончить подход»"
-      : phase === "work"
-        ? `Идёт подход ${activeSetIndex !== -1 ? activeSetIndex + 1 : currentExercise.sets} из ${currentExercise.sets}`
-        : phase === "restSet"
-          ? isManualMode
-            ? "Идёт отдых — новый подход станет доступен после таймера"
-            : "Восстановите дыхание перед следующим подходом"
-          : phase === "restExercise"
-            ? "Отдых перед стартом следующего упражнения — изучите технику"
-            : isManualMode
-              ? "Нажмите «Начать подход» внизу экрана"
-              : "Нажмите «Начать тренировку» для автозапуска";
+    : isPrepareRest
+      ? "Приготовьтесь выполнять упражнение"
+      : phase === "manualWorking"
+        ? "Выполняйте подход и нажмите «Закончить подход»"
+        : phase === "work"
+          ? `Идёт подход ${activeSetIndex !== -1 ? activeSetIndex + 1 : currentExercise.sets} из ${currentExercise.sets}`
+          : phase === "restSet"
+            ? isManualMode
+              ? "Идёт отдых — новый подход станет доступен после таймера"
+              : "Восстановите дыхание перед следующим подходом"
+            : phase === "restExercise"
+              ? "Отдых перед стартом следующего упражнения — изучите технику"
+              : isManualMode
+                ? "Нажмите «Начать подход» внизу экрана"
+                : "Нажмите «Начать тренировку» для автозапуска";
 
   return (
     <div className={styles.page}>

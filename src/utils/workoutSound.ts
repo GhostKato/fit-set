@@ -1,3 +1,10 @@
+export type WorkoutSignalType =
+  | "prepare"
+  | "workStart"
+  | "setDone"
+  | "exerciseDone"
+  | "workoutDone";
+
 const createToneWavDataUrl = (
   notes: { start: number; end: number; freq: number }[],
   duration: number,
@@ -53,26 +60,51 @@ const createToneWavDataUrl = (
   return `data:audio/wav;base64,${btoa(binary)}`;
 };
 
-const SET_DONE_URL = createToneWavDataUrl(
-  [
-    { start: 0, end: 0.14, freq: 880 },
-    { start: 0.18, end: 0.42, freq: 1175 },
-  ],
-  0.45,
-);
+const SOUND_MAP: Record<WorkoutSignalType, string> = {
+  prepare: createToneWavDataUrl(
+    [
+      { start: 0, end: 0.09, freq: 660 },
+      { start: 0.14, end: 0.23, freq: 660 },
+      { start: 0.28, end: 0.37, freq: 660 },
+    ],
+    0.4,
+  ),
+  workStart: createToneWavDataUrl(
+    [
+      { start: 0, end: 0.11, freq: 880 },
+      { start: 0.14, end: 0.36, freq: 1320 },
+    ],
+    0.4,
+  ),
+  setDone: createToneWavDataUrl(
+    [
+      { start: 0, end: 0.16, freq: 880 },
+      { start: 0.2, end: 0.44, freq: 660 },
+    ],
+    0.48,
+  ),
+  exerciseDone: createToneWavDataUrl(
+    [
+      { start: 0, end: 0.12, freq: 660 },
+      { start: 0.15, end: 0.27, freq: 880 },
+      { start: 0.3, end: 0.55, freq: 1175 },
+    ],
+    0.58,
+  ),
+  workoutDone: createToneWavDataUrl(
+    [
+      { start: 0, end: 0.12, freq: 587 },
+      { start: 0.14, end: 0.26, freq: 740 },
+      { start: 0.28, end: 0.4, freq: 880 },
+      { start: 0.43, end: 0.85, freq: 1175 },
+    ],
+    0.9,
+  ),
+};
 
-const REST_DONE_URL = createToneWavDataUrl(
-  [
-    { start: 0, end: 0.15, freq: 880 },
-    { start: 0.22, end: 0.37, freq: 880 },
-    { start: 0.44, end: 0.8, freq: 1175 },
-  ],
-  0.85,
-);
-
-export const playWorkoutSignal = (type: "setDone" | "restDone") => {
+export const playWorkoutSignal = (type: WorkoutSignalType) => {
   try {
-    const audio = new Audio(type === "setDone" ? SET_DONE_URL : REST_DONE_URL);
+    const audio = new Audio(SOUND_MAP[type]);
     audio.volume = 1;
     audio.play().catch(() => {});
   } catch {

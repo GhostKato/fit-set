@@ -34,9 +34,10 @@ export const WorkoutTimer = ({
   totalDuration,
   statusHint,
 }: WorkoutTimerProps) => {
-  const isCounting =
-    phase === "work" || phase === "restSet" || phase === "restExercise";
+  const isResting = phase === "restSet" || phase === "restExercise";
+  const isCounting = phase === "work" || isResting;
   const isWorking = phase === "work" || phase === "manualWorking";
+  const isPrepare = isResting && secondsLeft > 0 && secondsLeft <= 10;
 
   const progressPercent =
     isCounting && totalDuration > 0
@@ -51,14 +52,20 @@ export const WorkoutTimer = ({
     <div
       className={`${styles.container} ${
         isWorking ? styles.containerWork : ""
-      } ${phase === "restSet" || phase === "restExercise" ? styles.containerRest : ""}`}>
+      } ${isResting && !isPrepare ? styles.containerRest : ""} ${
+        isPrepare ? styles.containerPrepare : ""
+      }`}>
       <div className={styles.mainRow}>
         <div className={styles.leftSide}>
-          <span className={styles.meta}>{PHASE_LABELS[phase]}</span>
+          <span className={styles.meta}>
+            {isPrepare ? "Приготовьтесь" : PHASE_LABELS[phase]}
+          </span>
           <div
             className={`${styles.display} ${
               isWorking ? styles.displayWork : ""
-            } ${phase === "restSet" || phase === "restExercise" ? styles.displayRest : ""}`}>
+            } ${isResting && !isPrepare ? styles.displayRest : ""} ${
+              isPrepare ? styles.displayPrepare : ""
+            }`}>
             {phase === "manualWorking" ? "В процессе" : formatTime(secondsLeft)}
           </div>
         </div>
@@ -72,7 +79,7 @@ export const WorkoutTimer = ({
         <div
           className={`${styles.progressFill} ${
             isWorking ? styles.progressFillWork : ""
-          }`}
+          } ${isPrepare ? styles.progressFillPrepare : ""}`}
           style={{ width: `${progressPercent}%` }}
         />
       </div>

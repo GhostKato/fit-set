@@ -20,6 +20,11 @@
   background-color: #f8fbff;
 }
 
+.containerPrepare {
+  border-color: #dc3545;
+  background-color: #fff5f5;
+}
+
 .mainRow {
   display: flex;
   justify-content: space-between;
@@ -58,6 +63,10 @@
   color: #0d6efd;
 }
 
+.displayPrepare {
+  color: #dc3545;
+}
+
 .rightSide {
   text-align: right;
   max-width: 260px;
@@ -88,6 +97,10 @@
 
 .progressFillWork {
   background-color: #28a745;
+}
+
+.progressFillPrepare {
+  background-color: #dc3545;
 }
 
 @media (max-width: 600px) {
