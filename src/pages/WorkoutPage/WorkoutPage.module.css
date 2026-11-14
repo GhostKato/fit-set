@@ -7,7 +7,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
   text-align: left;
 }
 
@@ -22,6 +22,29 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.modeSelectBtn {
+  width: 158px;
+  padding: 10.5px 12px;
+  min-height: 44px;
+  background-color: #e9f7ef;
+  color: #218838;
+  border: 1.5px solid #28a745;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.modeSelectBtn:hover {
+  background-color: #28a745;
+  color: #ffffff;
 }
 
 .resetTopBtn {
@@ -47,23 +70,48 @@
   cursor: not-allowed;
 }
 
-.finishTopBtn {
-  padding: 10.5px 20px;
-  min-height: 44px;
+.filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.filterBtn {
+  min-width: 52px;
+  padding: 8px 14px;
   background-color: #ffffff;
-  color: #dc3545;
-  border: 1.5px solid #f5c2c7;
-  border-radius: 10px;
-  font-size: 15px;
+  color: #555555;
+  border: 1.5px solid #e2e5e9;
+  border-radius: 20px;
+  font-size: 13px;
   font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
-.finishTopBtn:hover {
-  background-color: #dc3545;
+.filterBtn:hover {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.filterBtnDone {
+  background-color: #e9f7ef;
+  border-color: #b7e4c7;
+  color: #28a745;
+}
+
+.filterBtnActive {
+  background-color: #28a745;
   color: #ffffff;
-  border-color: #dc3545;
+  border-color: #28a745;
+}
+
+.filterBtnActive:hover {
+  color: #ffffff;
 }
 
 .progressCard {
@@ -98,19 +146,24 @@
   color: #666666;
 }
 
-.progressTrack {
+.segmentsTrack {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   width: 100%;
   height: 5px;
-  background-color: #e9ecef;
-  border-radius: 999px;
-  overflow: hidden;
 }
 
-.progressFill {
+.segment {
+  flex: 1;
   height: 100%;
-  background-color: #28a745;
+  background-color: #e9ecef;
   border-radius: 999px;
-  transition: width 0.25s ease;
+  transition: background-color 0.25s ease;
+}
+
+.segmentDone {
+  background-color: #28a745;
 }
 
 .emptyState {
@@ -148,38 +201,13 @@
 
 .navBar {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
   margin-top: 14px;
 }
 
-.prevBtn {
-  padding: 12px 20px;
-  min-height: 44px;
-  background-color: #f4f6f8;
-  color: #444444;
-  border: 1.5px solid #dcdcdc;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.prevBtn:hover:not(:disabled) {
-  background-color: #e2e5e9;
-  color: #1e1e1e;
-}
-
-.prevBtn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.nextBtn {
-  flex: 1;
-  max-width: 280px;
+.mainActionBtn {
+  width: 280px;
   padding: 12px 22px;
   min-height: 44px;
   background-color: #28a745;
@@ -188,18 +216,34 @@
   border-radius: 10px;
   font-size: 15px;
   font-weight: 700;
+  text-align: center;
   cursor: pointer;
   transition:
     background-color 0.2s ease,
-    transform 0.1s ease;
+    transform 0.1s ease,
+    opacity 0.2s ease;
 }
 
-.nextBtn:hover {
+.mainActionBtn:hover:not(:disabled) {
   background-color: #218838;
 }
 
-.nextBtn:active {
+.mainActionBtn:active:not(:disabled) {
   transform: scale(0.98);
+}
+
+.mainActionBtn:disabled {
+  background-color: #e9ecef;
+  color: #888888;
+  cursor: not-allowed;
+}
+
+.mainActionBtnStop {
+  background-color: #dc3545;
+}
+
+.mainActionBtnStop:hover:not(:disabled) {
+  background-color: #c82333;
 }
 
 @media (max-width: 600px) {
@@ -212,22 +256,17 @@
     width: 100%;
   }
 
-  .resetTopBtn,
-  .finishTopBtn {
+  .modeSelectBtn,
+  .resetTopBtn {
+    width: auto;
     flex: 1;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 14px;
   }
 
-  .primaryBtn {
+  .primaryBtn,
+  .mainActionBtn {
     width: 100%;
-  }
-
-  .navBar {
-    flex-direction: column-reverse;
-  }
-
-  .prevBtn,
-  .nextBtn {
-    width: 100%;
-    max-width: 100%;
   }
 }

@@ -15,7 +15,7 @@ const ALL_DAYS = [
   "Воскресенье",
 ];
 
-const INACTIVE_TAB = "Не активные";
+const INACTIVE_TAB = "Неактивные";
 
 export const ExercisesPage = () => {
   const dispatch = useAppDispatch();
