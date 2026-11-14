@@ -1,9 +1,9 @@
 .todayBoard {
   background-color: #e9f7ef;
   border: 2px solid #28a745;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 24px;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
   box-shadow: 0 6px 20px rgba(40, 167, 69, 0.08);
 }
 
@@ -12,13 +12,13 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
 }
 
 .todayBoardTitle {
   margin: 0;
-  font-size: 19px;
+  font-size: 17.5px;
   font-weight: 800;
   color: #1e1e1e;
 }
@@ -28,7 +28,7 @@
   border: 1.5px solid #dc3545;
   color: #dc3545;
   border-radius: 8px;
-  padding: 6px 12px;
+  padding: 5px 12px;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -47,7 +47,7 @@
   border: 1.5px solid #28a745;
   color: #28a745;
   border-radius: 8px;
-  padding: 6px 12px;
+  padding: 5px 12px;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -64,7 +64,7 @@
 .todayGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 10px;
 }
 
 @media (max-width: 820px) {
@@ -77,7 +77,7 @@
   background-color: #ffffff;
   border: 1.5px solid #d4edda;
   border-radius: 12px;
-  padding: 14px;
+  padding: 10px 12px;
 }
 
 .todayMealTop {
@@ -85,15 +85,15 @@
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  min-height: 28px;
-  margin-bottom: 10px;
-  padding-bottom: 8px;
+  min-height: 26px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
   border-bottom: 1px solid #e9ecef;
 }
 
 .todayMealName {
   font-weight: 800;
-  font-size: 16px;
+  font-size: 15px;
   color: #28a745;
 }
 
@@ -192,7 +192,7 @@
 
 .todayEmpty {
   margin: 0;
-  font-size: 13.5px;
+  font-size: 13px;
   color: #888888;
   font-style: italic;
 }
@@ -203,7 +203,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
 .todayListItem {
@@ -212,11 +212,11 @@
   align-items: flex-start;
   gap: 8px;
   text-align: left;
-  font-size: 14px;
+  font-size: 13.5px;
   color: #1e1e1e;
   background-color: #f8f9fa;
   border: 1px solid #e9ecef;
-  padding: 6px 10px;
+  padding: 5px 9px;
   border-radius: 8px;
 }
 
@@ -234,4 +234,47 @@
 
 .removeTagBtn:hover {
   color: #dc3545;
+}
+
+@media (min-width: 2200px) {
+  .todayBoard {
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+
+  .todayBoardTitle {
+    font-size: 22px;
+  }
+
+  .clearBtn,
+  .editPlanBtn {
+    font-size: 15px;
+    padding: 7px 16px;
+  }
+
+  .todayGrid {
+    gap: 14px;
+  }
+
+  .todayMealBox {
+    padding: 16px 18px;
+  }
+
+  .todayMealName {
+    font-size: 18px;
+  }
+
+  .mealScheduleBtn,
+  .mealScheduleText {
+    font-size: 15px;
+  }
+
+  .todayEmpty {
+    font-size: 15.5px;
+  }
+
+  .todayListItem {
+    font-size: 16px;
+    padding: 7px 12px;
+  }
 }

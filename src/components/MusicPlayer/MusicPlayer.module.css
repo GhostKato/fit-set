@@ -132,6 +132,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .equalizer {
   display: inline-flex;
   align-items: flex-end;
@@ -244,8 +245,6 @@
 }
 
 .minimizeBtn {
-  background-color: transparent;
-  /* border: 1px solid #4e5358; */
   background-color: #2e3236;
   padding: 8px 10px;
   font-size: 13px;

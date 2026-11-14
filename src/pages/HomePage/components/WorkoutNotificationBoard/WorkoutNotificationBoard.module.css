@@ -1,33 +1,33 @@
 .todayCard {
   background-color: #e9f7ef;
   border: 2px solid #28a745;
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 32px;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
   box-shadow: 0 6px 20px rgba(40, 167, 69, 0.08);
 }
 
 .todayTitle {
-  margin: 0 0 8px 0;
-  font-size: 22px;
+  margin: 0 0 4px 0;
+  font-size: 17.5px;
   font-weight: 800;
   color: #1e1e1e;
 }
 
 .todayInfo {
-  margin: 0 0 18px 0;
-  font-size: 15px;
+  margin: 0 0 10px 0;
+  font-size: 14px;
   color: #333333;
 }
 
 .startBtn {
-  padding: 14px 24px;
-  min-height: 48px;
+  padding: 8px 20px;
+  min-height: 38px;
   background-color: #28a745;
   color: #ffffff;
   border: none;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   transition:
@@ -47,13 +47,13 @@
   background-color: #f8f9fa;
   border: 1.5px solid #e0e0e0;
   border-radius: 14px;
-  padding: 20px;
-  margin-bottom: 32px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
 }
 
 .restTitle {
-  margin: 0 0 8px 0;
-  font-size: 18px;
+  margin: 0 0 4px 0;
+  font-size: 17.5px;
   font-weight: 700;
   color: #1e1e1e;
 }
@@ -61,21 +61,50 @@
 .restText {
   margin: 0;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.4;
   color: #666666;
+}
+
+@media (min-width: 2200px) {
+  .todayCard,
+  .restCard {
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+
+  .todayTitle,
+  .restTitle {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .todayInfo,
+  .restText {
+    font-size: 16.5px;
+  }
+
+  .todayInfo {
+    margin-bottom: 14px;
+  }
+
+  .startBtn {
+    min-height: 48px;
+    padding: 10px 26px;
+    font-size: 17px;
+  }
 }
 
 @media (max-width: 600px) {
   .todayCard {
-    padding: 18px;
-  }
-
-  .restCard {
     padding: 16px;
   }
 
+  .restCard {
+    padding: 14px;
+  }
+
   .todayTitle {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .startBtn {

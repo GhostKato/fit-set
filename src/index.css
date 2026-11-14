@@ -17,10 +17,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html {
-  scrollbar-gutter: stable;
-}
-
 *,
 *::before,
 *::after {
@@ -53,4 +49,8 @@ input,
 textarea,
 select {
   font-family: inherit;
+}
+
+html {
+  scrollbar-gutter: stable;
 }

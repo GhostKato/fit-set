@@ -3,14 +3,14 @@
 }
 
 .sectionTitle {
-  margin: 0 0 16px 0;
-  font-size: 22px;
+  margin: 0 0 8px 0;
+  font-size: 18px;
   font-weight: 800;
   color: #1e1e1e;
 }
 
 .emptyCard {
-  padding: 24px 20px;
+  padding: 20px;
   background-color: #f8f9fa;
   border: 1px dashed #cccccc;
   border-radius: 14px;
@@ -18,19 +18,19 @@
 }
 
 .emptyText {
-  margin: 0 0 14px 0;
-  font-size: 15px;
+  margin: 0 0 12px 0;
+  font-size: 14px;
   color: #666666;
 }
 
 .addBtn {
-  padding: 12px 20px;
-  min-height: 44px;
+  padding: 8px 18px;
+  min-height: 38px;
   background-color: #28a745;
   color: #ffffff;
   border: none;
   border-radius: 10px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -42,14 +42,14 @@
 
 .scheduleGrid {
   display: grid;
-  gap: 12px;
+  gap: 8px;
 }
 
 .dayCard {
   background-color: #ffffff;
   border: 1.5px solid #e2e5e9;
   border-radius: 12px;
-  padding: 16px 18px;
+  padding: 10px 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
@@ -59,8 +59,8 @@
 }
 
 .dayTitle {
-  margin: 0 0 6px 0;
-  font-size: 16px;
+  margin: 0 0 3px 0;
+  font-size: 15px;
   font-weight: 700;
   color: #1e1e1e;
 }
@@ -78,8 +78,42 @@
 
 .dayCount {
   margin: 0;
-  font-size: 14px;
+  font-size: 13.5px;
   color: #666666;
+}
+
+@media (min-width: 2200px) {
+  .sectionTitle {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+
+  .scheduleGrid {
+    gap: 12px;
+  }
+
+  .dayCard {
+    padding: 16px 22px;
+  }
+
+  .dayTitle {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .todayTag {
+    font-size: 15px;
+  }
+
+  .dayCount {
+    font-size: 16px;
+  }
+
+  .addBtn {
+    min-height: 48px;
+    padding: 10px 24px;
+    font-size: 17px;
+  }
 }
 
 @media (max-width: 600px) {

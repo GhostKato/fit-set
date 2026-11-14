@@ -4,20 +4,32 @@
 }
 
 .greeting {
-  margin: 0 0 6px 0;
-  font-size: 26px;
+  margin: 0 0 4px 0;
+  font-size: 21px;
   font-weight: 800;
   color: #1e1e1e;
 }
 
 .dateText {
-  margin: 0 0 24px 0;
-  font-size: 15px;
+  margin: 0 0 12px 0;
+  font-size: 14px;
   color: #666666;
+}
+
+@media (min-width: 2200px) {
+  .greeting {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+
+  .dateText {
+    font-size: 16.5px;
+    margin-bottom: 18px;
+  }
 }
 
 @media (max-width: 600px) {
   .greeting {
-    font-size: 22px;
+    font-size: 21px;
   }
 }
