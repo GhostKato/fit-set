@@ -34,6 +34,8 @@ const createToneWavDataUrl = (
   writeString(36, "data");
   view.setUint32(40, numSamples * 2, true);
 
+  const normFactor = Math.tanh(2.5);
+
   for (let i = 0; i < numSamples; i++) {
     const t = i / sampleRate;
     let sample = 0;
@@ -42,8 +44,9 @@ const createToneWavDataUrl = (
       if (t >= note.start && t <= note.end) {
         const localT = t - note.start;
         const noteLen = note.end - note.start;
-        const envelope = Math.min(1, localT * 40) * (1 - localT / noteLen);
-        sample = Math.sin(2 * Math.PI * note.freq * t) * envelope * 0.85;
+        const envelope = Math.min(1, localT * 60) * (1 - localT / noteLen);
+        const rawWave = Math.sin(2 * Math.PI * note.freq * t);
+        sample = (Math.tanh(rawWave * 2.5) / normFactor) * envelope;
         break;
       }
     }
@@ -102,10 +105,32 @@ const SOUND_MAP: Record<WorkoutSignalType, string> = {
   ),
 };
 
+let sharedAudioCtx: AudioContext | null = null;
+
 export const playWorkoutSignal = (type: WorkoutSignalType) => {
   try {
     const audio = new Audio(SOUND_MAP[type]);
     audio.volume = 1;
+
+    const AudioCtx =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext })
+        .webkitAudioContext;
+
+    if (AudioCtx) {
+      if (!sharedAudioCtx) {
+        sharedAudioCtx = new AudioCtx();
+      }
+      if (sharedAudioCtx.state === "suspended") {
+        sharedAudioCtx.resume().catch(() => {});
+      }
+      const source = sharedAudioCtx.createMediaElementSource(audio);
+      const gainNode = sharedAudioCtx.createGain();
+      gainNode.gain.value = 5.5;
+      source.connect(gainNode);
+      gainNode.connect(sharedAudioCtx.destination);
+    }
+
     audio.play().catch(() => {});
   } catch {
     // Игнорируем блокировку автовоспроизведения, если она возникла

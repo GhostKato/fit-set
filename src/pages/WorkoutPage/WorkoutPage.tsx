@@ -253,18 +253,20 @@ export const WorkoutPage = () => {
           window.setTimeout(handleTimerTickComplete, 0);
           return 0;
         }
+        const nextSec = prev - 1;
         if (
           (phase === "restSet" || phase === "restExercise") &&
-          prev - 1 === 10
+          (nextSec === 10 || nextSec === 5)
         ) {
           playWorkoutSignal("prepare");
         }
-        return prev - 1;
+        return nextSec;
       });
     }, 1000);
 
     return () => window.clearInterval(timerId);
   }, [phase, secondsLeft, handleTimerTickComplete]);
+
   const handleManualAction = () => {
     if (!currentExercise) return;
 
