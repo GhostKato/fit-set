@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Check, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   syncTodaySelection,
@@ -127,14 +128,16 @@ export const TodayNutritionBoard = ({
                     <button
                       type="button"
                       onClick={() => saveSchedule(mealKey)}
-                      className={styles.scheduleSaveBtn}>
-                      ✓
+                      className={styles.scheduleSaveBtn}
+                      title="Сохранить">
+                      <Check size={14} strokeWidth={2.5} />
                     </button>
                     <button
                       type="button"
                       onClick={() => setEditingScheduleMeal(null)}
-                      className={styles.scheduleCancelBtn}>
-                      ✕
+                      className={styles.scheduleCancelBtn}
+                      title="Отмена">
+                      <X size={14} strokeWidth={2.5} />
                     </button>
                   </div>
                 ) : isEditable ? (
@@ -172,7 +175,7 @@ export const TodayNutritionBoard = ({
                             }
                             className={styles.removeTagBtn}
                             title="Убрать из приёма пищи">
-                            ✕
+                            <X size={14} strokeWidth={2.5} />
                           </button>
                         )}
                       </li>

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
+import { Pencil, Check, X } from "lucide-react";
 import { useAppDispatch } from "../../redux/hooks";
 import { editExercise, removeExercise } from "../../redux/exercises/operations";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
@@ -24,6 +25,8 @@ export const ExerciseCard = ({
 }: ExerciseCardProps) => {
   const dispatch = useAppDispatch();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditingWeight, setIsEditingWeight] = useState(false);
+  const [weightInput, setWeightInput] = useState(exercise.weight || "");
 
   const handleToggleActive = (nextValue: boolean) => {
     dispatch(
@@ -37,6 +40,25 @@ export const ExerciseCard = ({
   const handleConfirmDelete = async () => {
     setIsDeleteModalOpen(false);
     await dispatch(removeExercise(exercise.id));
+  };
+
+  const handleOpenWeightEdit = () => {
+    setWeightInput(exercise.weight || "");
+    setIsEditingWeight(true);
+  };
+
+  const handleSaveWeight = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const trimmed = weightInput.trim();
+    setIsEditingWeight(false);
+    if (trimmed === (exercise.weight || "")) return;
+
+    dispatch(
+      editExercise({
+        id: exercise.id,
+        fields: { weight: trimmed },
+      }),
+    );
   };
 
   const hasDetails = Boolean(
@@ -67,11 +89,52 @@ export const ExerciseCard = ({
               {exercise.order}
             </span>
             <h3 className={styles.name}>{exercise.name}</h3>
-            <p className={styles.stats}>
-              {exercise.sets} подх. × {exercise.target}{" "}
-              {exercise.unit === "sec" ? "сек." : "повт."} | Вес:{" "}
-              {exercise.weight || "Свой вес"}
-            </p>
+            <div className={styles.stats}>
+              <span>
+                {exercise.sets} подх. × {exercise.target}{" "}
+                {exercise.unit === "sec" ? "сек." : "повт."} | Вес:{" "}
+                {!isEditingWeight && (exercise.weight || "Свой вес")}
+              </span>
+
+              {isEditingWeight ? (
+                <form
+                  onSubmit={handleSaveWeight}
+                  className={styles.weightEditForm}>
+                  <input
+                    type="text"
+                    value={weightInput}
+                    onChange={(e) => setWeightInput(e.target.value)}
+                    placeholder="2 по 14 кг."
+                    autoFocus
+                    onKeyDown={(e) => {
+                      if (e.key === "Escape") setIsEditingWeight(false);
+                    }}
+                    className={styles.weightInput}
+                  />
+                  <button
+                    type="submit"
+                    className={`${styles.weightActionBtn} ${styles.weightSave}`}
+                    title="Сохранить">
+                    <Check size={14} strokeWidth={2.5} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsEditingWeight(false)}
+                    className={`${styles.weightActionBtn} ${styles.weightCancel}`}
+                    title="Отмена">
+                    <X size={14} strokeWidth={2.5} />
+                  </button>
+                </form>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleOpenWeightEdit}
+                  className={styles.weightIconBtn}
+                  title="Изменить вес">
+                  <Pencil size={14} />
+                </button>
+              )}
+            </div>
           </div>
 
           {showActions && (

@@ -85,6 +85,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 8px;
+  min-height: 28px;
   margin-bottom: 10px;
   padding-bottom: 8px;
   border-bottom: 1px solid #e9ecef;
@@ -97,13 +98,16 @@
 }
 
 .mealScheduleBtn {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
   background: transparent;
   border: none;
   color: #666666;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  padding: 3px 6px;
+  padding: 0 6px;
   border-radius: 6px;
   transition:
     background-color 0.2s ease,
@@ -116,36 +120,53 @@
 }
 
 .mealScheduleText {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
   color: #666666;
   font-size: 13px;
   font-weight: 600;
-  padding: 3px 6px;
+  padding: 0 6px;
 }
 
 .scheduleEditBox {
   display: flex;
   align-items: center;
   gap: 4px;
+  height: 26px;
 }
 
 .scheduleInput {
-  width: 96px;
-  padding: 4px 6px;
+  width: 92px;
+  height: 26px;
+  padding: 0 6px;
   font-size: 13px;
+  font-weight: 600;
   border-radius: 6px;
   border: 1.5px solid #ced4da;
   background-color: #ffffff;
   color: #1e1e1e;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.scheduleInput:focus {
+  border-color: #28a745;
 }
 
 .scheduleSaveBtn,
 .scheduleCancelBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
   border: none;
   border-radius: 5px;
-  padding: 4px 7px;
-  font-size: 12px;
-  font-weight: 700;
   cursor: pointer;
+  transition: background-color 0.15s ease;
 }
 
 .scheduleSaveBtn {
@@ -153,9 +174,18 @@
   color: #ffffff;
 }
 
+.scheduleSaveBtn:hover {
+  background-color: #218838;
+}
+
 .scheduleCancelBtn {
-  background-color: #6c757d;
-  color: #ffffff;
+  background-color: #e9ecef;
+  color: #555555;
+}
+
+.scheduleCancelBtn:hover {
+  background-color: #dde1e6;
+  color: #1e1e1e;
 }
 
 .todayEmpty {
@@ -189,14 +219,15 @@
 }
 
 .removeTagBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: none;
   color: #888888;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 0 4px;
-  line-height: 1.2;
+  padding: 2px 4px;
+  transition: color 0.15s ease;
 }
 
 .removeTagBtn:hover {

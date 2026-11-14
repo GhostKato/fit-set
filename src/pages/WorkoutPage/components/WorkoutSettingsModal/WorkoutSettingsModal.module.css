@@ -1,51 +1,54 @@
 .backdrop {
   position: fixed;
   inset: 0;
+  z-index: 1200;
   background-color: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 16px;
-  z-index: 9998;
 }
 
 .modal {
   width: 100%;
-  max-width: 440px;
-  max-height: 88vh;
-  overflow-y: auto;
+  max-width: 480px;
+  max-height: 90vh;
   background-color: #ffffff;
-  border: 1.5px solid #e2e5e9;
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
 }
 
 .title {
   margin: 0;
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 800;
   color: #1e1e1e;
 }
 
 .closeIconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 32px;
   height: 32px;
   border: none;
   border-radius: 8px;
   background-color: #f4f6f8;
   color: #555555;
-  font-size: 15px;
-  font-weight: 700;
   cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .closeIconBtn:hover {
@@ -54,28 +57,21 @@
 }
 
 .modeSwitch {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
-  margin-bottom: 16px;
 }
 
 .modeBtn {
-  flex: 1;
-  min-height: 40px;
-  padding: 8px 12px;
-  background-color: #f4f6f8;
-  color: #444444;
-  border: 1.5px solid #dcdcdc;
+  padding: 10px 12px;
+  border: 1.5px solid #e2e5e9;
   border-radius: 10px;
+  background-color: #ffffff;
+  color: #444444;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.15s ease;
-}
-
-.modeBtn:hover {
-  border-color: #28a745;
-  color: #28a745;
 }
 
 .modeBtnActive {
@@ -84,97 +80,140 @@
   color: #ffffff;
 }
 
-.modeBtnActive:hover {
-  color: #ffffff;
+.body {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 2px;
 }
 
 .section {
-  margin-bottom: 16px;
-  padding-top: 12px;
-  border-top: 1px solid #f0f2f5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.sectionTitle {
+.sectionLabel {
   font-size: 12px;
   font-weight: 700;
   color: #666666;
   text-transform: uppercase;
-  margin-bottom: 10px;
 }
 
 .exercisesList {
+  max-height: 220px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 210px;
-  overflow-y: auto;
   padding-right: 4px;
 }
 
-.exerciseRow,
-.restRow {
+.exerciseRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  padding: 6px 10px;
+  gap: 12px;
+  padding: 8px 12px;
   background-color: #f8f9fa;
   border: 1px solid #e9ecef;
   border-radius: 10px;
 }
 
-.restRow {
-  margin-bottom: 8px;
-}
-
-.exerciseLabel,
-.restLabel {
-  font-size: 13.5px;
+.exerciseName {
+  font-size: 14px;
+  font-weight: 600;
   color: #1e1e1e;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.timeInput {
-  width: 72px;
-  min-height: 34px;
-  padding: 4px 8px;
-  border: 1.5px solid #dcdcdc;
-  border-radius: 8px;
-  background-color: #ffffff;
-  color: #1e1e1e;
-  font-size: 14px;
-  font-weight: 700;
-  text-align: center;
+.fixedBadge {
   flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #28a745;
+  background-color: #e9f7ef;
+  padding: 4px 8px;
+  border-radius: 6px;
 }
 
-.timeInput:focus {
+.numberInput {
+  width: 78px;
+  flex-shrink: 0;
+  padding: 6px 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e1e1e;
+  text-align: center;
+  background-color: #ffffff;
+  border: 1.5px solid #dcdcdc;
+  border-radius: 8px;
   outline: none;
+}
+
+.numberInput:focus {
   border-color: #28a745;
 }
 
-.timeInput:disabled {
-  background-color: #e9ecef;
-  color: #888888;
-  border-color: #dee2e6;
-  cursor: not-allowed;
+.restGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
-.doneBtn {
-  width: 100%;
-  min-height: 44px;
-  padding: 10px 16px;
-  background-color: #28a745;
-  color: #ffffff;
-  border: none;
+.restField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
   border-radius: 10px;
-  font-size: 15px;
+}
+
+.restLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #444444;
+}
+
+.restField .numberInput {
+  width: 100%;
+}
+
+.footer {
+  display: flex;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.cancelBtn {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #555555;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
 }
 
-.doneBtn:hover {
+.saveBtn {
+  flex: 1;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  background-color: #28a745;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.saveBtn:hover {
   background-color: #218838;
 }
