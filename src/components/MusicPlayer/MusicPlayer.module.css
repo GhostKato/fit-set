@@ -245,15 +245,11 @@
 
 .minimizeBtn {
   background-color: transparent;
-  border: 1.5px solid #4e5358;
-  padding: 10px 10px;
+  /* border: 1px solid #4e5358; */
+  background-color: #2e3236;
+  padding: 8px 10px;
   font-size: 13px;
   font-weight: 600;
-}
-
-.minimizeBtn:hover {
-  border-color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.08);
 }
 
 @media (max-width: 640px) {

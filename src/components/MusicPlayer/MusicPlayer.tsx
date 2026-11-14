@@ -5,6 +5,13 @@ import {
   useCallback,
   type MouseEvent,
 } from "react";
+import {
+  SkipBack,
+  Play,
+  Pause,
+  SkipForward,
+  PictureInPicture2,
+} from "lucide-react";
 import { PRESET_STATIONS } from "../../data/radioStations";
 import { PlayerDrawer } from "./components/PlayerDrawer/PlayerDrawer";
 import type { LocalTrack, PlayerMode } from "../../types/player";
@@ -116,6 +123,7 @@ export const MusicPlayer = () => {
       localAudio.pause();
     }
   }, [mode, localIndex, currentLocalTrack, isPlaying]);
+
   const togglePlay = () => {
     if (mode === "local" && localTracks.length === 0) {
       setIsMinimized(false);
@@ -146,7 +154,6 @@ export const MusicPlayer = () => {
     });
     setIsPlaying(true);
   }, [mode, localTracks.length, isShuffle]);
-
   const handlePrev = useCallback(() => {
     if (mode === "radio") {
       setCurrentIndex(
@@ -203,6 +210,7 @@ export const MusicPlayer = () => {
     if (target.closest("button")) return;
     setIsMinimized(false);
   };
+
   return (
     <>
       <audio
@@ -286,7 +294,7 @@ export const MusicPlayer = () => {
                   onClick={handlePrev}
                   className={styles.controlBtn}
                   title="Предыдущая">
-                  ⏮
+                  <SkipBack size={18} />
                 </button>
                 <button
                   type="button"
@@ -295,14 +303,14 @@ export const MusicPlayer = () => {
                     isPlaying ? styles.playBtnActive : ""
                   }`}
                   title={isPlaying ? "Пауза" : "Играть"}>
-                  {isPlaying ? "⏸" : "▶"}
+                  {isPlaying ? <Pause size={18} /> : <Play size={18} />}
                 </button>
                 <button
                   type="button"
                   onClick={handleNext}
                   className={styles.controlBtn}
                   title="Следующая">
-                  ⏭
+                  <SkipForward size={18} />
                 </button>
 
                 <button
@@ -313,7 +321,7 @@ export const MusicPlayer = () => {
                   }}
                   className={`${styles.controlBtn} ${styles.minimizeBtn}`}
                   title="Свернуть плеер вправо">
-                  ▶
+                  <PictureInPicture2 size={18} />
                 </button>
               </div>
             </div>
