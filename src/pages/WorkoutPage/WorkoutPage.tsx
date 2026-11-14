@@ -204,6 +204,10 @@ export const WorkoutPage = () => {
         return;
       }
 
+      if (allDoneNow) {
+        setCurrentIndex(safeIndex + 1);
+      }
+
       const restSec = allDoneNow
         ? timingConfig.restBetweenExercises
         : timingConfig.restBetweenSets;
@@ -213,27 +217,10 @@ export const WorkoutPage = () => {
       return;
     }
 
-    if (phase === "restSet") {
+    if (phase === "restSet" || phase === "restExercise") {
       playWorkoutSignal("restDone");
       if (timingConfig.mode === "auto" && isAutoRunning) {
         const workSec = getWorkDuration(safeIndex);
-        setPhase("work");
-        setTotalDuration(workSec);
-        setSecondsLeft(workSec);
-      } else {
-        setPhase("idle");
-        setSecondsLeft(0);
-      }
-      return;
-    }
-
-    if (phase === "restExercise") {
-      playWorkoutSignal("restDone");
-      const nextExIdx = Math.min(safeIndex + 1, dayExercises.length - 1);
-      setCurrentIndex(nextExIdx);
-
-      if (timingConfig.mode === "auto" && isAutoRunning) {
-        const workSec = getWorkDuration(nextExIdx);
         setPhase("work");
         setTotalDuration(workSec);
         setSecondsLeft(workSec);
@@ -296,6 +283,10 @@ export const WorkoutPage = () => {
       setPhase("idle");
       setSecondsLeft(0);
       return;
+    }
+
+    if (allDoneNow) {
+      setCurrentIndex(safeIndex + 1);
     }
 
     const restSec = allDoneNow
@@ -403,13 +394,16 @@ export const WorkoutPage = () => {
   const isManualMode = timingConfig.mode === "manual";
   const isManualResting =
     isManualMode && (phase === "restSet" || phase === "restExercise");
+  const isWorkoutCompleted =
+    dayExercises.length > 0 && completedExercisesCount === dayExercises.length;
   const hasAnyProgress =
     safeIndex > 0 ||
     phase !== "idle" ||
     Object.values(completedSets).some((sets) => sets.some(Boolean));
 
-  const statusHint =
-    phase === "manualWorking"
+  const statusHint = isWorkoutCompleted
+    ? "Тренировка выполнена! Нажмите «Закончить тренировку»"
+    : phase === "manualWorking"
       ? "Выполняйте подход и нажмите «Закончить подход»"
       : phase === "work"
         ? `Идёт подход ${activeSetIndex !== -1 ? activeSetIndex + 1 : currentExercise.sets} из ${currentExercise.sets}`
@@ -418,7 +412,7 @@ export const WorkoutPage = () => {
             ? "Идёт отдых — новый подход станет доступен после таймера"
             : "Восстановите дыхание перед следующим подходом"
           : phase === "restExercise"
-            ? "Отдых перед переходом к следующему упражнению"
+            ? "Отдых перед стартом следующего упражнения — изучите технику"
             : isManualMode
               ? "Нажмите «Начать подход» внизу экрана"
               : "Нажмите «Начать тренировку» для автозапуска";
@@ -480,16 +474,17 @@ export const WorkoutPage = () => {
         <div className={styles.segmentsTrack}>
           {dayExercises.map((ex) => {
             const exSets = completedSets[ex.id] || [];
-            const isExDone =
-              ex.sets > 0 && exSets.filter(Boolean).length === ex.sets;
+            const doneCount = exSets.filter(Boolean).length;
+            const segmentFillPercent =
+              ex.sets > 0 ? Math.min(100, (doneCount / ex.sets) * 100) : 0;
 
             return (
-              <div
-                key={ex.id}
-                className={`${styles.segment} ${
-                  isExDone ? styles.segmentDone : ""
-                }`}
-              />
+              <div key={ex.id} className={styles.segment}>
+                <div
+                  className={styles.segmentFill}
+                  style={{ width: `${segmentFillPercent}%` }}
+                />
+              </div>
             );
           })}
         </div>
@@ -517,7 +512,14 @@ export const WorkoutPage = () => {
       />
 
       <div className={styles.navBar}>
-        {isManualMode ? (
+        {isWorkoutCompleted ? (
+          <button
+            type="button"
+            onClick={handleResetProgress}
+            className={styles.mainActionBtn}>
+            Закончить тренировку
+          </button>
+        ) : isManualMode ? (
           <button
             type="button"
             disabled={isManualResting}

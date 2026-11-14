@@ -159,11 +159,14 @@
   height: 100%;
   background-color: #e9ecef;
   border-radius: 999px;
-  transition: background-color 0.25s ease;
+  overflow: hidden;
 }
 
-.segmentDone {
+.segmentFill {
+  height: 100%;
   background-color: #28a745;
+  border-radius: 999px;
+  transition: width 0.25s ease;
 }
 
 .emptyState {
