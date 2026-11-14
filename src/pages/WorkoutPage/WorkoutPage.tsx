@@ -353,7 +353,6 @@ export const WorkoutPage = () => {
     setCurrentIndex(0);
     setCompletedSets({});
   };
-
   if (dayExercises.length === 0) {
     return (
       <div className={styles.page}>
@@ -401,6 +400,13 @@ export const WorkoutPage = () => {
     setCompletedSets((prev) => ({
       ...prev,
       [currentExercise.id]: updated,
+    }));
+  };
+
+  const resetCurrentSets = () => {
+    setCompletedSets((prev) => ({
+      ...prev,
+      [currentExercise.id]: Array(currentExercise.sets).fill(false),
     }));
   };
 
@@ -515,7 +521,8 @@ export const WorkoutPage = () => {
       <SetTracker
         setsState={currentSetsState}
         onToggleSet={toggleSet}
-        disabled={!isManualMode && isAutoRunning}
+        onResetSets={resetCurrentSets}
+        disabled={phase !== "idle"}
         isActive={
           phase === "work" || phase === "manualWorking" || isAutoRunning
         }
