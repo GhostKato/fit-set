@@ -1,10 +1,10 @@
 .container {
-  background-color: #ffffff;
-  border: 1.5px solid #e2e5e9;
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-primary);
   border-radius: 14px;
   padding: 12px 20px;
   margin-bottom: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--shadow-card);
   text-align: left;
   transition:
     border-color 0.2s ease,
@@ -12,8 +12,8 @@
 }
 
 .containerActive {
-  border-color: #28a745;
-  background-color: #fbfefc;
+  border-color: var(--accent);
+  background-color: var(--bg-accent-tint);
 }
 
 .header {
@@ -29,7 +29,7 @@
   display: block;
   font-size: 12px;
   font-weight: 700;
-  color: #666666;
+  color: var(--text-subtle);
   text-transform: uppercase;
 }
 
@@ -46,15 +46,15 @@
   height: 28px;
   font-size: 13px;
   font-weight: 700;
-  color: #28a745;
-  background-color: #e9f7ef;
+  color: var(--accent);
+  background-color: var(--bg-accent-soft);
   padding: 0 12px;
   border-radius: 20px;
   white-space: nowrap;
 }
 
 .counterDone {
-  background-color: #28a745;
+  background-color: var(--accent);
   color: #ffffff;
 }
 
@@ -64,9 +64,9 @@
   justify-content: center;
   height: 28px;
   padding: 0 12px;
-  background-color: #f4f6f8;
-  color: #444444;
-  border: 1.5px solid #dcdcdc;
+  background-color: var(--bg-muted);
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-input);
   border-radius: 8px;
   font-size: 13px;
   font-weight: 700;
@@ -76,8 +76,8 @@
 }
 
 .resetBtn:hover:not(:disabled) {
-  background-color: #e2e5e9;
-  color: #1e1e1e;
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .resetBtn:disabled {
@@ -98,10 +98,10 @@
   justify-content: center;
   min-height: 36px;
   padding: 5px 14px;
-  border: 1.5px solid #e2e5e9;
+  border: 1.5px solid var(--border-primary);
   border-radius: 999px;
-  background-color: #f8f9fa;
-  color: #1e1e1e;
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 700;
   white-space: nowrap;
@@ -110,9 +110,9 @@
 }
 
 .setPill:hover:not(:disabled) {
-  background-color: #e9f7ef;
-  border-color: #28a745;
-  color: #28a745;
+  background-color: var(--bg-accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .setPill:disabled {
@@ -120,19 +120,19 @@
 }
 
 .setPillActive {
-  border-color: #28a745;
-  background-color: #e9f7ef;
-  color: #218838;
+  border-color: var(--accent);
+  background-color: var(--bg-accent-soft);
+  color: var(--accent);
 }
 
 .setPillDone {
-  background-color: #28a745;
-  border-color: #28a745;
+  background-color: var(--accent);
+  border-color: var(--accent);
   color: #ffffff;
 }
 
 .setPillDone:hover:not(:disabled) {
-  background-color: #218838;
+  background-color: var(--accent-hover);
   color: #ffffff;
 }
 

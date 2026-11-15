@@ -1,9 +1,9 @@
 .card {
-  background-color: #ffffff;
-  border: 1.5px solid #e2e5e9;
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-primary);
   border-radius: 14px;
   padding: 12px 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--shadow-card);
   text-align: left;
   transition:
     border-color 0.2s ease,
@@ -11,8 +11,8 @@
 }
 
 .cardSelected {
-  border: 2px solid #28a745;
-  background-color: #fbfefc;
+  border: 2px solid var(--accent);
+  background-color: var(--bg-accent-tint);
 }
 
 .header {
@@ -31,7 +31,7 @@
   display: block;
   font-size: 12px;
   font-weight: 700;
-  color: #666666;
+  color: var(--text-subtle);
   text-transform: uppercase;
   margin-bottom: 2px;
 }
@@ -40,21 +40,21 @@
   margin: 0 0 3px 0;
   font-size: 17.5px;
   font-weight: 800;
-  color: #1e1e1e;
+  color: var(--text-primary);
 }
 
 .portion {
   margin: 0;
   font-size: 14px;
   font-weight: 700;
-  color: #28a745;
+  color: var(--accent);
 }
 
 .note {
   margin: 8px 0 0 0;
   font-size: 13.5px;
   line-height: 1.4;
-  color: #333333;
+  color: var(--text-secondary);
 }
 
 .actions {
@@ -65,9 +65,9 @@
 
 .editBtn {
   padding: 6px 12px;
-  background-color: #f4f6f8;
-  color: #1e1e1e;
-  border: 1px solid #dcdcdc;
+  background-color: var(--bg-muted);
+  color: var(--text-primary);
+  border: 1px solid var(--border-input);
   border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
@@ -76,16 +76,16 @@
 }
 
 .editBtn:hover {
-  background-color: #e9f7ef;
-  border-color: #28a745;
-  color: #28a745;
+  background-color: var(--bg-accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .deleteBtn {
   padding: 6px 12px;
-  background-color: #ffffff;
-  color: #dc3545;
-  border: 1px solid #f5c2c7;
+  background-color: var(--bg-card);
+  color: var(--danger);
+  border: 1px solid var(--border-danger-soft);
   border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
@@ -94,9 +94,9 @@
 }
 
 .deleteBtn:hover {
-  background-color: #dc3545;
+  background-color: var(--danger);
   color: #ffffff;
-  border-color: #dc3545;
+  border-color: var(--danger);
 }
 
 .mealPickerRow {
@@ -106,13 +106,13 @@
   flex-wrap: wrap;
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid #f0f2f5;
+  border-top: 1px solid var(--border-subtle);
 }
 
 .pickerLabel {
   font-size: 13px;
   font-weight: 600;
-  color: #666666;
+  color: var(--text-subtle);
 }
 
 .mealToggleBtn {
@@ -124,25 +124,25 @@
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  background-color: #f8f9fa;
-  border: 1.5px solid #dce0e5;
-  color: #495057;
+  background-color: var(--bg-subtle);
+  border: 1.5px solid var(--border-input);
+  color: var(--text-muted);
   transition: all 0.15s ease;
 }
 
 .mealToggleBtn:hover {
-  border-color: #28a745;
-  color: #28a745;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .mealToggleBtnActive {
-  background-color: #28a745;
-  border-color: #28a745;
+  background-color: var(--accent);
+  border-color: var(--accent);
   color: #ffffff;
 }
 
 .mealToggleBtnActive:hover {
-  background-color: #218838;
+  background-color: var(--accent-hover);
   color: #ffffff;
 }
 

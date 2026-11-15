@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 1200;
-  background-color: rgba(0, 0, 0, 0.45);
+  background-color: var(--bg-backdrop);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,10 +13,11 @@
   width: 100%;
   max-width: 480px;
   max-height: 90vh;
-  background-color: #ffffff;
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-primary);
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  box-shadow: var(--shadow-modal);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -32,7 +33,7 @@
   margin: 0;
   font-size: 19px;
   font-weight: 800;
-  color: #1e1e1e;
+  color: var(--text-primary);
 }
 
 .closeIconBtn {
@@ -43,8 +44,8 @@
   height: 32px;
   border: none;
   border-radius: 8px;
-  background-color: #f4f6f8;
-  color: #555555;
+  background-color: var(--bg-muted);
+  color: var(--text-muted);
   cursor: pointer;
   transition:
     background-color 0.15s ease,
@@ -52,8 +53,8 @@
 }
 
 .closeIconBtn:hover {
-  background-color: #e2e5e9;
-  color: #1e1e1e;
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .modeSwitch {
@@ -64,10 +65,10 @@
 
 .modeBtn {
   padding: 10px 12px;
-  border: 1.5px solid #e2e5e9;
+  border: 1.5px solid var(--border-primary);
   border-radius: 10px;
-  background-color: #ffffff;
-  color: #444444;
+  background-color: var(--bg-card);
+  color: var(--text-muted);
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -75,8 +76,8 @@
 }
 
 .modeBtnActive {
-  background-color: #28a745;
-  border-color: #28a745;
+  background-color: var(--accent);
+  border-color: var(--accent);
   color: #ffffff;
 }
 
@@ -97,7 +98,7 @@
 .sectionLabel {
   font-size: 12px;
   font-weight: 700;
-  color: #666666;
+  color: var(--text-subtle);
   text-transform: uppercase;
 }
 
@@ -116,15 +117,15 @@
   align-items: center;
   gap: 12px;
   padding: 8px 12px;
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-primary);
   border-radius: 10px;
 }
 
 .exerciseName {
   font-size: 14px;
   font-weight: 600;
-  color: #1e1e1e;
+  color: var(--text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -134,8 +135,8 @@
   flex-shrink: 0;
   font-size: 12px;
   font-weight: 700;
-  color: #28a745;
-  background-color: #e9f7ef;
+  color: var(--accent);
+  background-color: var(--bg-accent-soft);
   padding: 4px 8px;
   border-radius: 6px;
 }
@@ -146,16 +147,16 @@
   padding: 6px 8px;
   font-size: 14px;
   font-weight: 700;
-  color: #1e1e1e;
+  color: var(--text-primary);
   text-align: center;
-  background-color: #ffffff;
-  border: 1.5px solid #dcdcdc;
+  background-color: var(--bg-input);
+  border: 1.5px solid var(--border-input);
   border-radius: 8px;
   outline: none;
 }
 
 .numberInput:focus {
-  border-color: #28a745;
+  border-color: var(--accent);
 }
 
 .restGrid {
@@ -169,15 +170,15 @@
   flex-direction: column;
   gap: 6px;
   padding: 10px 12px;
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-primary);
   border-radius: 10px;
 }
 
 .restLabel {
   font-size: 13px;
   font-weight: 600;
-  color: #444444;
+  color: var(--text-muted);
 }
 
 .restField .numberInput {
@@ -193,10 +194,10 @@
 .cancelBtn {
   flex: 1;
   padding: 10px 14px;
-  border: 1px solid #dcdcdc;
+  border: 1px solid var(--border-input);
   border-radius: 10px;
-  background-color: #ffffff;
-  color: #555555;
+  background-color: var(--bg-muted);
+  color: var(--text-muted);
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -207,7 +208,7 @@
   padding: 10px 14px;
   border: none;
   border-radius: 10px;
-  background-color: #28a745;
+  background-color: var(--accent);
   color: #ffffff;
   font-size: 14px;
   font-weight: 700;
@@ -215,5 +216,5 @@
 }
 
 .saveBtn:hover {
-  background-color: #218838;
+  background-color: var(--accent-hover);
 }

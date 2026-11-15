@@ -14,7 +14,7 @@
   margin: 0;
   font-size: 21px;
   font-weight: 800;
-  color: #1e1e1e;
+  color: var(--text-primary);
 }
 
 .headerActions {
@@ -26,7 +26,7 @@
 .toggleFormBtn {
   padding: 8px 16px;
   min-height: 38px;
-  background-color: #28a745;
+  background-color: var(--accent);
   color: #ffffff;
   border: 1.5px solid transparent;
   border-radius: 10px;
@@ -38,27 +38,27 @@
 }
 
 .toggleFormBtn:hover {
-  background-color: #218838;
+  background-color: var(--accent-hover);
 }
 
 .toggleFormBtnActive {
-  background-color: #ffffff;
-  color: #444444;
-  border-color: #ced4da;
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  border-color: var(--border-input);
 }
 
 .toggleFormBtnActive:hover {
-  background-color: #f4f6f8;
-  color: #1e1e1e;
-  border-color: #adb5bd;
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--text-subtle);
 }
 
 .deleteAllBtn {
   padding: 8px 16px;
   min-height: 38px;
-  background-color: #ffffff;
-  color: #dc3545;
-  border: 1.5px solid #f5c2c7;
+  background-color: var(--bg-card);
+  color: var(--danger);
+  border: 1.5px solid var(--border-danger-soft);
   border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
@@ -68,9 +68,9 @@
 }
 
 .deleteAllBtn:hover:not(:disabled) {
-  background-color: #dc3545;
+  background-color: var(--danger);
   color: #ffffff;
-  border-color: #dc3545;
+  border-color: var(--danger);
 }
 
 .deleteAllBtn:disabled {
@@ -89,9 +89,9 @@
 
 .filterBtn {
   padding: 6px 14px;
-  background-color: #ffffff;
-  color: #555555;
-  border: 1.5px solid #e2e5e9;
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-primary);
   border-radius: 20px;
   font-size: 13px;
   font-weight: 700;
@@ -101,14 +101,14 @@
 }
 
 .filterBtn:hover {
-  border-color: #28a745;
-  color: #28a745;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .filterBtnActive {
-  background-color: #28a745;
+  background-color: var(--accent);
   color: #ffffff;
-  border-color: #28a745;
+  border-color: var(--accent);
 }
 
 .filterBtnActive:hover {
@@ -124,10 +124,10 @@
 .emptyState {
   text-align: center;
   padding: 28px 20px;
-  background-color: #f8f9fa;
-  border: 1.5px dashed #dcdcdc;
+  background-color: var(--bg-subtle);
+  border: 1.5px dashed var(--border-input);
   border-radius: 14px;
-  color: #666666;
+  color: var(--text-subtle);
   font-size: 15px;
 }
 
@@ -135,7 +135,7 @@
   margin-top: 12px;
   padding: 10px 20px;
   min-height: 40px;
-  background-color: #28a745;
+  background-color: var(--accent);
   color: #ffffff;
   border: none;
   border-radius: 10px;
@@ -146,14 +146,14 @@
 }
 
 .seedBtn:hover {
-  background-color: #218838;
+  background-color: var(--accent-hover);
 }
 
 .errorText {
   text-align: center;
-  color: #dc3545;
-  background-color: #fff5f5;
-  border: 1.5px solid #f5c2c7;
+  color: var(--danger);
+  background-color: var(--bg-danger-soft);
+  border: 1.5px solid var(--border-danger-soft);
   border-radius: 12px;
   padding: 10px 16px;
   margin-bottom: 12px;

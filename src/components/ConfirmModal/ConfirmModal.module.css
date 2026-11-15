@@ -1,7 +1,7 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.45);
+  background-color: var(--bg-backdrop);
   backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
@@ -13,12 +13,12 @@
 .modal {
   width: 100%;
   max-width: 380px;
-  background-color: #ffffff;
-  border: 1.5px solid #e2e5e9;
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-primary);
   border-radius: 16px;
   padding: 24px 20px;
   text-align: center;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  box-shadow: var(--shadow-modal);
   animation: modalFadeIn 0.15s ease-out;
 }
 
@@ -37,13 +37,13 @@
   margin: 0 0 20px 0;
   font-size: 19px;
   font-weight: 800;
-  color: #1e1e1e;
+  color: var(--text-primary);
 }
 
 .subtitle {
   margin: -12px 0 20px 0;
   font-size: 14px;
-  color: #666666;
+  color: var(--text-subtle);
   line-height: 1.4;
 }
 
@@ -69,24 +69,24 @@
 }
 
 .noBtn {
-  background-color: #f4f6f8;
-  color: #444444;
-  border: 1.5px solid #dcdcdc;
+  background-color: var(--bg-muted);
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-input);
 }
 
 .noBtn:hover {
-  background-color: #e2e5e9;
-  color: #1e1e1e;
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .yesBtn {
-  background-color: #dc3545;
+  background-color: var(--danger);
   color: #ffffff;
   border: none;
 }
 
 .yesBtn:hover {
-  background-color: #c82333;
+  background-color: var(--danger-hover);
 }
 
 .noBtn:active,

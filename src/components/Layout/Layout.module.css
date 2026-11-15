@@ -1,18 +1,22 @@
 .wrapper {
   min-height: 100dvh;
-  background-color: #f4f6f8;
+  background-color: var(--bg-page);
   padding-bottom: 56px;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.2s ease;
 }
 
 .header {
   position: sticky;
   top: 0;
   z-index: 900;
-  background-color: #ffffff;
-  border-bottom: 1.5px solid #e2e5e9;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  background-color: var(--bg-card);
+  border-bottom: 1.5px solid var(--border-primary);
+  box-shadow: var(--shadow-sm);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .headerInner {
@@ -29,7 +33,7 @@
 .brand {
   font-size: 22px;
   font-weight: 800;
-  color: #1e1e1e;
+  color: var(--text-primary);
   letter-spacing: -0.5px;
   text-decoration: none;
   transition: opacity 0.2s ease;
@@ -40,7 +44,7 @@
 }
 
 .brandAccent {
-  color: #28a745;
+  color: var(--accent);
 }
 
 .nav {
@@ -55,24 +59,24 @@
   text-decoration: none;
   font-size: 15px;
   font-weight: 600;
-  color: #555555;
+  color: var(--text-muted);
   transition: all 0.2s ease;
 }
 
 .navLink:hover {
-  background-color: #f0f2f5;
-  color: #1e1e1e;
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .navLinkActive {
-  background-color: #e9f7ef;
-  color: #28a745;
+  background-color: var(--bg-accent-soft);
+  color: var(--accent);
   font-weight: 700;
 }
 
 .navLinkActive:hover {
-  background-color: #dcf3e5;
-  color: #218838;
+  background-color: var(--bg-accent-soft-hover);
+  color: var(--accent-hover);
 }
 
 .userBlock {
@@ -81,22 +85,124 @@
   gap: 10px;
 }
 
+.userMenuWrapper {
+  position: relative;
+}
+
+.userNameBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  min-height: 36px;
+  background-color: transparent;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.userNameBtn:hover,
+.userNameBtnOpen {
+  background-color: var(--bg-hover);
+  border-color: var(--border-primary);
+  color: var(--text-primary);
+}
+
 .userName {
   font-size: 14px;
   font-weight: 600;
-  color: #555555;
   max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.userChevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.userChevronOpen {
+  transform: rotate(180deg);
+  color: var(--accent);
+}
+
+.userDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 268px;
+  padding: 14px;
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-primary);
+  border-radius: 14px;
+  box-shadow: var(--shadow-modal);
+  z-index: 950;
+  animation: dropdownFadeIn 0.15s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.themeTitle {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-subtle);
+  margin-bottom: 10px;
+}
+
+.themeRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.themeRowInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.themeRowLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.themeRowHint {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-subtle);
+}
+
+.themeDivider {
+  height: 1px;
+  background-color: var(--border-subtle);
+  margin: 10px 0;
+}
+
 .logoutBtn {
   padding: 8px 14px;
   min-height: 36px;
-  background-color: #ffffff;
-  color: #dc3545;
-  border: 1.5px solid #f5c2c7;
+  background-color: var(--bg-card);
+  color: var(--danger);
+  border: 1.5px solid var(--border-danger-soft);
   border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
@@ -105,9 +211,9 @@
 }
 
 .logoutBtn:hover {
-  background-color: #dc3545;
+  background-color: var(--danger);
   color: #ffffff;
-  border-color: #dc3545;
+  border-color: var(--danger);
 }
 
 .main {
@@ -172,7 +278,7 @@
     order: 3;
     width: 100%;
     padding-top: 10px;
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid var(--border-subtle);
     justify-content: space-between;
   }
 
@@ -185,6 +291,10 @@
 
   .userName {
     max-width: 110px;
+  }
+
+  .userDropdown {
+    right: -76px;
   }
 
   .main {

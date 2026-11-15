@@ -42,21 +42,21 @@
 }
 
 .trackActive {
-  background-color: #e9f7ef;
-  border: 1px solid #b7e4c7;
+  background-color: var(--bg-accent-soft);
+  border: 1px solid var(--border-accent-soft);
 }
 
 .trackActive:hover:not(:disabled) {
-  border-color: #28a745;
+  border-color: var(--accent);
 }
 
 .trackInactive {
-  background-color: #fff5f5;
-  border: 1px solid #f5c2c7;
+  background-color: var(--bg-danger-soft);
+  border: 1px solid var(--border-danger-soft);
 }
 
 .trackInactive:hover:not(:disabled) {
-  border-color: #dc3545;
+  border-color: var(--danger);
 }
 
 .thumb {
@@ -89,17 +89,17 @@
 }
 
 .thumbActive {
-  background-color: #28a745;
+  background-color: var(--accent);
 }
 
 .thumbInactive {
-  background-color: #dc3545;
+  background-color: var(--danger);
   transform: translateX(0);
 }
 
 .label {
   font-size: 14px;
   font-weight: 600;
-  color: #444444;
+  color: var(--text-muted);
   white-space: nowrap;
 }

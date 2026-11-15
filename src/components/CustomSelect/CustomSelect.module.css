@@ -16,13 +16,13 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px 12px;
-  background-color: #ffffff;
-  border: 1.5px solid #dcdcdc;
+  background-color: var(--bg-input);
+  border: 1.5px solid var(--border-input);
   border-radius: 10px;
   font-size: 14px;
   font-family: inherit;
   font-weight: 500;
-  color: #1e1e1e;
+  color: var(--text-primary);
   cursor: pointer;
   text-align: left;
   transition:
@@ -31,11 +31,11 @@
 }
 
 .trigger:hover {
-  border-color: #28a745;
+  border-color: var(--accent);
 }
 
 .triggerOpen {
-  border-color: #28a745;
+  border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.12);
 }
 
@@ -47,7 +47,7 @@
 
 .chevron {
   flex-shrink: 0;
-  color: #666666;
+  color: var(--text-subtle);
   transition:
     transform 0.2s ease,
     color 0.2s ease;
@@ -55,7 +55,7 @@
 
 .chevronOpen {
   transform: rotate(180deg);
-  color: #28a745;
+  color: var(--accent);
 }
 
 .dropdown {
@@ -71,10 +71,10 @@
   margin: 0;
   padding: 6px;
   list-style: none;
-  background-color: #ffffff;
-  border: 1.5px solid #e2e5e9;
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-primary);
   border-radius: 12px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-modal);
   z-index: 50;
   animation: dropdownFadeIn 0.15s ease-out;
 }
@@ -88,7 +88,7 @@
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #1e1e1e;
+  color: var(--text-primary);
   white-space: nowrap;
   cursor: pointer;
   transition:
@@ -97,28 +97,28 @@
 }
 
 .option:hover {
-  background-color: #f4f6f8;
-  color: #28a745;
+  background-color: var(--bg-hover);
+  color: var(--accent);
 }
 
 .optionSelected {
-  background-color: #e9f7ef;
-  color: #218838;
+  background-color: var(--bg-accent-soft);
+  color: var(--accent);
   font-weight: 700;
 }
 
 .optionSelected:hover {
-  background-color: #dff3e7;
-  color: #218838;
+  background-color: var(--bg-accent-soft-hover);
+  color: var(--accent-hover);
 }
 
 .bulkOption {
   font-weight: 600;
-  color: #444444;
+  color: var(--text-muted);
 }
 
 .bulkDivider {
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--border-primary);
   border-radius: 8px 8px 0 0;
   margin-bottom: 4px;
   padding-bottom: 10px;
@@ -138,8 +138,8 @@
   width: 17px;
   height: 17px;
   border-radius: 5px;
-  border: 1.5px solid #c4c9d0;
-  background-color: #ffffff;
+  border: 1.5px solid var(--border-input);
+  background-color: var(--bg-input);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -151,14 +151,14 @@
 }
 
 .checkboxChecked {
-  background-color: #28a745;
-  border-color: #28a745;
+  background-color: var(--accent);
+  border-color: var(--accent);
 }
 
 .checkIcon {
   font-size: 13px;
   font-weight: 800;
-  color: #28a745;
+  color: var(--accent);
 }
 
 @keyframes dropdownFadeIn {

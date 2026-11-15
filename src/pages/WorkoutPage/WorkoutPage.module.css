@@ -18,7 +18,7 @@
   margin: 0;
   font-size: 21px;
   font-weight: 800;
-  color: #1e1e1e;
+  color: var(--text-primary);
 }
 
 .headerActions {
@@ -31,9 +31,9 @@
   width: 156px;
   padding: 8px 12px;
   min-height: 38px;
-  background-color: #e9f7ef;
-  color: #218838;
-  border: 1.5px solid #28a745;
+  background-color: var(--bg-accent-soft);
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
   border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
@@ -46,16 +46,16 @@
 }
 
 .modeSelectBtn:hover {
-  background-color: #28a745;
+  background-color: var(--accent);
   color: #ffffff;
 }
 
 .resetTopBtn {
   padding: 8px 16px;
   min-height: 38px;
-  background-color: #f4f6f8;
-  color: #444444;
-  border: 1.5px solid #dcdcdc;
+  background-color: var(--bg-muted);
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-input);
   border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
@@ -64,8 +64,8 @@
 }
 
 .resetTopBtn:hover:not(:disabled) {
-  background-color: #e2e5e9;
-  color: #1e1e1e;
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .resetTopBtn:disabled {
@@ -85,9 +85,9 @@
 .filterBtn {
   min-width: 50px;
   padding: 6px 14px;
-  background-color: #ffffff;
-  color: #555555;
-  border: 1.5px solid #e2e5e9;
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-primary);
   border-radius: 20px;
   font-size: 13px;
   font-weight: 700;
@@ -98,20 +98,20 @@
 }
 
 .filterBtn:hover {
-  border-color: #28a745;
-  color: #28a745;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .filterBtnDone {
-  background-color: #e9f7ef;
-  border-color: #b7e4c7;
-  color: #28a745;
+  background-color: var(--bg-accent-soft);
+  border-color: var(--border-accent-soft);
+  color: var(--accent);
 }
 
 .filterBtnActive {
-  background-color: #28a745;
+  background-color: var(--accent);
   color: #ffffff;
-  border-color: #28a745;
+  border-color: var(--accent);
 }
 
 .filterBtnActive:hover {
@@ -125,10 +125,10 @@
   height: 46px;
   padding: 0 20px;
   margin-bottom: 12px;
-  background-color: #ffffff;
-  border: 1.5px solid #e2e5e9;
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-primary);
   border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--shadow-card);
 }
 
 .progressInfo {
@@ -141,13 +141,13 @@
 .progressLabel {
   font-size: 13px;
   font-weight: 700;
-  color: #28a745;
+  color: var(--accent);
 }
 
 .progressPercent {
   font-size: 12.5px;
   font-weight: 700;
-  color: #666666;
+  color: var(--text-subtle);
 }
 
 .segmentsTrack {
@@ -161,14 +161,14 @@
 .segment {
   flex: 1;
   height: 100%;
-  background-color: #e9ecef;
+  background-color: var(--bg-muted);
   border-radius: 999px;
   overflow: hidden;
 }
 
 .segmentFill {
   height: 100%;
-  background-color: #28a745;
+  background-color: var(--accent);
   border-radius: 999px;
   transition: width 0.25s ease;
 }
@@ -176,10 +176,10 @@
 .emptyState {
   text-align: center;
   padding: 32px 20px;
-  background-color: #f8f9fa;
-  border: 1.5px dashed #dcdcdc;
+  background-color: var(--bg-subtle);
+  border: 1.5px dashed var(--border-input);
   border-radius: 14px;
-  color: #666666;
+  color: var(--text-subtle);
   font-size: 15px;
 }
 
@@ -192,7 +192,7 @@
   margin-top: 14px;
   padding: 12px 20px;
   min-height: 44px;
-  background-color: #28a745;
+  background-color: var(--accent);
   color: #ffffff;
   border: none;
   border-radius: 10px;
@@ -203,7 +203,7 @@
 }
 
 .primaryBtn:hover {
-  background-color: #218838;
+  background-color: var(--accent-hover);
 }
 
 .navBar {
@@ -218,7 +218,7 @@
   width: 270px;
   padding: 10px 22px;
   min-height: 42px;
-  background-color: #28a745;
+  background-color: var(--accent);
   color: #ffffff;
   border: none;
   border-radius: 10px;
@@ -233,7 +233,7 @@
 }
 
 .mainActionBtn:hover:not(:disabled) {
-  background-color: #218838;
+  background-color: var(--accent-hover);
 }
 
 .mainActionBtn:active:not(:disabled) {
@@ -241,17 +241,17 @@
 }
 
 .mainActionBtn:disabled {
-  background-color: #e9ecef;
-  color: #888888;
+  background-color: var(--bg-muted);
+  color: var(--text-faint);
   cursor: not-allowed;
 }
 
 .mainActionBtnStop {
-  background-color: #dc3545;
+  background-color: var(--danger);
 }
 
 .mainActionBtnStop:hover:not(:disabled) {
-  background-color: #c82333;
+  background-color: var(--danger-hover);
 }
 
 @media (min-width: 2200px) {

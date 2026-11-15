@@ -9,12 +9,87 @@
     sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #1e1e1e;
-  background-color: #f4f6f8;
+
+  --bg-page: #f4f6f8;
+  --bg-card: #ffffff;
+  --bg-subtle: #f8f9fa;
+  --bg-muted: #f4f6f8;
+  --bg-hover: #f0f2f5;
+  --bg-input: #ffffff;
+  --bg-accent-soft: #e9f7ef;
+  --bg-accent-soft-hover: #dcf3e5;
+  --bg-accent-tint: #fbfefc;
+  --bg-danger-soft: #fff5f5;
+  --bg-overlay: rgba(255, 255, 255, 0.72);
+  --bg-backdrop: rgba(0, 0, 0, 0.45);
+  --bg-rest-soft: #f8fbff;
+
+  --text-primary: #1e1e1e;
+  --text-secondary: #333333;
+  --text-muted: #555555;
+  --text-subtle: #666666;
+  --text-faint: #888888;
+
+  --border-primary: #e2e5e9;
+  --border-input: #dcdcdc;
+  --border-subtle: #f0f2f5;
+  --border-accent-soft: #b7e4c7;
+  --border-danger-soft: #f5c2c7;
+
+  --accent: #28a745;
+  --accent-hover: #218838;
+  --danger: #dc3545;
+  --danger-hover: #c82333;
+  --info: #0d6efd;
+
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.03);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.03);
+  --shadow-modal: 0 12px 32px rgba(0, 0, 0, 0.16);
+
+  color: var(--text-primary);
+  background-color: var(--bg-page);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="dark"] {
+  --bg-page: #121417;
+  --bg-card: #1a1c1e;
+  --bg-subtle: #22252a;
+  --bg-muted: #262a30;
+  --bg-hover: #2c3138;
+  --bg-input: #22252a;
+  --bg-accent-soft: rgba(46, 160, 67, 0.16);
+  --bg-accent-soft-hover: rgba(46, 160, 67, 0.24);
+  --bg-accent-tint: #18221c;
+  --bg-danger-soft: rgba(229, 83, 83, 0.16);
+  --bg-overlay: rgba(18, 20, 23, 0.78);
+  --bg-backdrop: rgba(0, 0, 0, 0.65);
+  --bg-rest-soft: rgba(56, 139, 253, 0.14);
+
+  --text-primary: #f1f3f5;
+  --text-secondary: #d8dee4;
+  --text-muted: #a8b0b9;
+  --text-subtle: #8b949e;
+  --text-faint: #6e7681;
+
+  --border-primary: #2d3239;
+  --border-input: #363c44;
+  --border-subtle: #262a30;
+  --border-accent-soft: rgba(46, 160, 67, 0.42);
+  --border-danger-soft: rgba(229, 83, 83, 0.42);
+
+  --accent: #2ea043;
+  --accent-hover: #3fb950;
+  --danger: #e55353;
+  --danger-hover: #f06565;
+  --info: #4493f8;
+
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.28);
+  --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.25);
+  --shadow-modal: 0 14px 36px rgba(0, 0, 0, 0.55);
 }
 
 *,
@@ -27,8 +102,11 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #f4f6f8;
-  color: #1e1e1e;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 #root {
