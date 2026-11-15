@@ -26,7 +26,9 @@ export const HomePage = ({ user }: HomePageProps) => {
   const todayName = DAYS_BY_GET_DAY[new Date().getDay()];
 
   const todayExercises = useMemo(() => {
-    return exercises.filter((item) => item.isActive && item.day === todayName);
+    return exercises.filter(
+      (item) => item.isActive && item.days.includes(todayName),
+    );
   }, [exercises, todayName]);
 
   return (

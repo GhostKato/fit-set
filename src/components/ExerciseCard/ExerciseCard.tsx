@@ -84,7 +84,7 @@ export const ExerciseCard = ({
         <div className={styles.header}>
           <div>
             <span className={styles.meta}>
-              {exercise.day}
+              {exercise.days.join(", ")}
               {exercise.muscleGroup && ` • ${exercise.muscleGroup}`} • №
               {exercise.order}
             </span>

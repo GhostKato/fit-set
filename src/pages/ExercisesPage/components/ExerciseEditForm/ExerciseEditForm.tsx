@@ -37,7 +37,7 @@ export const ExerciseEditForm = ({
   const dispatch = useAppDispatch();
 
   const [formData, setFormData] = useState<NewExercise>({
-    day: exercise.day,
+    days: exercise.days,
     dayTitle: exercise.dayTitle,
     muscleGroup: exercise.muscleGroup,
     order: exercise.order,
@@ -54,6 +54,8 @@ export const ExerciseEditForm = ({
     isActive: exercise.isActive,
   });
 
+  const isSaveDisabled = formData.days.length === 0 || !formData.name.trim();
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -69,7 +71,8 @@ export const ExerciseEditForm = ({
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formData.name.trim()) return;
+    if (isSaveDisabled) return;
+
     await dispatch(editExercise({ id: exercise.id, fields: formData }));
     onCancel();
   };
@@ -81,9 +84,13 @@ export const ExerciseEditForm = ({
       <div className={styles.editGrid}>
         <div className={styles.row}>
           <CustomSelect
-            value={formData.day}
+            multiple
+            values={formData.days}
             options={ALL_DAYS}
-            onChange={(val) => setFormData((prev) => ({ ...prev, day: val }))}
+            placeholder="Выберите дни..."
+            onChangeMultiple={(days) =>
+              setFormData((prev) => ({ ...prev, days }))
+            }
           />
 
           <input
@@ -228,7 +235,10 @@ export const ExerciseEditForm = ({
         <button type="button" onClick={onCancel} className={styles.cancelBtn}>
           Отмена
         </button>
-        <button type="submit" className={styles.saveBtn}>
+        <button
+          type="submit"
+          disabled={isSaveDisabled}
+          className={styles.saveBtn}>
           Сохранить
         </button>
       </div>

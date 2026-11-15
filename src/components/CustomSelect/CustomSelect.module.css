@@ -4,6 +4,11 @@
   min-width: 110px;
 }
 
+.wrapperMultiple {
+  width: 165px;
+  flex-shrink: 0;
+}
+
 .trigger {
   width: 100%;
   display: flex;
@@ -57,10 +62,12 @@
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  right: 0;
+  width: max-content;
   min-width: 100%;
-  max-height: 240px;
+  max-width: calc(100vw - 32px);
+  max-height: 290px;
   overflow-y: auto;
+  overflow-x: hidden;
   margin: 0;
   padding: 6px;
   list-style: none;
@@ -82,6 +89,7 @@
   font-size: 14px;
   font-weight: 500;
   color: #1e1e1e;
+  white-space: nowrap;
   cursor: pointer;
   transition:
     background-color 0.15s ease,
@@ -102,6 +110,49 @@
 .optionSelected:hover {
   background-color: #dff3e7;
   color: #218838;
+}
+
+.bulkOption {
+  font-weight: 600;
+  color: #444444;
+}
+
+.bulkDivider {
+  border-bottom: 1px solid #e9ecef;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 4px;
+  padding-bottom: 10px;
+}
+
+.optionLeft {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.optionLabel {
+  white-space: nowrap;
+}
+
+.checkbox {
+  width: 17px;
+  height: 17px;
+  border-radius: 5px;
+  border: 1.5px solid #c4c9d0;
+  background-color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #ffffff;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.checkboxChecked {
+  background-color: #28a745;
+  border-color: #28a745;
 }
 
 .checkIcon {

@@ -12,6 +12,7 @@ import {
   type WorkoutTimingConfig,
 } from "./components/WorkoutSettingsModal/WorkoutSettingsModal";
 import { playWorkoutSignal } from "../../utils/workoutSound";
+import { getMostFrequentDayTitle } from "../../utils/dayTitle";
 import styles from "./WorkoutPage.module.css";
 
 const DAYS_BY_INDEX = [
@@ -90,12 +91,12 @@ export const WorkoutPage = () => {
 
   const dayExercises = useMemo(() => {
     return allExercises
-      .filter((item) => item.isActive && item.day === selectedDay)
+      .filter((item) => item.isActive && item.days.includes(selectedDay))
       .sort((a, b) => a.order - b.order);
   }, [allExercises, selectedDay]);
 
   const customDayTitle = useMemo(() => {
-    return dayExercises.find((item) => item.dayTitle?.trim())?.dayTitle?.trim();
+    return getMostFrequentDayTitle(dayExercises, "");
   }, [dayExercises]);
 
   const [currentIndex, setCurrentIndex] = useState<number>(
@@ -125,6 +126,7 @@ export const WorkoutPage = () => {
     setSecondsLeft(0);
     setIsAutoRunning(false);
   }
+
   useEffect(() => {
     try {
       const payload: SavedWorkoutProgress = { currentIndex, completedSets };
@@ -145,7 +147,6 @@ export const WorkoutPage = () => {
       // Игнорируем ошибку доступа к localStorage
     }
   };
-
   const completedExercisesCount = useMemo(() => {
     return dayExercises.filter((ex) => {
       const setsArr = completedSets[ex.id] || [];

@@ -2,7 +2,7 @@ import type { NewExercise } from "../types/exercise";
 
 export const DEFAULT_EXERCISES: NewExercise[] = [
   {
-    day: "Понедельник",
+    days: ["Понедельник"],
     dayTitle: "День толкающих мышц",
     muscleGroup: "ПЛЕЧЕВЫЕ МЫШЦЫ",
     order: 1,
@@ -21,7 +21,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Понедельник",
+    days: ["Понедельник"],
     dayTitle: "День толкающих мышц",
     muscleGroup: "ГРУДЬ",
     order: 2,
@@ -40,7 +40,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Понедельник",
+    days: ["Понедельник"],
     dayTitle: "День толкающих мышц",
     muscleGroup: "ГРУДЬ",
     order: 3,
@@ -59,7 +59,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Понедельник",
+    days: ["Понедельник"],
     dayTitle: "День толкающих мышц",
     muscleGroup: "ГРУДЬ",
     order: 4,
@@ -79,7 +79,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Понедельник",
+    days: ["Понедельник"],
     dayTitle: "День толкающих мышц",
     muscleGroup: "ГРУДЬ",
     order: 5,
@@ -98,7 +98,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Понедельник",
+    days: ["Понедельник"],
     dayTitle: "День толкающих мышц",
     muscleGroup: "ПЛЕЧЕВЫЕ СУСТАВЫ",
     order: 6,
@@ -118,7 +118,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Понедельник",
+    days: ["Понедельник"],
     dayTitle: "День толкающих мышц",
     muscleGroup: "ПЛЕЧЕВЫЕ СУСТАВЫ",
     order: 7,
@@ -137,7 +137,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Понедельник",
+    days: ["Понедельник"],
     dayTitle: "День толкающих мышц",
     muscleGroup: "ШЕЯ",
     order: 8,
@@ -156,7 +156,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Среда",
+    days: ["Среда"],
     dayTitle: "День низа тела и кора",
     muscleGroup: "ЯГОДИЦЫ",
     order: 1,
@@ -175,7 +175,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Среда",
+    days: ["Среда"],
     dayTitle: "День низа тела и кора",
     muscleGroup: "БЕДРА",
     order: 2,
@@ -194,7 +194,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Среда",
+    days: ["Среда"],
     dayTitle: "День низа тела и кора",
     muscleGroup: "БЕДРА",
     order: 3,
@@ -213,7 +213,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Среда",
+    days: ["Среда"],
     dayTitle: "День низа тела и кора",
     muscleGroup: "БЕДРА",
     order: 4,
@@ -232,7 +232,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Среда",
+    days: ["Среда"],
     dayTitle: "День низа тела и кора",
     muscleGroup: "ГОЛЕНИ",
     order: 5,
@@ -251,7 +251,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Среда",
+    days: ["Среда"],
     dayTitle: "День низа тела и кора",
     muscleGroup: "КОР",
     order: 6,
@@ -270,7 +270,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Среда",
+    days: ["Среда"],
     dayTitle: "День низа тела и кора",
     muscleGroup: "КОР",
     order: 7,
@@ -290,7 +290,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Среда",
+    days: ["Среда"],
     dayTitle: "День низа тела и кора",
     muscleGroup: "КОР",
     order: 8,
@@ -310,7 +310,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Пятница",
+    days: ["Пятница"],
     dayTitle: "День тяг",
     muscleGroup: "СПИНА",
     order: 1,
@@ -329,7 +329,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Пятница",
+    days: ["Пятница"],
     dayTitle: "День тяг",
     muscleGroup: "СПИНА",
     order: 2,
@@ -348,7 +348,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Пятница",
+    days: ["Пятница"],
     dayTitle: "День тяг",
     muscleGroup: "ПЛЕЧЕВЫЕ МЫШЦЫ",
     order: 3,
@@ -368,7 +368,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Пятница",
+    days: ["Пятница"],
     dayTitle: "День тяг",
     muscleGroup: "ПЛЕЧЕВЫЕ МЫШЦЫ",
     order: 4,
@@ -387,7 +387,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Пятница",
+    days: ["Пятница"],
     dayTitle: "День тяг",
     muscleGroup: "ПРЕДПЛЕЧЬЯ",
     order: 5,
@@ -406,7 +406,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Пятница",
+    days: ["Пятница"],
     dayTitle: "День тяг",
     muscleGroup: "ПРЕДПЛЕЧЬЯ",
     order: 6,
@@ -425,7 +425,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Пятница",
+    days: ["Пятница"],
     dayTitle: "День тяг",
     muscleGroup: "ПЛЕЧЕВЫЕ СУСТАВЫ",
     order: 7,
@@ -445,7 +445,7 @@ export const DEFAULT_EXERCISES: NewExercise[] = [
     isActive: true,
   },
   {
-    day: "Пятница",
+    days: ["Пятница"],
     dayTitle: "День тяг",
     muscleGroup: "ТРАПЕЦИИ",
     order: 8,

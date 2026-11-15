@@ -19,6 +19,7 @@ export const fetchUserExercises = async (): Promise<Exercise[]> => {
 
   const q = query(collection(db, "exercises"), where("userId", "==", userId));
   const snapshot = await getDocs(q);
+
   return snapshot.docs.map((item) => ({
     id: item.id,
     ...(item.data() as Omit<Exercise, "id">),

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { getMostFrequentDayTitle } from "../../../../utils/dayTitle";
 import type { Exercise } from "../../../../types/exercise";
 import styles from "./WorkoutScheduleBoard.module.css";
 
@@ -31,7 +32,7 @@ export const WorkoutScheduleBoard = ({
 
   const activeDays = useMemo(() => {
     const uniqueDays = Array.from(
-      new Set(activeExercises.map((item) => item.day)),
+      new Set(activeExercises.flatMap((item) => item.days)),
     );
     return uniqueDays.sort(
       (a, b) => WEEK_ORDER.indexOf(a) - WEEK_ORDER.indexOf(b),
@@ -57,13 +58,13 @@ export const WorkoutScheduleBoard = ({
       ) : (
         <div className={styles.scheduleGrid}>
           {activeDays.map((day) => {
-            const dayExercises = activeExercises.filter(
-              (item) => item.day === day,
+            const dayExercises = activeExercises.filter((item) =>
+              item.days.includes(day),
             );
-            const customTitle =
-              dayExercises
-                .find((item) => item.dayTitle?.trim())
-                ?.dayTitle?.trim() || "Тренировка";
+            const customTitle = getMostFrequentDayTitle(
+              dayExercises,
+              "Тренировка",
+            );
             const isToday = day === todayName;
 
             return (

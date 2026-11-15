@@ -95,11 +95,18 @@
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    opacity 0.2s ease;
 }
 
-.saveBtn:hover {
+.saveBtn:hover:not(:disabled) {
   background-color: #218838;
+}
+
+.saveBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .cancelBtn {

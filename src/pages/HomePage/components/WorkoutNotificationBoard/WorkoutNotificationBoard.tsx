@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../../redux/hooks";
+import { getMostFrequentDayTitle } from "../../../../utils/dayTitle";
 import type { Exercise } from "../../../../types/exercise";
 import styles from "./WorkoutNotificationBoard.module.css";
 
@@ -47,9 +48,7 @@ export const WorkoutNotificationBoard = ({
     );
   }
 
-  const customDayTitle =
-    todayExercises.find((item) => item.dayTitle?.trim())?.dayTitle?.trim() ||
-    "Тренировка";
+  const customDayTitle = getMostFrequentDayTitle(todayExercises, "Тренировка");
 
   return (
     <div className={styles.todayCard}>

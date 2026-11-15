@@ -1,8 +1,9 @@
 export type ExerciseUnit = "reps" | "sec";
+
 export type Exercise = {
   id: string;
   userId: string;
-  day: string;
+  days: string[];
   dayTitle: string;
   muscleGroup: string;
   order: number;

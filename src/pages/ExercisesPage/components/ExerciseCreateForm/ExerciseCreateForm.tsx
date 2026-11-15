@@ -26,7 +26,7 @@ const UNIT_OPTIONS = [
 ];
 
 const initialFormState: NewExercise = {
-  day: "Понедельник",
+  days: ["Понедельник"],
   dayTitle: "",
   muscleGroup: "",
   order: 1,
@@ -47,6 +47,8 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState<NewExercise>(initialFormState);
 
+  const isSubmitDisabled = formData.days.length === 0 || !formData.name.trim();
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -62,12 +64,13 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formData.name.trim()) return;
+    if (isSubmitDisabled) return;
 
     await dispatch(addExercise(formData));
+
     setFormData((prev) => ({
       ...initialFormState,
-      day: prev.day,
+      days: prev.days,
       dayTitle: prev.dayTitle,
       order: prev.order + 1,
     }));
@@ -80,9 +83,13 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
 
       <div className={styles.row}>
         <CustomSelect
-          value={formData.day}
+          multiple
+          values={formData.days}
           options={ALL_DAYS}
-          onChange={(val) => setFormData((prev) => ({ ...prev, day: val }))}
+          placeholder="Выберите дни..."
+          onChangeMultiple={(days) =>
+            setFormData((prev) => ({ ...prev, days }))
+          }
         />
 
         <input
@@ -222,7 +229,10 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
         className={styles.input}
       />
 
-      <button type="submit" className={styles.submitBtn}>
+      <button
+        type="submit"
+        disabled={isSubmitDisabled}
+        className={styles.submitBtn}>
         Создать
       </button>
     </form>

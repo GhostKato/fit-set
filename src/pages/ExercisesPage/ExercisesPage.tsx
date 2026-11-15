@@ -47,7 +47,7 @@ export const ExercisesPage = () => {
     .filter((item) => {
       if (selectedDay === INACTIVE_TAB) return !item.isActive;
       if (!item.isActive) return false;
-      return selectedDay === "Все" ? true : item.day === selectedDay;
+      return selectedDay === "Все" ? true : item.days.includes(selectedDay);
     })
     .sort((a, b) => a.order - b.order);
 
