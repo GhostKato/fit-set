@@ -149,6 +149,7 @@ export const WorkoutPage = () => {
       // Игнорируем ошибку доступа к localStorage
     }
   };
+
   const completedExercisesCount = useMemo(() => {
     return dayExercises.filter((ex) => {
       const setsArr = completedSets[ex.id] || [];
@@ -182,7 +183,6 @@ export const WorkoutPage = () => {
     },
     [dayExercises, timingConfig.setDurations],
   );
-
   const handleTimerTickComplete = useCallback(() => {
     if (!currentExercise) return;
 
@@ -313,6 +313,11 @@ export const WorkoutPage = () => {
     setSecondsLeft(restSec);
   };
 
+  const handleManualCancel = () => {
+    setPhase("idle");
+    setSecondsLeft(0);
+  };
+
   const handleAutoToggle = () => {
     if (isAutoRunning) {
       setIsAutoRunning(false);
@@ -417,8 +422,13 @@ export const WorkoutPage = () => {
   const isManualMode = timingConfig.mode === "manual";
   const isManualResting =
     isManualMode && (phase === "restSet" || phase === "restExercise");
+  const isManualActivePhase =
+    isManualMode && (phase === "manualWorking" || isManualResting);
   const isWorkoutCompleted =
     dayExercises.length > 0 && completedExercisesCount === dayExercises.length;
+  const hasCompletedSets = dayExercises.some((ex) =>
+    (completedSets[ex.id] || []).some(Boolean),
+  );
   const hasAnyProgress =
     safeIndex > 0 ||
     phase !== "idle" ||
@@ -444,7 +454,9 @@ export const WorkoutPage = () => {
               ? "Отдых перед стартом следующего упражнения — изучите технику"
               : isManualMode
                 ? "Нажмите «Начать подход» внизу экрана"
-                : "Нажмите «Начать тренировку» для автозапуска";
+                : hasCompletedSets
+                  ? "Нажмите «Продолжить тренировку» для автозапуска"
+                  : "Нажмите «Начать тренировку» для автозапуска";
 
   return (
     <div className={styles.page}>
@@ -554,15 +566,25 @@ export const WorkoutPage = () => {
             Закончить тренировку
           </button>
         ) : isManualMode ? (
-          <button
-            type="button"
-            disabled={isManualResting}
-            onClick={handleManualAction}
-            className={`${styles.mainActionBtn} ${
-              phase === "manualWorking" ? styles.mainActionBtnStop : ""
-            }`}>
-            {phase === "manualWorking" ? "Закончить подход" : "Начать подход"}
-          </button>
+          <>
+            {isManualActivePhase && (
+              <button
+                type="button"
+                onClick={handleManualCancel}
+                className={styles.cancelActionBtn}>
+                Отменить
+              </button>
+            )}
+            <button
+              type="button"
+              disabled={isManualResting}
+              onClick={handleManualAction}
+              className={`${styles.mainActionBtn} ${
+                phase === "manualWorking" ? styles.mainActionBtnStop : ""
+              }`}>
+              {phase === "manualWorking" ? "Закончить подход" : "Начать подход"}
+            </button>
+          </>
         ) : (
           <button
             type="button"
@@ -570,7 +592,11 @@ export const WorkoutPage = () => {
             className={`${styles.mainActionBtn} ${
               isAutoRunning ? styles.mainActionBtnStop : ""
             }`}>
-            {isAutoRunning ? "Приостановить тренировку" : "Начать тренировку"}
+            {isAutoRunning
+              ? "Приостановить тренировку"
+              : hasCompletedSets
+                ? "Продолжить тренировку"
+                : "Начать тренировку"}
           </button>
         )}
       </div>

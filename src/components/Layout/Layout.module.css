@@ -60,7 +60,9 @@
   font-size: 15px;
   font-weight: 600;
   color: var(--text-muted);
-  transition: all 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .navLink:hover {
@@ -71,7 +73,6 @@
 .navLinkActive {
   background-color: var(--bg-accent-soft);
   color: var(--accent);
-  font-weight: 700;
 }
 
 .navLinkActive:hover {

@@ -210,8 +210,38 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
   margin-top: 0;
   padding-top: 0;
+}
+
+.cancelActionBtn {
+  padding: 10px 20px;
+  min-height: 42px;
+  background-color: var(--bg-muted);
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-input);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.cancelActionBtn:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--text-subtle);
+}
+
+.cancelActionBtn:active {
+  transform: scale(0.98);
 }
 
 .mainActionBtn {
@@ -314,6 +344,13 @@
     padding-top: 0;
   }
 
+  .cancelActionBtn {
+    min-height: 54px;
+    padding: 12px 26px;
+    font-size: 18px;
+    border-radius: 12px;
+  }
+
   .mainActionBtn {
     width: 340px;
     min-height: 54px;
@@ -342,7 +379,9 @@
   }
 
   .primaryBtn,
-  .mainActionBtn {
-    width: 100%;
+  .mainActionBtn,
+  .cancelActionBtn {
+    flex: 1;
+    width: auto;
   }
 }
