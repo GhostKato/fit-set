@@ -6,7 +6,7 @@ export type Exercise = {
   days: string[];
   dayTitle: string;
   muscleGroup: string;
-  order: number;
+  orders: Record<string, number>;
   name: string;
   targetMuscles: string;
   sets: number;

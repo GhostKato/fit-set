@@ -25,7 +25,9 @@ const UNIT_OPTIONS = [
   { value: "sec", label: "сек." },
 ];
 
-const initialFormState: NewExercise = {
+type CreateFormState = Omit<NewExercise, "orders"> & { order: number };
+
+const initialFormState: CreateFormState = {
   days: ["Понедельник"],
   dayTitle: "",
   muscleGroup: "",
@@ -45,7 +47,7 @@ const initialFormState: NewExercise = {
 
 export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
   const dispatch = useAppDispatch();
-  const [formData, setFormData] = useState<NewExercise>(initialFormState);
+  const [formData, setFormData] = useState<CreateFormState>(initialFormState);
 
   const isSubmitDisabled = formData.days.length === 0 || !formData.name.trim();
 
@@ -66,7 +68,13 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
     e.preventDefault();
     if (isSubmitDisabled) return;
 
-    await dispatch(addExercise(formData));
+    const { order, ...rest } = formData;
+    const orders: Record<string, number> = {};
+    for (const day of formData.days) {
+      orders[day] = order;
+    }
+
+    await dispatch(addExercise({ ...rest, orders }));
 
     setFormData((prev) => ({
       ...initialFormState,

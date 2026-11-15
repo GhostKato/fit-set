@@ -3,6 +3,11 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import { editExercise } from "../../../../redux/exercises/operations";
 import { CustomSelect } from "../../../../components/CustomSelect/CustomSelect";
 import { StatusToggle } from "../../../../components/StatusToggle/StatusToggle";
+import {
+  areAllOrdersEqual,
+  getOrderForContext,
+  isSpecificWeekDay,
+} from "../../../../utils/exerciseOrder";
 import type {
   Exercise,
   ExerciseUnit,
@@ -12,6 +17,7 @@ import styles from "./ExerciseEditForm.module.css";
 
 interface ExerciseEditFormProps {
   exercise: Exercise;
+  activeDay?: string;
   onCancel: () => void;
 }
 
@@ -32,15 +38,20 @@ const UNIT_OPTIONS = [
 
 export const ExerciseEditForm = ({
   exercise,
+  activeDay,
   onCancel,
 }: ExerciseEditFormProps) => {
   const dispatch = useAppDispatch();
+
+  const [currentOrder, setCurrentOrder] = useState<number>(() =>
+    getOrderForContext(exercise.orders, exercise.days, activeDay),
+  );
 
   const [formData, setFormData] = useState<NewExercise>({
     days: exercise.days,
     dayTitle: exercise.dayTitle,
     muscleGroup: exercise.muscleGroup,
-    order: exercise.order,
+    orders: exercise.orders,
     name: exercise.name,
     targetMuscles: exercise.targetMuscles,
     sets: exercise.sets,
@@ -60,20 +71,56 @@ export const ExerciseEditForm = ({
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
+    if (name === "order") {
+      setCurrentOrder(Number(value));
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        name === "sets" || name === "target" || name === "order"
-          ? Number(value)
-          : value,
+      [name]: name === "sets" || name === "target" ? Number(value) : value,
     }));
+  };
+
+  const handleDaysChange = (nextDays: string[]) => {
+    setFormData((prev) => {
+      const updatedOrders: Record<string, number> = {};
+      for (const day of nextDays) {
+        updatedOrders[day] = prev.orders[day] ?? currentOrder;
+      }
+      return {
+        ...prev,
+        days: nextDays,
+        orders: updatedOrders,
+      };
+    });
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSaveDisabled) return;
 
-    await dispatch(editExercise({ id: exercise.id, fields: formData }));
+    const updatedOrders: Record<string, number> = {};
+    for (const day of formData.days) {
+      updatedOrders[day] = formData.orders[day] ?? currentOrder;
+    }
+
+    if (isSpecificWeekDay(activeDay) && formData.days.includes(activeDay)) {
+      updatedOrders[activeDay] = currentOrder;
+    } else if (areAllOrdersEqual(exercise.orders, exercise.days)) {
+      for (const day of formData.days) {
+        updatedOrders[day] = currentOrder;
+      }
+    } else if (formData.days.length > 0) {
+      updatedOrders[formData.days[0]] = currentOrder;
+    }
+
+    await dispatch(
+      editExercise({
+        id: exercise.id,
+        fields: { ...formData, orders: updatedOrders },
+      }),
+    );
     onCancel();
   };
 
@@ -88,9 +135,7 @@ export const ExerciseEditForm = ({
             values={formData.days}
             options={ALL_DAYS}
             placeholder="Выберите дни..."
-            onChangeMultiple={(days) =>
-              setFormData((prev) => ({ ...prev, days }))
-            }
+            onChangeMultiple={handleDaysChange}
           />
 
           <input
@@ -135,10 +180,14 @@ export const ExerciseEditForm = ({
             <input
               type="number"
               name="order"
-              value={formData.order}
+              value={currentOrder}
               onChange={handleChange}
               min={1}
-              title="Порядок в тренировке"
+              title={
+                isSpecificWeekDay(activeDay)
+                  ? `Порядок в тренировке (${activeDay})`
+                  : "Порядок в тренировке"
+              }
               className={`${styles.input} ${styles.numberInput}`}
             />
           </label>

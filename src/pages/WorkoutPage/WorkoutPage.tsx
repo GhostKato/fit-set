@@ -92,7 +92,9 @@ export const WorkoutPage = () => {
   const dayExercises = useMemo(() => {
     return allExercises
       .filter((item) => item.isActive && item.days.includes(selectedDay))
-      .sort((a, b) => a.order - b.order);
+      .sort(
+        (a, b) => (a.orders[selectedDay] ?? 1) - (b.orders[selectedDay] ?? 1),
+      );
   }, [allExercises, selectedDay]);
 
   const customDayTitle = useMemo(() => {
@@ -517,7 +519,11 @@ export const WorkoutPage = () => {
         </div>
       </div>
 
-      <ExerciseCard exercise={currentExercise} showActions={false} />
+      <ExerciseCard
+        exercise={currentExercise}
+        activeDay={selectedDay}
+        showActions={false}
+      />
 
       <SetTracker
         setsState={currentSetsState}

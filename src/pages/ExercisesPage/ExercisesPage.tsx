@@ -7,6 +7,7 @@ import {
 import { ExerciseCard } from "../../components/ExerciseCard/ExerciseCard";
 import { ConfirmModal } from "../../components/ConfirmModal/ConfirmModal";
 import { ExerciseCreateForm } from "./components/ExerciseCreateForm/ExerciseCreateForm";
+import { getOrderForContext } from "../../utils/exerciseOrder";
 import styles from "./ExercisesPage.module.css";
 
 const ALL_DAYS = [
@@ -49,7 +50,11 @@ export const ExercisesPage = () => {
       if (!item.isActive) return false;
       return selectedDay === "Все" ? true : item.days.includes(selectedDay);
     })
-    .sort((a, b) => a.order - b.order);
+    .sort(
+      (a, b) =>
+        getOrderForContext(a.orders, a.days, selectedDay) -
+        getOrderForContext(b.orders, b.days, selectedDay),
+    );
 
   return (
     <div className={styles.page}>
@@ -120,6 +125,7 @@ export const ExercisesPage = () => {
           <ExerciseCard
             key={exercise.id}
             exercise={exercise}
+            activeDay={selectedDay}
             isEditing={activeForm === exercise.id}
             onStartEdit={() => setActiveForm(exercise.id)}
             onCancelEdit={() => setActiveForm(null)}

@@ -5,11 +5,13 @@ import { editExercise, removeExercise } from "../../redux/exercises/operations";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { StatusToggle } from "../StatusToggle/StatusToggle";
 import { ExerciseEditForm } from "../../pages/ExercisesPage/components/ExerciseEditForm/ExerciseEditForm";
+import { formatCardOrder } from "../../utils/exerciseOrder";
 import type { Exercise } from "../../types/exercise";
 import styles from "./ExerciseCard.module.css";
 
 interface ExerciseCardProps {
   exercise: Exercise;
+  activeDay?: string;
   showActions?: boolean;
   isEditing?: boolean;
   onStartEdit?: () => void;
@@ -18,6 +20,7 @@ interface ExerciseCardProps {
 
 export const ExerciseCard = ({
   exercise,
+  activeDay,
   showActions = true,
   isEditing = false,
   onStartEdit,
@@ -71,7 +74,11 @@ export const ExerciseCard = ({
 
   if (isEditing && showActions) {
     return (
-      <ExerciseEditForm exercise={exercise} onCancel={() => onCancelEdit?.()} />
+      <ExerciseEditForm
+        exercise={exercise}
+        activeDay={activeDay}
+        onCancel={() => onCancelEdit?.()}
+      />
     );
   }
 
@@ -85,8 +92,8 @@ export const ExerciseCard = ({
           <div>
             <span className={styles.meta}>
               {exercise.days.join(", ")}
-              {exercise.muscleGroup && ` • ${exercise.muscleGroup}`} • №
-              {exercise.order}
+              {exercise.muscleGroup && ` • ${exercise.muscleGroup}`} •{" "}
+              {formatCardOrder(exercise.orders, exercise.days, activeDay)}
             </span>
             <h3 className={styles.name}>{exercise.name}</h3>
             <div className={styles.stats}>
