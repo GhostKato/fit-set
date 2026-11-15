@@ -93,10 +93,11 @@ export const CustomSelect = ({
     }
     if (values.length === 0) return placeholder;
     if (values.length === 1) {
+      const firstValue = values.at(0) ?? "";
       const singleOption = normalizedOptions.find(
-        (opt) => opt.value === values,
+        (opt) => opt.value === firstValue,
       );
-      return singleOption ? singleOption.label : values;
+      return singleOption ? singleOption.label : firstValue;
     }
     return `Выбрано дней: ${values.length}`;
   };
