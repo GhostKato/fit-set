@@ -1,14 +1,15 @@
-const SHORT_DAY_MAP: Record<string, string> = {
-  Понедельник: "Пн",
-  Вторник: "Вт",
-  Среда: "Ср",
-  Четверг: "Чт",
-  Пятница: "Пт",
-  Суббота: "Сб",
-  Воскресенье: "Вс",
-};
+import type { LanguageCode } from "../context/LanguageContext";
+import { translateShortDay } from "../i18n";
 
-const WEEK_DAYS = Object.keys(SHORT_DAY_MAP);
+const WEEK_DAYS = [
+  "Понедельник",
+  "Вторник",
+  "Среда",
+  "Четверг",
+  "Пятница",
+  "Суббота",
+  "Воскресенье",
+];
 
 export const isSpecificWeekDay = (day?: string): day is string =>
   Boolean(day && WEEK_DAYS.includes(day));
@@ -38,6 +39,7 @@ export const formatCardOrder = (
   orders: Record<string, number>,
   days: string[],
   activeDay?: string,
+  lang: LanguageCode = "ua",
 ): string => {
   if (isSpecificWeekDay(activeDay)) {
     return `№${orders[activeDay] ?? 1}`;
@@ -49,6 +51,6 @@ export const formatCardOrder = (
   }
 
   return days
-    .map((d) => `${SHORT_DAY_MAP[d] ?? d} №${orders[d] ?? 1}`)
+    .map((d) => `${translateShortDay(d, lang)} №${orders[d] ?? 1}`)
     .join(", ");
 };

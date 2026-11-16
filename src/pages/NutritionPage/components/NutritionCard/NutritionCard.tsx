@@ -1,37 +1,38 @@
 import { useState } from "react";
-import { Check, Plus } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import {
-  removeNutritionItem,
+  removeNutrition,
   syncTodaySelection,
 } from "../../../../redux/nutrition/operations";
 import { setDailySelectionOptimistic } from "../../../../redux/nutrition/slice";
 import { ConfirmModal } from "../../../../components/ConfirmModal/ConfirmModal";
 import { NutritionEditForm } from "../NutritionEditForm/NutritionEditForm";
+import { useLanguage } from "../../../../context/LanguageContext";
+import { translateCategory, translateMeal } from "../../../../i18n";
 import type { MealTime, NutritionItem } from "../../../../types/nutrition";
 import styles from "./NutritionCard.module.css";
 
 interface NutritionCardProps {
   item: NutritionItem;
-  isEditing: boolean;
-  onStartEdit: () => void;
-  onCancelEdit: () => void;
+  isEditing?: boolean;
+  onStartEdit?: () => void;
+  onCancelEdit?: () => void;
 }
 
 const MEAL_ORDER: MealTime[] = ["Завтрак", "Обед", "Ужин"];
 
 export const NutritionCard = ({
   item,
-  isEditing,
+  isEditing = false,
   onStartEdit,
   onCancelEdit,
 }: NutritionCardProps) => {
   const dispatch = useAppDispatch();
+  const { language, t } = useLanguage();
   const dailySelection = useAppSelector(
     (state) => state.nutrition.dailySelection,
   );
-
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleToggleMealForToday = (mealKey: MealTime) => {
     const currentList = dailySelection[mealKey] ?? [];
@@ -49,88 +50,82 @@ export const NutritionCard = ({
     dispatch(syncTodaySelection(nextSelection));
   };
 
-  const handleConfirmDelete = () => {
-    setIsConfirmOpen(false);
-    dispatch(removeNutritionItem(item.id));
+  const handleConfirmDelete = async () => {
+    setIsDeleteModalOpen(false);
+    await dispatch(removeNutrition(item.id));
   };
 
-  const isSelectedAnywhere = MEAL_ORDER.some((m) =>
-    dailySelection[m]?.includes(item.id),
-  );
-
   if (isEditing) {
-    return <NutritionEditForm item={item} onCancel={onCancelEdit} />;
+    return <NutritionEditForm item={item} onCancel={() => onCancelEdit?.()} />;
   }
 
   return (
     <>
-      <div
-        className={`${styles.card} ${
-          isSelectedAnywhere ? styles.cardSelected : ""
-        }`}>
-        <div className={styles.header}>
-          <div className={styles.info}>
-            <span className={styles.meta}>{item.category}</span>
-            <h3 className={styles.name}>{item.title}</h3>
-            {item.portion && (
-              <p className={styles.portion}>Порция: {item.portion}</p>
-            )}
-            {item.note && (
-              <p className={styles.note}>
-                <strong>Заметка:</strong> {item.note}
-              </p>
-            )}
+      <div className={styles.card}>
+        <div className={styles.cardTop}>
+          <div>
+            <span className={styles.categoryBadge}>
+              {translateCategory(item.category, language)}
+            </span>
+            <h4 className={styles.cardTitle}>{item.title}</h4>
           </div>
 
-          <div className={styles.actions}>
+          <div className={styles.cardActions}>
             <button
               type="button"
-              onClick={onStartEdit}
+              onClick={() => onStartEdit?.()}
               className={styles.editBtn}>
-              Изменить
+              {t.editBtn}
             </button>
             <button
               type="button"
-              onClick={() => setIsConfirmOpen(true)}
+              onClick={() => setIsDeleteModalOpen(true)}
               className={styles.deleteBtn}>
-              Удалить
+              {t.deleteBtn}
             </button>
           </div>
         </div>
 
-        <div className={styles.mealPickerRow}>
-          <span className={styles.pickerLabel}>Выбрать сегодня на:</span>
-          {MEAL_ORDER.map((mealKey) => {
-            const isAdded = dailySelection[mealKey]?.includes(item.id);
-            return (
-              <button
-                key={mealKey}
-                type="button"
-                onClick={() => handleToggleMealForToday(mealKey)}
-                className={`${styles.mealToggleBtn} ${
-                  isAdded ? styles.mealToggleBtnActive : ""
-                }`}>
-                {isAdded ? (
-                  <>
-                    <Check size={14} strokeWidth={2.5} />
-                    <span>{mealKey}</span>
-                  </>
-                ) : (
-                  <>
-                    <Plus size={14} strokeWidth={2.5} />
-                    <span>{mealKey}</span>
-                  </>
-                )}
-              </button>
-            );
-          })}
+        {item.portion && (
+          <p className={styles.portionText}>
+            <strong>{t.portionLabel}:</strong> {item.portion}
+          </p>
+        )}
+
+        {item.note && (
+          <p className={styles.noteText}>
+            <strong>{t.noteLabel}:</strong> {item.note}
+          </p>
+        )}
+
+        <div className={styles.mealSelectorRow}>
+          <span className={styles.mealSelectorLabel}>{t.selectTodayFor}</span>
+          <div className={styles.mealPills}>
+            {MEAL_ORDER.map((mealKey) => {
+              const isSelected = (dailySelection[mealKey] ?? []).includes(
+                item.id,
+              );
+              return (
+                <button
+                  key={mealKey}
+                  type="button"
+                  onClick={() => handleToggleMealForToday(mealKey)}
+                  className={`${styles.mealPill} ${
+                    isSelected ? styles.mealPillActive : ""
+                  }`}>
+                  {isSelected ? "✓ " : "+ "}
+                  {translateMeal(mealKey, language)}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       <ConfirmModal
-        isOpen={isConfirmOpen}
+        isOpen={isDeleteModalOpen}
         onConfirm={handleConfirmDelete}
-        onCancel={() => setIsConfirmOpen(false)}
+        onCancel={() => setIsDeleteModalOpen(false)}
       />
     </>
   );

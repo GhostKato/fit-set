@@ -4,38 +4,40 @@ import {
   removeAllNutrition,
   seedDefaultNutrition,
 } from "../../redux/nutrition/operations";
-import { NutritionCard } from "./components/NutritionCard/NutritionCard";
 import { TodayNutritionBoard } from "../../components/TodayNutritionBoard/TodayNutritionBoard";
 import { ConfirmModal } from "../../components/ConfirmModal/ConfirmModal";
+import { NutritionCard } from "./components/NutritionCard/NutritionCard";
 import { NutritionCreateForm } from "./components/NutritionCreateForm/NutritionCreateForm";
+import { useLanguage } from "../../context/LanguageContext";
+import { translateCategory } from "../../i18n";
 import type { NutritionCategory } from "../../types/nutrition";
 import styles from "./NutritionPage.module.css";
 
-type CategoryFilterTab = "Все" | NutritionCategory;
-
-const FILTER_TABS: CategoryFilterTab[] = [
-  "Все",
+const ALL_CATEGORIES: NutritionCategory[] = [
   "Простые углеводы",
   "Сложные углеводы",
   "Белок",
   "Жиры",
   "Клетчатка",
-  "Десерт",
   "Соус",
   "Коктейли",
+  "Десерт",
 ];
+
+const ALL_TAB = "Все";
 
 export const NutritionPage = () => {
   const dispatch = useAppDispatch();
+  const { language, t } = useLanguage();
   const { items, isLoading, error } = useAppSelector(
     (state) => state.nutrition,
   );
 
-  const [selectedTab, setSelectedTab] = useState<CategoryFilterTab>("Все");
+  const [selectedCategory, setSelectedCategory] = useState<string>(ALL_TAB);
   const [activeForm, setActiveForm] = useState<"create" | string | null>(null);
   const [isDeleteAllOpen, setIsDeleteAllOpen] = useState(false);
 
-  const isCreateOpen = activeForm === "create";
+  const isFormOpen = activeForm === "create";
 
   const handleToggleCreateForm = () => {
     setActiveForm((prev) => (prev === "create" ? null : "create"));
@@ -47,21 +49,17 @@ export const NutritionPage = () => {
     dispatch(removeAllNutrition());
   };
 
-  const matchesTab = (item: { category: NutritionCategory }) => {
-    if (selectedTab === "Все") return true;
-    return item.category === selectedTab;
-  };
+  const getTabLabel = (tab: string) =>
+    tab === ALL_TAB ? t.filterAll : translateCategory(tab, language);
 
-  const filteredItems = items
-    .filter(matchesTab)
-    .sort((a, b) => a.order - b.order);
+  const filteredItems = items.filter((item) =>
+    selectedCategory === ALL_TAB ? true : item.category === selectedCategory,
+  );
 
   return (
     <div className={styles.page}>
-      <TodayNutritionBoard isEditable />
-
       <div className={styles.header}>
-        <h2 className={styles.title}>Мой рацион питания</h2>
+        <h2 className={styles.title}>{t.nutritionTitle}</h2>
 
         <div className={styles.headerActions}>
           <button
@@ -69,59 +67,64 @@ export const NutritionPage = () => {
             disabled={items.length === 0 || isLoading}
             onClick={() => setIsDeleteAllOpen(true)}
             className={styles.deleteAllBtn}>
-            Удалить всё
+            {t.deleteAllBtn}
           </button>
 
           <button
             type="button"
             onClick={handleToggleCreateForm}
             className={`${styles.toggleFormBtn} ${
-              isCreateOpen ? styles.toggleFormBtnActive : ""
+              isFormOpen ? styles.toggleFormBtnActive : ""
             }`}>
-            {isCreateOpen ? "Закрыть форму" : "+ Добавить"}
+            {isFormOpen ? t.closeFormBtn : t.addBtn}
           </button>
         </div>
       </div>
 
-      {isCreateOpen && (
+      {isFormOpen && (
         <NutritionCreateForm onSuccess={() => setActiveForm(null)} />
       )}
 
+      <TodayNutritionBoard isEditable />
+
       <div className={styles.filters}>
-        {FILTER_TABS.map((tab) => (
+        {[ALL_TAB, ...ALL_CATEGORIES].map((cat) => (
           <button
-            key={tab}
+            key={cat}
             type="button"
-            onClick={() => setSelectedTab(tab)}
+            onClick={() => setSelectedCategory(cat)}
             className={`${styles.filterBtn} ${
-              selectedTab === tab ? styles.filterBtnActive : ""
+              selectedCategory === cat ? styles.filterBtnActive : ""
             }`}>
-            {tab}
+            {getTabLabel(cat)}
           </button>
         ))}
       </div>
 
-      {error && <p className={styles.errorText}>Ошибка: {error}</p>}
+      {error && (
+        <p className={styles.errorText}>
+          {t.errorPrefix}: {error}
+        </p>
+      )}
 
       {!isLoading && items.length === 0 ? (
         <div className={styles.emptyState}>
-          <p>
-            Ваш рацион пока пуст. Вы можете загрузить свой базовый план питания
-            одной кнопкой или добавить пункты вручную.
-          </p>
+          <p>{t.nutritionEmptyText}</p>
           <button
             type="button"
             onClick={() => dispatch(seedDefaultNutrition())}
             className={styles.seedBtn}>
-            Загрузить мой базовый рацион
+            {t.nutritionSeedBtn}
           </button>
         </div>
       ) : filteredItems.length === 0 ? (
         <div className={styles.emptyState}>
-          В категории «{selectedTab}» пока нет добавленных пунктов.
+          {t.nutritionEmptyCategoryPrefix}
+          {getTabLabel(selectedCategory)}
+          {t.nutritionEmptyCategorySuffix}
         </div>
       ) : (
-        <div className={styles.cardsList}>
+        <div className={styles.cardsGrid}>
           {filteredItems.map((item) => (
             <NutritionCard
               key={item.id}
@@ -136,7 +139,7 @@ export const NutritionPage = () => {
 
       <ConfirmModal
         isOpen={isDeleteAllOpen}
-        title="Удалить всё?"
+        title={t.deleteAllConfirmTitle}
         onConfirm={handleConfirmDeleteAll}
         onCancel={() => setIsDeleteAllOpen(false)}
       />

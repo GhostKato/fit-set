@@ -198,6 +198,44 @@
   margin: 10px 0;
 }
 
+.langGroup {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.langBtn {
+  min-height: 34px;
+  padding: 6px 8px;
+  background-color: var(--bg-muted);
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-input);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.langBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.langBtnActive {
+  background-color: var(--bg-accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.langBtnActive:hover {
+  background-color: var(--bg-accent-soft-hover);
+  color: var(--accent-hover);
+}
+
 .logoutBtn {
   padding: 8px 14px;
   min-height: 36px;

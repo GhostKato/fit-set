@@ -6,6 +6,8 @@ import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { StatusToggle } from "../StatusToggle/StatusToggle";
 import { ExerciseEditForm } from "../../pages/ExercisesPage/components/ExerciseEditForm/ExerciseEditForm";
 import { formatCardOrder } from "../../utils/exerciseOrder";
+import { useLanguage } from "../../context/LanguageContext";
+import { translateDay } from "../../i18n";
 import type { Exercise } from "../../types/exercise";
 import styles from "./ExerciseCard.module.css";
 
@@ -27,6 +29,7 @@ export const ExerciseCard = ({
   onCancelEdit,
 }: ExerciseCardProps) => {
   const dispatch = useAppDispatch();
+  const { language, t } = useLanguage();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditingWeight, setIsEditingWeight] = useState(false);
   const [weightInput, setWeightInput] = useState(exercise.weight || "");
@@ -91,16 +94,22 @@ export const ExerciseCard = ({
         <div className={styles.header}>
           <div>
             <span className={styles.meta}>
-              {exercise.days.join(", ")}
+              {exercise.days.map((d) => translateDay(d, language)).join(", ")}
               {exercise.muscleGroup && ` • ${exercise.muscleGroup}`} •{" "}
-              {formatCardOrder(exercise.orders, exercise.days, activeDay)}
+              {formatCardOrder(
+                exercise.orders,
+                exercise.days,
+                activeDay,
+                language,
+              )}
             </span>
             <h3 className={styles.name}>{exercise.name}</h3>
             <div className={styles.stats}>
               <span>
-                {exercise.sets} подх. × {exercise.target}{" "}
-                {exercise.unit === "sec" ? "сек." : "повт."} | Вес:{" "}
-                {!isEditingWeight && (exercise.weight || "Свой вес")}
+                {exercise.sets} {t.unitSetsShort} × {exercise.target}{" "}
+                {exercise.unit === "sec" ? t.unitSec : t.unitReps} |{" "}
+                {t.weightLabel}:{" "}
+                {!isEditingWeight && (exercise.weight || t.bodyweightLabel)}
               </span>
 
               {isEditingWeight ? (
@@ -121,14 +130,14 @@ export const ExerciseCard = ({
                   <button
                     type="submit"
                     className={`${styles.weightActionBtn} ${styles.weightSave}`}
-                    title="Сохранить">
+                    title={t.saveTitle}>
                     <Check size={14} strokeWidth={2.5} />
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsEditingWeight(false)}
                     className={`${styles.weightActionBtn} ${styles.weightCancel}`}
-                    title="Отмена">
+                    title={t.cancelTitle}>
                     <X size={14} strokeWidth={2.5} />
                   </button>
                 </form>
@@ -137,7 +146,7 @@ export const ExerciseCard = ({
                   type="button"
                   onClick={handleOpenWeightEdit}
                   className={styles.weightIconBtn}
-                  title="Изменить вес">
+                  title={t.editWeightTitle}>
                   <Pencil size={14} />
                 </button>
               )}
@@ -155,13 +164,13 @@ export const ExerciseCard = ({
                 type="button"
                 onClick={() => onStartEdit?.()}
                 className={styles.editBtn}>
-                Изменить
+                {t.editBtn}
               </button>
               <button
                 type="button"
                 onClick={() => setIsDeleteModalOpen(true)}
                 className={styles.deleteBtn}>
-                Удалить
+                {t.deleteBtn}
               </button>
             </div>
           )}
@@ -171,27 +180,28 @@ export const ExerciseCard = ({
           <div className={styles.details}>
             {exercise.targetMuscles && (
               <p className={styles.detailItem}>
-                <strong>Работающие мышцы:</strong> {exercise.targetMuscles}
+                <strong>{t.detailTargetMuscles}:</strong>{" "}
+                {exercise.targetMuscles}
               </p>
             )}
             {exercise.howToDo && (
               <p className={styles.detailItem}>
-                <strong>Как выполнять:</strong> {exercise.howToDo}
+                <strong>{t.detailHowToDo}:</strong> {exercise.howToDo}
               </p>
             )}
             {exercise.handsMode && (
               <p className={styles.detailItem}>
-                <strong>Режим работы рук:</strong> {exercise.handsMode}
+                <strong>{t.detailHandsMode}:</strong> {exercise.handsMode}
               </p>
             )}
             {exercise.palmPosition && (
               <p className={styles.detailItem}>
-                <strong>Положение ладоней:</strong> {exercise.palmPosition}
+                <strong>{t.detailPalmPosition}:</strong> {exercise.palmPosition}
               </p>
             )}
             {exercise.breathing && (
               <p className={styles.detailItem}>
-                <strong>Дыхание:</strong> {exercise.breathing}
+                <strong>{t.detailBreathing}:</strong> {exercise.breathing}
               </p>
             )}
           </div>

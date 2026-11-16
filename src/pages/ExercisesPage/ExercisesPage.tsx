@@ -8,6 +8,8 @@ import { ExerciseCard } from "../../components/ExerciseCard/ExerciseCard";
 import { ConfirmModal } from "../../components/ConfirmModal/ConfirmModal";
 import { ExerciseCreateForm } from "./components/ExerciseCreateForm/ExerciseCreateForm";
 import { getOrderForContext } from "../../utils/exerciseOrder";
+import { useLanguage } from "../../context/LanguageContext";
+import { translateDay } from "../../i18n";
 import styles from "./ExercisesPage.module.css";
 
 const ALL_DAYS = [
@@ -20,15 +22,17 @@ const ALL_DAYS = [
   "Воскресенье",
 ];
 
+const ALL_TAB = "Все";
 const INACTIVE_TAB = "Неактивные";
 
 export const ExercisesPage = () => {
   const dispatch = useAppDispatch();
+  const { language, t } = useLanguage();
   const { items, isLoading, error } = useAppSelector(
     (state) => state.exercises,
   );
 
-  const [selectedDay, setSelectedDay] = useState<string>("Все");
+  const [selectedDay, setSelectedDay] = useState<string>(ALL_TAB);
   const [activeForm, setActiveForm] = useState<"create" | string | null>(null);
   const [isDeleteAllOpen, setIsDeleteAllOpen] = useState(false);
 
@@ -44,11 +48,17 @@ export const ExercisesPage = () => {
     dispatch(removeAllExercises());
   };
 
+  const getTabLabel = (tab: string) => {
+    if (tab === ALL_TAB) return t.filterAll;
+    if (tab === INACTIVE_TAB) return t.filterInactive;
+    return translateDay(tab, language);
+  };
+
   const filteredExercises = items
     .filter((item) => {
       if (selectedDay === INACTIVE_TAB) return !item.isActive;
       if (!item.isActive) return false;
-      return selectedDay === "Все" ? true : item.days.includes(selectedDay);
+      return selectedDay === ALL_TAB ? true : item.days.includes(selectedDay);
     })
     .sort(
       (a, b) =>
@@ -59,7 +69,7 @@ export const ExercisesPage = () => {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <h2 className={styles.title}>Моя программа упражнений</h2>
+        <h2 className={styles.title}>{t.exercisesTitle}</h2>
 
         <div className={styles.headerActions}>
           <button
@@ -67,7 +77,7 @@ export const ExercisesPage = () => {
             disabled={items.length === 0 || isLoading}
             onClick={() => setIsDeleteAllOpen(true)}
             className={styles.deleteAllBtn}>
-            Удалить всё
+            {t.deleteAllBtn}
           </button>
 
           <button
@@ -76,7 +86,7 @@ export const ExercisesPage = () => {
             className={`${styles.toggleFormBtn} ${
               isFormOpen ? styles.toggleFormBtnActive : ""
             }`}>
-            {isFormOpen ? "Закрыть форму" : "+ Добавить"}
+            {isFormOpen ? t.closeFormBtn : t.addBtn}
           </button>
         </div>
       </div>
@@ -86,7 +96,7 @@ export const ExercisesPage = () => {
       )}
 
       <div className={styles.filters}>
-        {["Все", ...ALL_DAYS, INACTIVE_TAB].map((day) => (
+        {[ALL_TAB, ...ALL_DAYS, INACTIVE_TAB].map((day) => (
           <button
             key={day}
             type="button"
@@ -94,31 +104,32 @@ export const ExercisesPage = () => {
             className={`${styles.filterBtn} ${
               selectedDay === day ? styles.filterBtnActive : ""
             }`}>
-            {day}
+            {getTabLabel(day)}
           </button>
         ))}
       </div>
 
-      {error && <p className={styles.errorText}>Ошибка: {error}</p>}
+      {error && (
+        <p className={styles.errorText}>
+          {t.errorPrefix}: {error}
+        </p>
+      )}
 
       {!isLoading && items.length === 0 ? (
         <div className={styles.emptyState}>
-          <p>
-            Ваша программа упражнений пока пуста. Вы можете загрузить свою
-            базовую программу одной кнопкой или добавить упражнения вручную.
-          </p>
+          <p>{t.exercisesEmptyText}</p>
           <button
             type="button"
             onClick={() => dispatch(seedDefaultExercises())}
             className={styles.seedBtn}>
-            Загрузить мою базовую программу
+            {t.exercisesSeedBtn}
           </button>
         </div>
       ) : filteredExercises.length === 0 ? (
         <div className={styles.emptyState}>
           {selectedDay === INACTIVE_TAB
-            ? "Неактивных упражнений пока нет."
-            : `На день «${selectedDay}» пока нет активных упражнений.`}
+            ? t.exercisesEmptyInactive
+            : `${t.exercisesEmptyForDayPrefix}${getTabLabel(selectedDay)}${t.exercisesEmptyForDaySuffix}`}
         </div>
       ) : (
         filteredExercises.map((exercise) => (
@@ -135,7 +146,7 @@ export const ExercisesPage = () => {
 
       <ConfirmModal
         isOpen={isDeleteAllOpen}
-        title="Удалить всё?"
+        title={t.deleteAllConfirmTitle}
         onConfirm={handleConfirmDeleteAll}
         onCancel={() => setIsDeleteAllOpen(false)}
       />

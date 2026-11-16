@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMostFrequentDayTitle } from "../../../../utils/dayTitle";
+import { useLanguage } from "../../../../context/LanguageContext";
+import { translateDay } from "../../../../i18n";
 import type { Exercise } from "../../../../types/exercise";
 import styles from "./WorkoutScheduleBoard.module.css";
 
@@ -24,6 +26,7 @@ export const WorkoutScheduleBoard = ({
   todayName,
 }: WorkoutScheduleBoardProps) => {
   const navigate = useNavigate();
+  const { language, t } = useLanguage();
 
   const activeExercises = useMemo(
     () => exercises.filter((item) => item.isActive),
@@ -41,18 +44,16 @@ export const WorkoutScheduleBoard = ({
 
   return (
     <section className={styles.section}>
-      <h3 className={styles.sectionTitle}>Расписание тренировок</h3>
+      <h3 className={styles.sectionTitle}>{t.homeScheduleTitle}</h3>
 
       {activeDays.length === 0 ? (
         <div className={styles.emptyCard}>
-          <p className={styles.emptyText}>
-            У вас пока нет активных упражнений.
-          </p>
+          <p className={styles.emptyText}>{t.homeNoActiveExercises}</p>
           <button
             type="button"
             onClick={() => navigate("/exercises")}
             className={styles.addBtn}>
-            Перейти к упражнениям
+            {t.homeGoToExercisesBtn}
           </button>
         </div>
       ) : (
@@ -63,7 +64,7 @@ export const WorkoutScheduleBoard = ({
             );
             const customTitle = getMostFrequentDayTitle(
               dayExercises,
-              "Тренировка",
+              t.homeDefaultWorkoutTitle,
             );
             const isToday = day === todayName;
 
@@ -74,11 +75,12 @@ export const WorkoutScheduleBoard = ({
                   isToday ? styles.dayCardToday : ""
                 }`}>
                 <h4 className={styles.dayTitle}>
-                  {day} —{" "}
+                  {translateDay(day, language)} —{" "}
                   <span className={styles.dayAccent}>{customTitle}</span>
                 </h4>
                 <p className={styles.dayCount}>
-                  Упражнений в программе: <strong>{dayExercises.length}</strong>
+                  {t.homeExercisesInProgram}:{" "}
+                  <strong>{dayExercises.length}</strong>
                 </p>
               </div>
             );

@@ -8,6 +8,7 @@ import {
   PlayerSelect,
   type PlayerSelectOption,
 } from "../PlayerSelect/PlayerSelect";
+import { useLanguage } from "../../../../context/LanguageContext";
 import type { LocalTrack, PlayerMode } from "../../../../types/player";
 import styles from "./PlayerDrawer.module.css";
 
@@ -37,11 +38,6 @@ const checkFolderPickerSupport = (): boolean => {
   return hasWebkitDirectory && !isMobileDevice;
 };
 
-const MODE_OPTIONS: PlayerSelectOption[] = [
-  { value: "radio", label: "Онлайн радио" },
-  { value: "local", label: "Моя музыка" },
-];
-
 export const PlayerDrawer = ({
   mode,
   onSwitchMode,
@@ -55,9 +51,15 @@ export const PlayerDrawer = ({
   isShuffle,
   onToggleShuffle,
 }: PlayerDrawerProps) => {
+  const { t } = useLanguage();
   const folderInputRef = useRef<HTMLInputElement | null>(null);
   const filesInputRef = useRef<HTMLInputElement | null>(null);
   const canSelectFolder = checkFolderPickerSupport();
+
+  const MODE_OPTIONS: PlayerSelectOption[] = [
+    { value: "radio", label: t.playerModeRadio },
+    { value: "local", label: t.playerModeLocal },
+  ];
 
   const openSystemPicker = () => {
     if (canSelectFolder) {
@@ -84,7 +86,7 @@ export const PlayerDrawer = ({
     e.target.value = "";
 
     if (audioFiles.length === 0) {
-      onError("В выбранном месте не найдено аудиофайлов.");
+      onError(t.playerErrorNoAudio);
       return;
     }
 
@@ -121,7 +123,7 @@ export const PlayerDrawer = ({
     label: `${idx + 1}. ${track.title}`,
   }));
 
-  const addButtonText = canSelectFolder ? "Добавить папку" : "Добавить файлы";
+  const addButtonText = canSelectFolder ? t.playerAddFolder : t.playerAddFiles;
 
   return (
     <div className={styles.drawer}>
@@ -185,7 +187,7 @@ export const PlayerDrawer = ({
             className={`${styles.shuffleBtn} ${
               isShuffle ? styles.shuffleBtnActive : ""
             }`}>
-            {isShuffle ? "Вперемешку" : "По порядку"}
+            {isShuffle ? t.playerShuffleOn : t.playerShuffleOff}
           </button>
         )}
       </div>

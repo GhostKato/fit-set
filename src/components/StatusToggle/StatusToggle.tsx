@@ -1,3 +1,4 @@
+import { useLanguage } from "../../context/LanguageContext";
 import styles from "./StatusToggle.module.css";
 
 interface StatusToggleProps {
@@ -21,9 +22,11 @@ export const StatusToggle = ({
   title,
   className = "",
 }: StatusToggleProps) => {
+  const { t } = useLanguage();
+
   return (
     <label
-      title={title ?? (checked ? "Активно" : "Не активно")}
+      title={title ?? (checked ? t.statusActive : t.statusInactive)}
       className={`${styles.wrapper} ${
         disabled ? styles.wrapperDisabled : ""
       } ${className}`}>

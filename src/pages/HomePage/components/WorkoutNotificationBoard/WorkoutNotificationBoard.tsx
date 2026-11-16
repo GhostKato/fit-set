@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../../redux/hooks";
 import { getMostFrequentDayTitle } from "../../../../utils/dayTitle";
+import { useLanguage } from "../../../../context/LanguageContext";
+import { translateDay, translateDayAccusative } from "../../../../i18n";
 import type { Exercise } from "../../../../types/exercise";
 import styles from "./WorkoutNotificationBoard.module.css";
 
@@ -9,21 +11,12 @@ interface WorkoutNotificationBoardProps {
   todayExercises: Exercise[];
 }
 
-const formatDayAccusative = (day: string): string => {
-  const lower = day.toLowerCase();
-  const map: Record<string, string> = {
-    среда: "среду",
-    пятница: "пятницу",
-    суббота: "субботу",
-  };
-  return map[lower] || lower;
-};
-
 export const WorkoutNotificationBoard = ({
   todayName,
   todayExercises,
 }: WorkoutNotificationBoardProps) => {
   const navigate = useNavigate();
+  const { language, t } = useLanguage();
   const allExercises = useAppSelector((state) => state.exercises.items);
 
   const handleStartWorkout = () => {
@@ -37,34 +30,35 @@ export const WorkoutNotificationBoard = ({
 
     return (
       <div className={styles.restCard}>
-        <h3 className={styles.restTitle}>
-          Сегодня день отдыха и восстановления
-        </h3>
+        <h3 className={styles.restTitle}>{t.homeRestTitle}</h3>
         <p className={styles.restText}>
-          На {formatDayAccusative(todayName)} тренировок нет. Отдыхайте и
-          набирайтесь сил перед следующим занятием.
+          {t.homeRestTextPrefix} {translateDayAccusative(todayName, language)}{" "}
+          {t.homeRestTextSuffix}
         </p>
       </div>
     );
   }
 
-  const customDayTitle = getMostFrequentDayTitle(todayExercises, "Тренировка");
+  const customDayTitle = getMostFrequentDayTitle(
+    todayExercises,
+    t.homeDefaultWorkoutTitle,
+  );
 
   return (
     <div className={styles.todayCard}>
       <h2 className={styles.todayTitle}>
-        {todayName} — {customDayTitle}
+        {translateDay(todayName, language)} — {customDayTitle}
       </h2>
 
       <p className={styles.todayInfo}>
-        Запланировано упражнений: <strong>{todayExercises.length}</strong>
+        {t.homePlannedExercises}: <strong>{todayExercises.length}</strong>
       </p>
 
       <button
         type="button"
         onClick={handleStartWorkout}
         className={styles.startBtn}>
-        Начать сегодняшнюю тренировку
+        {t.homeStartWorkoutBtn}
       </button>
     </div>
   );

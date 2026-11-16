@@ -14,10 +14,12 @@ import {
 } from "lucide-react";
 import { PRESET_STATIONS } from "../../data/radioStations";
 import { PlayerDrawer } from "./components/PlayerDrawer/PlayerDrawer";
+import { useLanguage } from "../../context/LanguageContext";
 import type { LocalTrack, PlayerMode } from "../../types/player";
 import styles from "./MusicPlayer.module.css";
 
 export const MusicPlayer = () => {
+  const { t } = useLanguage();
   const playerRef = useRef<HTMLDivElement | null>(null);
   const radioAudioRef = useRef<HTMLAudioElement | null>(null);
   const localAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -39,14 +41,14 @@ export const MusicPlayer = () => {
   const activeTitle =
     mode === "radio"
       ? currentStation.title
-      : (currentLocalTrack?.title ?? "Треки не выбраны");
+      : (currentLocalTrack?.title ?? t.playerNoTracks);
 
   const activeMeta =
     mode === "radio"
-      ? `РАДИО #${currentStation.id} • ${currentStation.genre}`
+      ? `${t.playerRadioLabel} #${currentStation.id} • ${currentStation.genre}`
       : localTracks.length > 0
-        ? `МОЯ МУЗЫКА • ${localIndex + 1} из ${localTracks.length}`
-        : "МОЯ МУЗЫКА • ВЫБЕРИТЕ ТРЕКИ";
+        ? `${t.playerMyMusicLabel} • ${localIndex + 1} ${t.playerOfLabel} ${localTracks.length}`
+        : `${t.playerMyMusicLabel} • ${t.playerSelectTracksHint}`;
 
   useEffect(() => {
     if (isMinimized || isCollapsed) return;
@@ -87,12 +89,12 @@ export const MusicPlayer = () => {
       radioAudio.load();
       radioAudio.play().catch(() => {
         setIsPlaying(false);
-        setErrorMsg("Не удалось запустить поток. Попробуйте другую станцию.");
+        setErrorMsg(t.playerErrorStream);
       });
     } else {
       radioAudio.pause();
     }
-  }, [mode, currentIndex, isPlaying]);
+  }, [mode, currentIndex, isPlaying, t.playerErrorStream]);
 
   useEffect(() => {
     const localAudio = localAudioRef.current;
@@ -117,17 +119,17 @@ export const MusicPlayer = () => {
       localAudio.load();
       localAudio.play().catch(() => {
         setIsPlaying(false);
-        setErrorMsg("Не удалось воспроизвести этот аудиофайл.");
+        setErrorMsg(t.playerErrorLocalFile);
       });
     } else {
       localAudio.pause();
     }
-  }, [mode, localIndex, currentLocalTrack, isPlaying]);
+  }, [mode, localIndex, currentLocalTrack, isPlaying, t.playerErrorLocalFile]);
 
   const togglePlay = () => {
     if (mode === "local" && localTracks.length === 0) {
       setIsMinimized(false);
-      setErrorMsg("Сначала выберите папку или аудиофайлы.");
+      setErrorMsg(t.playerErrorSelectFirst);
       return;
     }
     setIsPlaying((prev) => !prev);
@@ -176,7 +178,10 @@ export const MusicPlayer = () => {
 
     navigator.mediaSession.metadata = new MediaMetadata({
       title: activeTitle,
-      artist: mode === "radio" ? currentStation.genre : "Fit Set • Моя музыка",
+      artist:
+        mode === "radio"
+          ? currentStation.genre
+          : `Fit Set • ${t.playerModeLocal}`,
       album: "Fit Set Player",
     });
 
@@ -184,7 +189,14 @@ export const MusicPlayer = () => {
     navigator.mediaSession.setActionHandler("pause", () => setIsPlaying(false));
     navigator.mediaSession.setActionHandler("previoustrack", handlePrev);
     navigator.mediaSession.setActionHandler("nexttrack", handleNext);
-  }, [activeTitle, mode, currentStation.genre, handlePrev, handleNext]);
+  }, [
+    activeTitle,
+    mode,
+    currentStation.genre,
+    handlePrev,
+    handleNext,
+    t.playerModeLocal,
+  ]);
 
   const handleLoadLocalTracks = (newTracks: LocalTrack[]) => {
     localTracks.forEach((track) => URL.revokeObjectURL(track.url));
@@ -220,7 +232,7 @@ export const MusicPlayer = () => {
         onError={() => {
           if (mode !== "radio") return;
           setIsPlaying(false);
-          setErrorMsg("Станция временно недоступна. Переключите волну.");
+          setErrorMsg(t.playerErrorStationUnavailable);
         }}
       />
 
@@ -232,7 +244,7 @@ export const MusicPlayer = () => {
         onError={() => {
           if (mode !== "local" || !currentLocalTrack) return;
           setIsPlaying(false);
-          setErrorMsg("Ошибка чтения файла.");
+          setErrorMsg(t.playerErrorReadFile);
         }}
       />
 
@@ -243,8 +255,8 @@ export const MusicPlayer = () => {
           className={`${styles.floatingEqBtn} ${
             isPlaying ? styles.floatingEqBtnPlaying : ""
           }`}
-          title={`Развернуть плеер (${activeTitle})`}
-          aria-label="Развернуть плеер">
+          title={`${t.playerExpandTitle} (${activeTitle})`}
+          aria-label={t.playerExpandTitle}>
           <div
             className={`${styles.equalizer} ${
               isPlaying ? styles.equalizerPlaying : ""
@@ -265,11 +277,7 @@ export const MusicPlayer = () => {
               className={`${styles.topBar} ${
                 isMinimized ? styles.topBarExpandable : ""
               }`}
-              title={
-                isMinimized
-                  ? "Нажмите, чтобы открыть список станций и треков"
-                  : undefined
-              }>
+              title={isMinimized ? t.playerOpenDrawerTitle : undefined}>
               <div className={styles.stationInfo}>
                 <span className={styles.stationMeta}>{activeMeta}</span>
                 <div className={styles.titleRow}>
@@ -293,7 +301,7 @@ export const MusicPlayer = () => {
                   type="button"
                   onClick={handlePrev}
                   className={styles.controlBtn}
-                  title="Предыдущая">
+                  title={t.playerPrevTitle}>
                   <SkipBack size={18} />
                 </button>
                 <button
@@ -302,14 +310,14 @@ export const MusicPlayer = () => {
                   className={`${styles.controlBtn} ${styles.playBtn} ${
                     isPlaying ? styles.playBtnActive : ""
                   }`}
-                  title={isPlaying ? "Пауза" : "Играть"}>
+                  title={isPlaying ? t.playerPauseTitle : t.playerPlayTitle}>
                   {isPlaying ? <Pause size={18} /> : <Play size={18} />}
                 </button>
                 <button
                   type="button"
                   onClick={handleNext}
                   className={styles.controlBtn}
-                  title="Следующая">
+                  title={t.playerNextTitle}>
                   <SkipForward size={18} />
                 </button>
 
@@ -320,7 +328,7 @@ export const MusicPlayer = () => {
                     setIsCollapsed(true);
                   }}
                   className={`${styles.controlBtn} ${styles.minimizeBtn}`}
-                  title="Свернуть плеер вправо">
+                  title={t.playerCollapseTitle}>
                   <PictureInPicture2 size={18} />
                 </button>
               </div>

@@ -3,6 +3,8 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import { addExercise } from "../../../../redux/exercises/operations";
 import { CustomSelect } from "../../../../components/CustomSelect/CustomSelect";
 import { StatusToggle } from "../../../../components/StatusToggle/StatusToggle";
+import { useLanguage } from "../../../../context/LanguageContext";
+import { translateDay } from "../../../../i18n";
 import type { ExerciseUnit, NewExercise } from "../../../../types/exercise";
 import styles from "./ExerciseCreateForm.module.css";
 
@@ -18,11 +20,6 @@ const ALL_DAYS = [
   "Пятница",
   "Суббота",
   "Воскресенье",
-];
-
-const UNIT_OPTIONS = [
-  { value: "reps", label: "повт." },
-  { value: "sec", label: "сек." },
 ];
 
 type CreateFormState = Omit<NewExercise, "orders"> & { order: number };
@@ -47,7 +44,18 @@ const initialFormState: CreateFormState = {
 
 export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
   const dispatch = useAppDispatch();
+  const { language, t } = useLanguage();
   const [formData, setFormData] = useState<CreateFormState>(initialFormState);
+
+  const dayOptions = ALL_DAYS.map((day) => ({
+    value: day,
+    label: translateDay(day, language),
+  }));
+
+  const unitOptions = [
+    { value: "reps", label: t.unitReps },
+    { value: "sec", label: t.unitSec },
+  ];
 
   const isSubmitDisabled = formData.days.length === 0 || !formData.name.trim();
 
@@ -87,14 +95,14 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <h3 className={styles.formTitle}>Новое упражнение</h3>
+      <h3 className={styles.formTitle}>{t.formNewExerciseTitle}</h3>
 
       <div className={styles.row}>
         <CustomSelect
           multiple
           values={formData.days}
-          options={ALL_DAYS}
-          placeholder="Выберите дни..."
+          options={dayOptions}
+          placeholder={t.formSelectDaysPlaceholder}
           onChangeMultiple={(days) =>
             setFormData((prev) => ({ ...prev, days }))
           }
@@ -104,7 +112,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
           name="dayTitle"
           value={formData.dayTitle}
           onChange={handleChange}
-          placeholder="Тема дня"
+          placeholder={t.formDayTitlePlaceholder}
           className={`${styles.input} ${styles.flex1}`}
         />
 
@@ -112,7 +120,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
           name="muscleGroup"
           value={formData.muscleGroup}
           onChange={handleChange}
-          placeholder="Группа мышц"
+          placeholder={t.formMuscleGroupPlaceholder}
           className={`${styles.input} ${styles.flex1}`}
         />
 
@@ -122,7 +130,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
             setFormData((prev) => ({ ...prev, isActive: nextValue }))
           }
           size="md"
-          label="Статус:"
+          label={t.formStatusLabel}
           labelPosition="left"
         />
       </div>
@@ -132,7 +140,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          placeholder="Название упражнения *"
+          placeholder={t.formExerciseNamePlaceholder}
           required
           className={`${styles.input} ${styles.flex2}`}
         />
@@ -145,7 +153,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
             value={formData.order}
             onChange={handleChange}
             min={1}
-            title="Порядок в тренировке"
+            title={t.formOrderTitle}
             className={`${styles.input} ${styles.numberInput}`}
           />
         </label>
@@ -153,7 +161,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
 
       <div className={styles.row}>
         <label className={styles.numberGroup}>
-          <span>Подходы:</span>
+          <span>{t.formSetsLabel}</span>
           <input
             type="number"
             name="sets"
@@ -166,7 +174,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
 
         <label className={styles.numberGroup}>
           <span className={styles.targetLabel}>
-            {formData.unit === "sec" ? "Секунды:" : "Повторы:"}
+            {formData.unit === "sec" ? t.formSecondsLabel : t.formRepsLabel}
           </span>
           <input
             type="number"
@@ -180,8 +188,8 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
 
         <CustomSelect
           value={formData.unit}
-          options={UNIT_OPTIONS}
-          title="Единица измерения"
+          options={unitOptions}
+          title={t.formUnitTitle}
           onChange={(val) =>
             setFormData((prev) => ({ ...prev, unit: val as ExerciseUnit }))
           }
@@ -191,7 +199,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
           name="weight"
           value={formData.weight}
           onChange={handleChange}
-          placeholder="Рабочий вес"
+          placeholder={t.formWeightPlaceholder}
           className={`${styles.input} ${styles.flex1}`}
         />
       </div>
@@ -200,7 +208,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
         name="targetMuscles"
         value={formData.targetMuscles}
         onChange={handleChange}
-        placeholder="Работающие мышцы"
+        placeholder={t.formTargetMusclesPlaceholder}
         className={styles.input}
       />
 
@@ -208,7 +216,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
         name="howToDo"
         value={formData.howToDo}
         onChange={handleChange}
-        placeholder="Как выполнять"
+        placeholder={t.formHowToDoPlaceholder}
         rows={2}
         className={styles.textarea}
       />
@@ -217,7 +225,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
         name="handsMode"
         value={formData.handsMode}
         onChange={handleChange}
-        placeholder="Режим работы рук"
+        placeholder={t.formHandsModePlaceholder}
         className={styles.input}
       />
 
@@ -225,7 +233,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
         name="palmPosition"
         value={formData.palmPosition}
         onChange={handleChange}
-        placeholder="Положение ладоней"
+        placeholder={t.formPalmPositionPlaceholder}
         className={styles.input}
       />
 
@@ -233,7 +241,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
         name="breathing"
         value={formData.breathing}
         onChange={handleChange}
-        placeholder="Дыхание"
+        placeholder={t.formBreathingPlaceholder}
         className={styles.input}
       />
 
@@ -241,7 +249,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
         type="submit"
         disabled={isSubmitDisabled}
         className={styles.submitBtn}>
-        Создать
+        {t.createBtn}
       </button>
     </form>
   );

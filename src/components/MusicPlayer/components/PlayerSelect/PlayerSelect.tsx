@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useLanguage } from "../../../../context/LanguageContext";
 import styles from "./PlayerSelect.module.css";
 
 export interface PlayerSelectOption {
@@ -18,11 +19,12 @@ interface PlayerSelectProps {
 export const PlayerSelect = ({
   value,
   options,
-  placeholder = "Выбрать...",
+  placeholder,
   onChange,
   topActionLabel,
   onTopAction,
 }: PlayerSelectProps) => {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement | null>(null);
 
@@ -52,10 +54,12 @@ export const PlayerSelect = ({
         className={`${styles.trigger} ${isOpen ? styles.triggerOpen : ""}`}
         aria-expanded={isOpen}>
         <span className={styles.label}>
-          {selectedOption ? selectedOption.label : placeholder}
+          {selectedOption
+            ? selectedOption.label
+            : (placeholder ?? t.selectPlaceholder)}
         </span>
         <span className={styles.arrow} aria-hidden="true">
-          ▾
+          ▼
         </span>
       </button>
 

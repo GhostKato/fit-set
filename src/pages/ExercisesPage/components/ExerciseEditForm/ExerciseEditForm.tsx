@@ -8,6 +8,8 @@ import {
   getOrderForContext,
   isSpecificWeekDay,
 } from "../../../../utils/exerciseOrder";
+import { useLanguage } from "../../../../context/LanguageContext";
+import { translateDay } from "../../../../i18n";
 import type {
   Exercise,
   ExerciseUnit,
@@ -31,17 +33,23 @@ const ALL_DAYS = [
   "Воскресенье",
 ];
 
-const UNIT_OPTIONS = [
-  { value: "reps", label: "повт." },
-  { value: "sec", label: "сек." },
-];
-
 export const ExerciseEditForm = ({
   exercise,
   activeDay,
   onCancel,
 }: ExerciseEditFormProps) => {
   const dispatch = useAppDispatch();
+  const { language, t } = useLanguage();
+
+  const dayOptions = ALL_DAYS.map((day) => ({
+    value: day,
+    label: translateDay(day, language),
+  }));
+
+  const unitOptions = [
+    { value: "reps", label: t.unitReps },
+    { value: "sec", label: t.unitSec },
+  ];
 
   const [currentOrder, setCurrentOrder] = useState<number>(() =>
     getOrderForContext(exercise.orders, exercise.days, activeDay),
@@ -126,15 +134,15 @@ export const ExerciseEditForm = ({
 
   return (
     <form onSubmit={handleSubmit} className={styles.cardEditing}>
-      <h4 className={styles.editTitle}>Редактирование упражнения</h4>
+      <h4 className={styles.editTitle}>{t.formEditExerciseTitle}</h4>
 
       <div className={styles.editGrid}>
         <div className={styles.row}>
           <CustomSelect
             multiple
             values={formData.days}
-            options={ALL_DAYS}
-            placeholder="Выберите дни..."
+            options={dayOptions}
+            placeholder={t.formSelectDaysPlaceholder}
             onChangeMultiple={handleDaysChange}
           />
 
@@ -142,7 +150,7 @@ export const ExerciseEditForm = ({
             name="dayTitle"
             value={formData.dayTitle}
             onChange={handleChange}
-            placeholder="Тема дня"
+            placeholder={t.formDayTitlePlaceholder}
             className={`${styles.input} ${styles.flex1}`}
           />
 
@@ -150,7 +158,7 @@ export const ExerciseEditForm = ({
             name="muscleGroup"
             value={formData.muscleGroup}
             onChange={handleChange}
-            placeholder="Группа мышц"
+            placeholder={t.formMuscleGroupPlaceholder}
             className={`${styles.input} ${styles.flex1}`}
           />
 
@@ -160,7 +168,7 @@ export const ExerciseEditForm = ({
               setFormData((prev) => ({ ...prev, isActive: nextValue }))
             }
             size="md"
-            label="Статус:"
+            label={t.formStatusLabel}
             labelPosition="left"
           />
         </div>
@@ -170,7 +178,7 @@ export const ExerciseEditForm = ({
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Название упражнения *"
+            placeholder={t.formExerciseNamePlaceholder}
             required
             className={`${styles.input} ${styles.flex2}`}
           />
@@ -185,8 +193,8 @@ export const ExerciseEditForm = ({
               min={1}
               title={
                 isSpecificWeekDay(activeDay)
-                  ? `Порядок в тренировке (${activeDay})`
-                  : "Порядок в тренировке"
+                  ? `${t.formOrderTitle} (${translateDay(activeDay, language)})`
+                  : t.formOrderTitle
               }
               className={`${styles.input} ${styles.numberInput}`}
             />
@@ -195,7 +203,7 @@ export const ExerciseEditForm = ({
 
         <div className={styles.row}>
           <label className={styles.numberGroup}>
-            <span>Подходы:</span>
+            <span>{t.formSetsLabel}</span>
             <input
               type="number"
               name="sets"
@@ -208,7 +216,7 @@ export const ExerciseEditForm = ({
 
           <label className={styles.numberGroup}>
             <span className={styles.targetLabel}>
-              {formData.unit === "sec" ? "Секунды:" : "Повторы:"}
+              {formData.unit === "sec" ? t.formSecondsLabel : t.formRepsLabel}
             </span>
             <input
               type="number"
@@ -222,8 +230,8 @@ export const ExerciseEditForm = ({
 
           <CustomSelect
             value={formData.unit}
-            options={UNIT_OPTIONS}
-            title="Единица измерения"
+            options={unitOptions}
+            title={t.formUnitTitle}
             onChange={(val) =>
               setFormData((prev) => ({ ...prev, unit: val as ExerciseUnit }))
             }
@@ -233,7 +241,7 @@ export const ExerciseEditForm = ({
             name="weight"
             value={formData.weight}
             onChange={handleChange}
-            placeholder="Рабочий вес"
+            placeholder={t.formWeightPlaceholder}
             className={`${styles.input} ${styles.flex1}`}
           />
         </div>
@@ -242,7 +250,7 @@ export const ExerciseEditForm = ({
           name="targetMuscles"
           value={formData.targetMuscles}
           onChange={handleChange}
-          placeholder="Работающие мышцы"
+          placeholder={t.formTargetMusclesPlaceholder}
           className={styles.input}
         />
 
@@ -250,7 +258,7 @@ export const ExerciseEditForm = ({
           name="howToDo"
           value={formData.howToDo}
           onChange={handleChange}
-          placeholder="Как выполнять"
+          placeholder={t.formHowToDoPlaceholder}
           rows={2}
           className={styles.textarea}
         />
@@ -259,7 +267,7 @@ export const ExerciseEditForm = ({
           name="handsMode"
           value={formData.handsMode}
           onChange={handleChange}
-          placeholder="Режим работы рук"
+          placeholder={t.formHandsModePlaceholder}
           className={styles.input}
         />
 
@@ -267,7 +275,7 @@ export const ExerciseEditForm = ({
           name="palmPosition"
           value={formData.palmPosition}
           onChange={handleChange}
-          placeholder="Положение ладоней"
+          placeholder={t.formPalmPositionPlaceholder}
           className={styles.input}
         />
 
@@ -275,20 +283,20 @@ export const ExerciseEditForm = ({
           name="breathing"
           value={formData.breathing}
           onChange={handleChange}
-          placeholder="Дыхание"
+          placeholder={t.formBreathingPlaceholder}
           className={styles.input}
         />
       </div>
 
       <div className={styles.editActions}>
         <button type="button" onClick={onCancel} className={styles.cancelBtn}>
-          Отмена
+          {t.cancelBtn}
         </button>
         <button
           type="submit"
           disabled={isSaveDisabled}
           className={styles.saveBtn}>
-          Сохранить
+          {t.saveBtn}
         </button>
       </div>
     </form>

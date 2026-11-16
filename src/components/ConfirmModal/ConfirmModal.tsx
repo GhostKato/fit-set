@@ -1,4 +1,5 @@
 import { useEffect, type MouseEvent } from "react";
+import { useLanguage } from "../../context/LanguageContext";
 import styles from "./ConfirmModal.module.css";
 
 interface ConfirmModalProps {
@@ -11,11 +12,13 @@ interface ConfirmModalProps {
 
 export const ConfirmModal = ({
   isOpen,
-  title = "Подтвердить удаление?",
+  title,
   subtitle,
   onConfirm,
   onCancel,
 }: ConfirmModalProps) => {
+  const { t } = useLanguage();
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -49,15 +52,15 @@ export const ConfirmModal = ({
       role="dialog"
       aria-modal="true">
       <div className={styles.modal}>
-        <h3 className={styles.title}>{title}</h3>
+        <h3 className={styles.title}>{title ?? t.confirmDeleteTitle}</h3>
         {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
 
         <div className={styles.actions}>
           <button type="button" onClick={onCancel} className={styles.noBtn}>
-            Нет
+            {t.confirmNo}
           </button>
           <button type="button" onClick={onConfirm} className={styles.yesBtn}>
-            Да
+            {t.confirmYes}
           </button>
         </div>
       </div>

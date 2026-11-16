@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Check } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext";
 import styles from "./CustomSelect.module.css";
 
 export interface SelectOption {
@@ -26,12 +27,15 @@ export const CustomSelect = ({
   options,
   onChange,
   onChangeMultiple,
-  placeholder = "Выберите...",
+  placeholder,
   className = "",
   title,
 }: CustomSelectProps) => {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const resolvedPlaceholder = placeholder ?? t.selectPlaceholder;
 
   const normalizedOptions: SelectOption[] = options.map((opt) =>
     typeof opt === "string" ? { value: opt, label: opt } : opt,
@@ -89,9 +93,9 @@ export const CustomSelect = ({
 
   const getTriggerText = () => {
     if (!multiple) {
-      return selectedOption ? selectedOption.label : placeholder;
+      return selectedOption ? selectedOption.label : resolvedPlaceholder;
     }
-    if (values.length === 0) return placeholder;
+    if (values.length === 0) return resolvedPlaceholder;
     if (values.length === 1) {
       const firstValue = values.at(0) ?? "";
       const singleOption = normalizedOptions.find(
@@ -99,7 +103,7 @@ export const CustomSelect = ({
       );
       return singleOption ? singleOption.label : firstValue;
     }
-    return `Выбрано дней: ${values.length}`;
+    return `${t.selectedDaysPrefix} ${values.length}`;
   };
 
   return (
@@ -142,7 +146,7 @@ export const CustomSelect = ({
                 aria-selected={false}
                 onClick={handleSelectAll}
                 className={`${styles.option} ${styles.bulkOption}`}>
-                <span>Выбрать все</span>
+                <span>{t.selectAllOption}</span>
               </li>
 
               <li
@@ -150,7 +154,7 @@ export const CustomSelect = ({
                 aria-selected={false}
                 onClick={handleClearAll}
                 className={`${styles.option} ${styles.bulkOption} ${styles.bulkDivider}`}>
-                <span>Убрать все</span>
+                <span>{t.clearAllOption}</span>
               </li>
             </>
           )}

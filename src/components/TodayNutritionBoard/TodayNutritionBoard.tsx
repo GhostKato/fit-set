@@ -8,6 +8,8 @@ import {
 } from "../../redux/nutrition/operations";
 import { setDailySelectionOptimistic } from "../../redux/nutrition/slice";
 import { EMPTY_DAILY_SELECTION } from "../../services/nutritionOps";
+import { useLanguage } from "../../context/LanguageContext";
+import { translateMeal } from "../../i18n";
 import type { MealTime } from "../../types/nutrition";
 import styles from "./TodayNutritionBoard.module.css";
 
@@ -22,6 +24,7 @@ export const TodayNutritionBoard = ({
 }: TodayNutritionBoardProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { language, t } = useLanguage();
   const { items, dailySelection, schedule } = useAppSelector(
     (state) => state.nutrition,
   );
@@ -83,7 +86,7 @@ export const TodayNutritionBoard = ({
   return (
     <section className={styles.todayBoard}>
       <div className={styles.todayBoardHeader}>
-        <h3 className={styles.todayBoardTitle}>Мой рацион на сегодня</h3>
+        <h3 className={styles.todayBoardTitle}>{t.todayNutritionTitle}</h3>
 
         {isEditable ? (
           totalSelectedCount > 0 && (
@@ -91,7 +94,7 @@ export const TodayNutritionBoard = ({
               type="button"
               onClick={handleClearToday}
               className={styles.clearBtn}>
-              Очистить всё
+              {t.todayNutritionClearAll}
             </button>
           )
         ) : (
@@ -99,7 +102,7 @@ export const TodayNutritionBoard = ({
             type="button"
             onClick={() => navigate("/nutrition")}
             className={styles.editPlanBtn}>
-            Изменить рацион
+            {t.todayNutritionEditPlan}
           </button>
         )}
       </div>
@@ -114,7 +117,9 @@ export const TodayNutritionBoard = ({
           return (
             <div key={mealKey} className={styles.todayMealBox}>
               <div className={styles.todayMealTop}>
-                <span className={styles.todayMealName}>{mealKey}</span>
+                <span className={styles.todayMealName}>
+                  {translateMeal(mealKey, language)}
+                </span>
 
                 {isEditable && editingScheduleMeal === mealKey ? (
                   <div className={styles.scheduleEditBox}>
@@ -129,14 +134,14 @@ export const TodayNutritionBoard = ({
                       type="button"
                       onClick={() => saveSchedule(mealKey)}
                       className={styles.scheduleSaveBtn}
-                      title="Сохранить">
+                      title={t.saveTitle}>
                       <Check size={14} strokeWidth={2.5} />
                     </button>
                     <button
                       type="button"
                       onClick={() => setEditingScheduleMeal(null)}
                       className={styles.scheduleCancelBtn}
-                      title="Отмена">
+                      title={t.cancelTitle}>
                       <X size={14} strokeWidth={2.5} />
                     </button>
                   </div>
@@ -145,7 +150,7 @@ export const TodayNutritionBoard = ({
                     type="button"
                     onClick={() => startEditingSchedule(mealKey)}
                     className={styles.mealScheduleBtn}
-                    title="Изменить время приёма пищи">
+                    title={t.todayNutritionEditTimeTitle}>
                     <Clock size={14} strokeWidth={2.2} />
                     <span>{schedule[mealKey]}</span>
                   </button>
@@ -158,7 +163,7 @@ export const TodayNutritionBoard = ({
               </div>
 
               {mealProducts.length === 0 ? (
-                <p className={styles.todayEmpty}>Ничего не выбрано</p>
+                <p className={styles.todayEmpty}>{t.todayNutritionEmpty}</p>
               ) : (
                 <ul className={styles.todayList}>
                   {mealProducts.map((prod) =>
@@ -176,7 +181,7 @@ export const TodayNutritionBoard = ({
                               handleToggleMealForToday(prod.id, mealKey)
                             }
                             className={styles.removeTagBtn}
-                            title="Убрать из приёма пищи">
+                            title={t.todayNutritionRemoveItemTitle}>
                             <X size={14} strokeWidth={2.5} />
                           </button>
                         )}

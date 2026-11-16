@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { logoutUser } from "../../services/authOps";
 import { useTheme } from "../../context/ThemeContext";
+import { useLanguage, type LanguageCode } from "../../context/LanguageContext";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { StatusToggle } from "../StatusToggle/StatusToggle";
 import { MusicPlayer } from "../MusicPlayer/MusicPlayer";
@@ -13,8 +14,15 @@ interface LayoutProps {
   user: UserProfile;
 }
 
+const LANGUAGES: { code: LanguageCode; label: string }[] = [
+  { code: "en", label: "EN" },
+  { code: "ua", label: "UA" },
+  { code: "ru", label: "RU" },
+];
+
 export const Layout = ({ user }: LayoutProps) => {
   const { isAuto, theme, setIsAuto, setTheme } = useTheme();
+  const { language, setLanguage, t } = useLanguage();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -63,13 +71,13 @@ export const Layout = ({ user }: LayoutProps) => {
 
           <nav className={styles.nav}>
             <NavLink to="/workout" className={getNavLinkClass}>
-              Тренировка
+              {t.navWorkout}
             </NavLink>
             <NavLink to="/exercises" className={getNavLinkClass}>
-              Упражнения
+              {t.navExercises}
             </NavLink>
             <NavLink to="/nutrition" className={getNavLinkClass}>
-              Питание
+              {t.navNutrition}
             </NavLink>
           </nav>
 
@@ -97,27 +105,23 @@ export const Layout = ({ user }: LayoutProps) => {
                 <div
                   className={styles.userDropdown}
                   role="dialog"
-                  aria-label="Настройки темы">
-                  <div className={styles.themeTitle}>Тема оформления</div>
+                  aria-label={t.settingsAria}>
+                  <div className={styles.themeTitle}>{t.themeTitle}</div>
 
                   <div className={styles.themeRow}>
                     <div className={styles.themeRowInfo}>
                       <span className={styles.themeRowLabel}>
-                        Авто по времени
+                        {t.themeAuto}
                       </span>
                       <span className={styles.themeRowHint}>
-                        День 07:00 – 20:00
+                        {t.themeAutoHint}
                       </span>
                     </div>
                     <StatusToggle
                       checked={isAuto}
                       onChange={setIsAuto}
                       size="sm"
-                      title={
-                        isAuto
-                          ? "Автосмена темы включена"
-                          : "Автосмена темы выключена"
-                      }
+                      title={isAuto ? t.themeAutoOnTitle : t.themeAutoOffTitle}
                     />
                   </div>
 
@@ -125,13 +129,15 @@ export const Layout = ({ user }: LayoutProps) => {
 
                   <div className={styles.themeRow}>
                     <div className={styles.themeRowInfo}>
-                      <span className={styles.themeRowLabel}>Ночная тема</span>
+                      <span className={styles.themeRowLabel}>
+                        {t.themeDark}
+                      </span>
                       <span className={styles.themeRowHint}>
                         {isAuto
-                          ? "Доступно при выкл. авто"
+                          ? t.themeDarkAutoHint
                           : theme === "dark"
-                            ? "Включена ночная"
-                            : "Включена дневная"}
+                            ? t.themeDarkOnHint
+                            : t.themeDarkOffHint}
                       </span>
                     </div>
                     <StatusToggle
@@ -141,12 +147,32 @@ export const Layout = ({ user }: LayoutProps) => {
                       size="sm"
                       title={
                         isAuto
-                          ? "Сначала выключите автосмену темы"
+                          ? t.themeDarkAutoTitle
                           : theme === "dark"
-                            ? "Ночная тема"
-                            : "Дневная тема"
+                            ? t.themeDarkTitle
+                            : t.themeLightTitle
                       }
                     />
+                  </div>
+
+                  <div className={styles.themeDivider} />
+
+                  <div
+                    className={styles.langGroup}
+                    role="group"
+                    aria-label={t.languageAria}>
+                    {LANGUAGES.map((item) => (
+                      <button
+                        key={item.code}
+                        type="button"
+                        onClick={() => setLanguage(item.code)}
+                        aria-pressed={language === item.code}
+                        className={`${styles.langBtn} ${
+                          language === item.code ? styles.langBtnActive : ""
+                        }`}>
+                        {item.label}
+                      </button>
+                    ))}
                   </div>
                 </div>
               )}
@@ -156,7 +182,7 @@ export const Layout = ({ user }: LayoutProps) => {
               type="button"
               onClick={() => setIsLogoutModalOpen(true)}
               className={styles.logoutBtn}>
-              Выйти
+              {t.logoutBtn}
             </button>
           </div>
         </div>
@@ -170,7 +196,7 @@ export const Layout = ({ user }: LayoutProps) => {
 
       <ConfirmModal
         isOpen={isLogoutModalOpen}
-        title="Выйти из аккаунта?"
+        title={t.logoutConfirmTitle}
         onConfirm={handleConfirmLogout}
         onCancel={() => setIsLogoutModalOpen(false)}
       />

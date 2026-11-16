@@ -1,7 +1,9 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { addNutritionItem } from "../../../../redux/nutrition/operations";
+import { addNutrition } from "../../../../redux/nutrition/operations";
 import { CustomSelect } from "../../../../components/CustomSelect/CustomSelect";
+import { useLanguage } from "../../../../context/LanguageContext";
+import { translateCategory } from "../../../../i18n";
 import type {
   NewNutritionItem,
   NutritionCategory,
@@ -12,7 +14,7 @@ interface NutritionCreateFormProps {
   onSuccess: () => void;
 }
 
-const CATEGORY_ORDER: NutritionCategory[] = [
+const ALL_CATEGORIES: NutritionCategory[] = [
   "Простые углеводы",
   "Сложные углеводы",
   "Белок",
@@ -24,18 +26,23 @@ const CATEGORY_ORDER: NutritionCategory[] = [
 ];
 
 const initialFormState: NewNutritionItem = {
-  category: "Сложные углеводы",
+  category: "Белок",
   title: "",
   portion: "",
   note: "",
-  order: 1,
 };
 
 export const NutritionCreateForm = ({
   onSuccess,
 }: NutritionCreateFormProps) => {
   const dispatch = useAppDispatch();
+  const { language, t } = useLanguage();
   const [formData, setFormData] = useState<NewNutritionItem>(initialFormState);
+
+  const categoryOptions = ALL_CATEGORIES.map((cat) => ({
+    value: cat,
+    label: translateCategory(cat, language),
+  }));
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -43,7 +50,7 @@ export const NutritionCreateForm = ({
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "order" ? Number(value) : value,
+      [name]: value,
     }));
   };
 
@@ -51,59 +58,53 @@ export const NutritionCreateForm = ({
     e.preventDefault();
     if (!formData.title.trim()) return;
 
-    await dispatch(addNutritionItem(formData));
+    await dispatch(
+      addNutrition({
+        category: formData.category,
+        title: formData.title.trim(),
+        portion: formData.portion.trim(),
+        note: formData.note.trim(),
+      }),
+    );
+
     setFormData((prev) => ({
       ...initialFormState,
       category: prev.category,
-      order: prev.order + 1,
     }));
     onSuccess();
   };
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <h3 className={styles.formTitle}>Новый пункт меню</h3>
+      <h3 className={styles.formTitle}>{t.formNewNutritionTitle}</h3>
 
       <div className={styles.row}>
         <CustomSelect
           value={formData.category}
-          options={CATEGORY_ORDER}
+          options={categoryOptions}
           onChange={(val) =>
             setFormData((prev) => ({
               ...prev,
               category: val as NutritionCategory,
             }))
           }
-          className={styles.flex1}
         />
 
-        <label className={styles.numberGroup}>
-          <span>№:</span>
-          <input
-            type="number"
-            name="order"
-            value={formData.order}
-            onChange={handleChange}
-            min={1}
-            className={`${styles.input} ${styles.numberInput}`}
-          />
-        </label>
+        <input
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          placeholder={t.formNutritionTitlePlaceholder}
+          required
+          className={`${styles.input} ${styles.flex2}`}
+        />
       </div>
-
-      <input
-        name="title"
-        value={formData.title}
-        onChange={handleChange}
-        placeholder="Название продукта, коктейля или соуса *"
-        required
-        className={styles.input}
-      />
 
       <input
         name="portion"
         value={formData.portion}
         onChange={handleChange}
-        placeholder="Порция / граммовка (например, 120–130 г)"
+        placeholder={t.formNutritionPortionPlaceholder}
         className={styles.input}
       />
 
@@ -111,13 +112,13 @@ export const NutritionCreateForm = ({
         name="note"
         value={formData.note}
         onChange={handleChange}
-        placeholder="Примечание или способ приготовления"
+        placeholder={t.formNutritionNotePlaceholder}
         rows={2}
         className={styles.textarea}
       />
 
       <button type="submit" className={styles.submitBtn}>
-        Сохранить в рацион
+        {t.formNutritionSaveBtn}
       </button>
     </form>
   );

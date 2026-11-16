@@ -1,8 +1,16 @@
 import { useState, type SubmitEvent } from "react";
 import { loginUser, registerUser } from "../../services/authOps";
+import { useLanguage, type LanguageCode } from "../../context/LanguageContext";
 import styles from "./AuthPage.module.css";
 
+const LANGUAGES: { code: LanguageCode; label: string }[] = [
+  { code: "en", label: "EN" },
+  { code: "ua", label: "UA" },
+  { code: "ru", label: "RU" },
+];
+
 export const AuthPage = () => {
+  const { language, setLanguage, t } = useLanguage();
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -28,9 +36,7 @@ export const AuthPage = () => {
         await loginUser(email.trim(), password);
       }
     } catch {
-      setError(
-        "Ошибка входа: проверьте email, пароль (минимум 6 символов) или подключение к интернету.",
-      );
+      setError(t.authError);
     } finally {
       setIsLoading(false);
     }
@@ -38,20 +44,35 @@ export const AuthPage = () => {
 
   return (
     <div className={styles.wrapper}>
+      <div className={styles.langBar} role="group" aria-label={t.languageAria}>
+        {LANGUAGES.map((item) => (
+          <button
+            key={item.code}
+            type="button"
+            onClick={() => setLanguage(item.code)}
+            aria-pressed={language === item.code}
+            className={`${styles.langBtn} ${
+              language === item.code ? styles.langBtnActive : ""
+            }`}>
+            {item.label}
+          </button>
+        ))}
+      </div>
+
       <div className={styles.card}>
         <div className={styles.brand}>
           Fit<span className={styles.brandAccent}>Set</span>
         </div>
 
         <h2 className={styles.title}>
-          {isRegister ? "Создание аккаунта" : "Вход в личный кабинет"}
+          {isRegister ? t.authCreateTitle : t.authLoginTitle}
         </h2>
 
         <form onSubmit={handleSubmit} className={styles.form}>
           {isRegister && (
             <input
               type="text"
-              placeholder="Ваше имя"
+              placeholder={t.authNamePlaceholder}
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -73,7 +94,7 @@ export const AuthPage = () => {
           <div className={styles.passwordWrapper}>
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="Пароль (от 6 символов)"
+              placeholder={t.authPasswordPlaceholder}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -85,7 +106,7 @@ export const AuthPage = () => {
               onClick={() => setShowPassword((prev) => !prev)}
               className={styles.togglePasswordBtn}
               tabIndex={-1}>
-              {showPassword ? "Скрыть" : "Показать"}
+              {showPassword ? t.authHidePassword : t.authShowPassword}
             </button>
           </div>
 
@@ -96,10 +117,10 @@ export const AuthPage = () => {
             disabled={isLoading}
             className={styles.submitBtn}>
             {isLoading
-              ? "Загрузка..."
+              ? t.authLoading
               : isRegister
-                ? "Создать аккаунт"
-                : "Войти"}
+                ? t.authCreateBtn
+                : t.authLoginBtn}
           </button>
         </form>
 
@@ -108,9 +129,7 @@ export const AuthPage = () => {
           onClick={handleToggleMode}
           disabled={isLoading}
           className={styles.switchBtn}>
-          {isRegister
-            ? "Уже есть аккаунт? Войти"
-            : "Нет аккаунта? Зарегистрироваться"}
+          {isRegister ? t.authSwitchToLogin : t.authSwitchToRegister}
         </button>
       </div>
     </div>

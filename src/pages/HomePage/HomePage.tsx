@@ -3,6 +3,8 @@ import { useAppSelector } from "../../redux/hooks";
 import { TodayNutritionBoard } from "../../components/TodayNutritionBoard/TodayNutritionBoard";
 import { WorkoutNotificationBoard } from "./components/WorkoutNotificationBoard/WorkoutNotificationBoard";
 import { WorkoutScheduleBoard } from "./components/WorkoutScheduleBoard/WorkoutScheduleBoard";
+import { useLanguage } from "../../context/LanguageContext";
+import { translateDay } from "../../i18n";
 import type { UserProfile } from "../../types/user";
 import styles from "./HomePage.module.css";
 
@@ -21,6 +23,7 @@ const DAYS_BY_GET_DAY = [
 ];
 
 export const HomePage = ({ user }: HomePageProps) => {
+  const { language, t } = useLanguage();
   const exercises = useAppSelector((state) => state.exercises.items);
 
   const todayName = DAYS_BY_GET_DAY[new Date().getDay()];
@@ -33,9 +36,11 @@ export const HomePage = ({ user }: HomePageProps) => {
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.greeting}>Привет, {user.name || "Спортсмен"}!</h1>
+      <h1 className={styles.greeting}>
+        {t.homeGreeting}, {user.name || t.homeDefaultUser}!
+      </h1>
       <p className={styles.dateText}>
-        Сегодня: <strong>{todayName}</strong>
+        {t.homeToday}: <strong>{translateDay(todayName, language)}</strong>
       </p>
 
       <WorkoutNotificationBoard
