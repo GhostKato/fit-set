@@ -1,34 +1,37 @@
 import type { LanguageCode } from "../context/LanguageContext";
 import { translateShortDay } from "../i18n";
+import type { WeekDay } from "../types/exercise";
 
-const WEEK_DAYS = [
-  "Понедельник",
-  "Вторник",
-  "Среда",
-  "Четверг",
-  "Пятница",
-  "Суббота",
-  "Воскресенье",
+export const WEEK_DAYS: WeekDay[] = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
 ];
 
-export const isSpecificWeekDay = (day?: string): day is string =>
-  Boolean(day && WEEK_DAYS.includes(day));
+export const isSpecificWeekDay = (day?: string): day is WeekDay =>
+  Boolean(day && WEEK_DAYS.includes(day as WeekDay));
 
 export const getOrderForContext = (
-  orders: Record<string, number>,
-  days: string[],
+  orders: Partial<Record<WeekDay, number>>,
+  days: WeekDay[],
   activeDay?: string,
 ): number => {
   if (isSpecificWeekDay(activeDay) && orders[activeDay] !== undefined) {
-    return orders[activeDay];
+    return orders[activeDay] ?? 1;
   }
   const firstDay = days[0];
-  return firstDay && orders[firstDay] !== undefined ? orders[firstDay] : 1;
+  return firstDay && orders[firstDay] !== undefined
+    ? (orders[firstDay] ?? 1)
+    : 1;
 };
 
 export const areAllOrdersEqual = (
-  orders: Record<string, number>,
-  days: string[],
+  orders: Partial<Record<WeekDay, number>>,
+  days: WeekDay[],
 ): boolean => {
   if (days.length <= 1) return true;
   const firstVal = orders[days[0]] ?? 1;
@@ -36,8 +39,8 @@ export const areAllOrdersEqual = (
 };
 
 export const formatCardOrder = (
-  orders: Record<string, number>,
-  days: string[],
+  orders: Partial<Record<WeekDay, number>>,
+  days: WeekDay[],
   activeDay?: string,
   lang: LanguageCode = "ua",
 ): string => {

@@ -8,6 +8,7 @@ import {
   seedDefaultExercisesToDb,
 } from "../../services/exercisesOps";
 import type { Exercise, NewExercise } from "../../types/exercise";
+import type { LanguageCode } from "../../context/LanguageContext";
 
 export const fetchExercises = createAsyncThunk<
   Exercise[],
@@ -73,11 +74,11 @@ export const removeAllExercises = createAsyncThunk<
 
 export const seedDefaultExercises = createAsyncThunk<
   Exercise[],
-  void,
+  LanguageCode | undefined,
   { rejectValue: string }
->("exercises/seedDefault", async (_, thunkAPI) => {
+>("exercises/seedDefault", async (lang = "ua", thunkAPI) => {
   try {
-    return await seedDefaultExercisesToDb();
+    return await seedDefaultExercisesToDb(lang);
   } catch (error) {
     return thunkAPI.rejectWithValue((error as Error).message);
   }

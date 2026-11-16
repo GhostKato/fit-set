@@ -7,6 +7,7 @@ import {
   areAllOrdersEqual,
   getOrderForContext,
   isSpecificWeekDay,
+  WEEK_DAYS,
 } from "../../../../utils/exerciseOrder";
 import { useLanguage } from "../../../../context/LanguageContext";
 import { translateDay } from "../../../../i18n";
@@ -14,6 +15,7 @@ import type {
   Exercise,
   ExerciseUnit,
   NewExercise,
+  WeekDay,
 } from "../../../../types/exercise";
 import styles from "./ExerciseEditForm.module.css";
 
@@ -23,16 +25,6 @@ interface ExerciseEditFormProps {
   onCancel: () => void;
 }
 
-const ALL_DAYS = [
-  "Понедельник",
-  "Вторник",
-  "Среда",
-  "Четверг",
-  "Пятница",
-  "Суббота",
-  "Воскресенье",
-];
-
 export const ExerciseEditForm = ({
   exercise,
   activeDay,
@@ -41,7 +33,7 @@ export const ExerciseEditForm = ({
   const dispatch = useAppDispatch();
   const { language, t } = useLanguage();
 
-  const dayOptions = ALL_DAYS.map((day) => ({
+  const dayOptions = WEEK_DAYS.map((day) => ({
     value: day,
     label: translateDay(day, language),
   }));
@@ -91,14 +83,15 @@ export const ExerciseEditForm = ({
   };
 
   const handleDaysChange = (nextDays: string[]) => {
+    const typedDays = nextDays as WeekDay[];
     setFormData((prev) => {
-      const updatedOrders: Record<string, number> = {};
-      for (const day of nextDays) {
+      const updatedOrders: Partial<Record<WeekDay, number>> = {};
+      for (const day of typedDays) {
         updatedOrders[day] = prev.orders[day] ?? currentOrder;
       }
       return {
         ...prev,
-        days: nextDays,
+        days: typedDays,
         orders: updatedOrders,
       };
     });
@@ -108,7 +101,7 @@ export const ExerciseEditForm = ({
     e.preventDefault();
     if (isSaveDisabled) return;
 
-    const updatedOrders: Record<string, number> = {};
+    const updatedOrders: Partial<Record<WeekDay, number>> = {};
     for (const day of formData.days) {
       updatedOrders[day] = formData.orders[day] ?? currentOrder;
     }

@@ -11,7 +11,8 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import type { Exercise, NewExercise } from "../types/exercise";
-import { DEFAULT_EXERCISES } from "../data/defaultExercises";
+import { getDefaultExercises } from "../data/defaultExercises";
+import type { LanguageCode } from "../context/LanguageContext";
 
 export const fetchUserExercises = async (): Promise<Exercise[]> => {
   const userId = auth.currentUser?.uid;
@@ -64,14 +65,16 @@ export const deleteAllUserExercises = async (): Promise<void> => {
   await batch.commit();
 };
 
-export const seedDefaultExercisesToDb = async (): Promise<Exercise[]> => {
+export const seedDefaultExercisesToDb = async (
+  lang: LanguageCode = "ua",
+): Promise<Exercise[]> => {
   const userId = auth.currentUser?.uid;
   if (!userId) throw new Error("Пользователь не авторизован");
 
   const batch = writeBatch(db);
   const createdItems: Exercise[] = [];
 
-  DEFAULT_EXERCISES.forEach((item) => {
+  getDefaultExercises(lang).forEach((item) => {
     const docRef = doc(collection(db, "exercises"));
     const fullItem = { ...item, userId };
     batch.set(docRef, fullItem);

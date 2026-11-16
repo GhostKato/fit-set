@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMostFrequentDayTitle } from "../../../../utils/dayTitle";
+import { WEEK_DAYS } from "../../../../utils/exerciseOrder";
 import { useLanguage } from "../../../../context/LanguageContext";
 import { translateDay } from "../../../../i18n";
 import type { Exercise } from "../../../../types/exercise";
@@ -10,16 +11,6 @@ interface WorkoutScheduleBoardProps {
   exercises: Exercise[];
   todayName: string;
 }
-
-const WEEK_ORDER = [
-  "Понедельник",
-  "Вторник",
-  "Среда",
-  "Четверг",
-  "Пятница",
-  "Суббота",
-  "Воскресенье",
-];
 
 export const WorkoutScheduleBoard = ({
   exercises,
@@ -38,7 +29,7 @@ export const WorkoutScheduleBoard = ({
       new Set(activeExercises.flatMap((item) => item.days)),
     );
     return uniqueDays.sort(
-      (a, b) => WEEK_ORDER.indexOf(a) - WEEK_ORDER.indexOf(b),
+      (a, b) => WEEK_DAYS.indexOf(a) - WEEK_DAYS.indexOf(b),
     );
   }, [activeExercises]);
 

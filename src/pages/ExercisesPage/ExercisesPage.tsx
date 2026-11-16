@@ -7,23 +7,14 @@ import {
 import { ExerciseCard } from "../../components/ExerciseCard/ExerciseCard";
 import { ConfirmModal } from "../../components/ConfirmModal/ConfirmModal";
 import { ExerciseCreateForm } from "./components/ExerciseCreateForm/ExerciseCreateForm";
-import { getOrderForContext } from "../../utils/exerciseOrder";
+import { getOrderForContext, WEEK_DAYS } from "../../utils/exerciseOrder";
 import { useLanguage } from "../../context/LanguageContext";
 import { translateDay } from "../../i18n";
+import type { WeekDay } from "../../types/exercise";
 import styles from "./ExercisesPage.module.css";
 
-const ALL_DAYS = [
-  "Понедельник",
-  "Вторник",
-  "Среда",
-  "Четверг",
-  "Пятница",
-  "Суббота",
-  "Воскресенье",
-];
-
-const ALL_TAB = "Все";
-const INACTIVE_TAB = "Неактивные";
+const ALL_TAB = "all";
+const INACTIVE_TAB = "inactive";
 
 export const ExercisesPage = () => {
   const dispatch = useAppDispatch();
@@ -58,7 +49,9 @@ export const ExercisesPage = () => {
     .filter((item) => {
       if (selectedDay === INACTIVE_TAB) return !item.isActive;
       if (!item.isActive) return false;
-      return selectedDay === ALL_TAB ? true : item.days.includes(selectedDay);
+      return selectedDay === ALL_TAB
+        ? true
+        : item.days.includes(selectedDay as WeekDay);
     })
     .sort(
       (a, b) =>
@@ -96,7 +89,7 @@ export const ExercisesPage = () => {
       )}
 
       <div className={styles.filters}>
-        {[ALL_TAB, ...ALL_DAYS, INACTIVE_TAB].map((day) => (
+        {[ALL_TAB, ...WEEK_DAYS, INACTIVE_TAB].map((day) => (
           <button
             key={day}
             type="button"
@@ -120,7 +113,7 @@ export const ExercisesPage = () => {
           <p>{t.exercisesEmptyText}</p>
           <button
             type="button"
-            onClick={() => dispatch(seedDefaultExercises())}
+            onClick={() => dispatch(seedDefaultExercises(language))}
             className={styles.seedBtn}>
             {t.exercisesSeedBtn}
           </button>

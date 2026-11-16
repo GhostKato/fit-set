@@ -2,6 +2,186 @@ import type { LanguageCode } from "../context/LanguageContext";
 import type { NewNutritionItem } from "../types/nutrition";
 
 const DEFAULT_NUTRITION_BY_LANG: Record<LanguageCode, NewNutritionItem[]> = {
+  en: [
+    // SIMPLE CARBS
+    {
+      category: "simple_carbs",
+      title: "Pizza",
+      portion: "2 slices.",
+      note: "On holidays for lunch (complex carbs and fats are 0 g then).",
+      order: 1,
+    },
+    {
+      category: "simple_carbs",
+      title: "Sushi rolls",
+      portion: "8 pieces.",
+      note: "On holidays for lunch (complex carbs and fats are 0 g then).",
+      order: 2,
+    },
+
+    // COMPLEX CARBS
+    {
+      category: "complex_carbs",
+      title: "Buckwheat",
+      portion: "120–130 g (4 level tbsp, cooked).",
+      note: "For breakfast and lunch.",
+      order: 3,
+    },
+    {
+      category: "complex_carbs",
+      title: "Oatmeal (steel-cut / whole grain, not instant flakes)",
+      portion: "120–130 g cooked.",
+      note: "For breakfast.",
+      order: 4,
+    },
+    {
+      category: "complex_carbs",
+      title: "Light chicken & vegetable soup",
+      portion: "",
+      note: "Light chicken broth + vegetables.",
+      order: 5,
+    },
+    {
+      category: "complex_carbs",
+      title: "No complex carbs",
+      portion: "0 g.",
+      note: "When eating fatty food, cottage cheese dessert, yogurt sauce, or simple carbs at lunch.",
+      order: 6,
+    },
+
+    // PROTEIN
+    {
+      category: "protein",
+      title: "Chicken",
+      portion: "100–110 g (palm-sized piece excluding fingers).",
+      note: "Baked, boiled, or canned in its own juice.",
+      order: 7,
+    },
+    {
+      category: "protein",
+      title: "Fish",
+      portion: "100–110 g (palm-sized piece excluding fingers).",
+      note: "Baked, boiled, or canned in its own juice.",
+      order: 8,
+    },
+    {
+      category: "protein",
+      title: "Egg whites",
+      portion: "4 pcs.",
+      note: "Without yolks.",
+      order: 9,
+    },
+
+    // FATS
+    {
+      category: "fats",
+      title: "No added fats",
+      portion: "0 g.",
+      note: "When eating fatty food, cottage cheese dessert, yogurt sauce, or simple carbs at lunch.",
+      order: 10,
+    },
+    {
+      category: "fats",
+      title: "Extra Virgin Olive Oil",
+      portion: "10 g (1 tbsp) at breakfast / 5 g (1 tsp) at lunch.",
+      note: "Cold-pressed, unrefined.",
+      order: 11,
+    },
+    {
+      category: "fats",
+      title: "Egg yolks",
+      portion: "2 pcs at breakfast / 1 pc at lunch.",
+      note: "Without egg whites.",
+      order: 12,
+    },
+    {
+      category: "fats",
+      title: "Extra Virgin Olive Oil + 1 egg yolk",
+      portion: "5 g (1 tsp) + 1 pc.",
+      note: "",
+      order: 13,
+    },
+
+    // FIBER
+    {
+      category: "fiber",
+      title: "Fresh vegetables (cucumbers, carrots, radish, lettuce)",
+      portion: "150–200 g (size of 2 fists)",
+      note: "",
+      order: 14,
+    },
+    {
+      category: "fiber",
+      title: "Mushrooms",
+      portion: "100–150 g (4–5 heaped tbsp).",
+      note: "Oven-baked or pan-seared.",
+      order: 15,
+    },
+    {
+      category: "fiber",
+      title: "Canned green peas or sweet corn (sugar-free)",
+      portion: "4–5 tbsp (in soup or with meat).",
+      note: "Skip porridge in this meal if chosen.",
+      order: 16,
+    },
+
+    // SAUCES
+    {
+      category: "sauce",
+      title: "Tomato sauce",
+      portion: "To taste",
+      note: "Avoid at dinner only. 2 tbsp tomato paste (strictly no sugar or vegetable oil in ingredients!), stevia, 2–3 tbsp warm water (to adjust thickness), spices to taste: dried or fresh garlic, basil, oregano, smoked paprika, pinch of pepper.",
+      order: 17,
+    },
+    {
+      category: "sauce",
+      title: "White garlic sauce",
+      portion: "To taste",
+      note: "Avoid if eating fatty food, cottage cheese dessert, or simple carbs at lunch.",
+      order: 18,
+    },
+    {
+      category: "sauce",
+      title: "Mild pink sauce",
+      portion: "To taste",
+      note: "Avoid if eating fatty food, cottage cheese dessert, or simple carbs at lunch.",
+      order: 19,
+    },
+
+    // DESSERTS
+    {
+      category: "dessert",
+      title:
+        "One fruit (apple, half grapefruit, kiwi, or 3–4 large strawberries)",
+      portion: "1 pc (right after a meal)",
+      note: "",
+      order: 20,
+    },
+    {
+      category: "dessert",
+      title:
+        "Cottage cheese dessert (low-fat cottage cheese up to 5% + plain yogurt 1.6% + stevia + 1 tsp cinnamon + kiwi)",
+      portion:
+        "120–130 g cottage cheese (4 level tbsp) + 30–40 g yogurt (2 tbsp)",
+      note: "Right after a meal. Avoid if eating fatty food, yogurt sauce, or simple carbs at lunch.",
+      order: 21,
+    },
+    {
+      category: "dessert",
+      title: "Tea + stevia + 2 squares of dark chocolate (70%+)",
+      portion: "2 squares (right after a meal)",
+      note: "",
+      order: 22,
+    },
+    {
+      category: "dessert",
+      title:
+        "Tea + stevia + 2 Maria biscuits or 1 oatmeal cookie (no sugar or white flour)",
+      portion: "1–2 pcs (right after a meal)",
+      note: "",
+      order: 23,
+    },
+  ],
   ua: [
     // SIMPLE CARBS
     {
@@ -362,189 +542,9 @@ const DEFAULT_NUTRITION_BY_LANG: Record<LanguageCode, NewNutritionItem[]> = {
       order: 23,
     },
   ],
-  en: [
-    // SIMPLE CARBS
-    {
-      category: "simple_carbs",
-      title: "Pizza",
-      portion: "2 slices.",
-      note: "On holidays for lunch (complex carbs and fats are 0 g then).",
-      order: 1,
-    },
-    {
-      category: "simple_carbs",
-      title: "Sushi rolls",
-      portion: "8 pieces.",
-      note: "On holidays for lunch (complex carbs and fats are 0 g then).",
-      order: 2,
-    },
-
-    // COMPLEX CARBS
-    {
-      category: "complex_carbs",
-      title: "Buckwheat",
-      portion: "120–130 g (4 level tbsp, cooked).",
-      note: "For breakfast and lunch.",
-      order: 3,
-    },
-    {
-      category: "complex_carbs",
-      title: "Oatmeal (steel-cut / whole grain, not instant flakes)",
-      portion: "120–130 g cooked.",
-      note: "For breakfast.",
-      order: 4,
-    },
-    {
-      category: "complex_carbs",
-      title: "Light chicken & vegetable soup",
-      portion: "",
-      note: "Light chicken broth + vegetables.",
-      order: 5,
-    },
-    {
-      category: "complex_carbs",
-      title: "No complex carbs",
-      portion: "0 g.",
-      note: "When eating fatty food, cottage cheese dessert, yogurt sauce, or simple carbs at lunch.",
-      order: 6,
-    },
-
-    // PROTEIN
-    {
-      category: "protein",
-      title: "Chicken",
-      portion: "100–110 g (palm-sized piece excluding fingers).",
-      note: "Baked, boiled, or canned in its own juice.",
-      order: 7,
-    },
-    {
-      category: "protein",
-      title: "Fish",
-      portion: "100–110 g (palm-sized piece excluding fingers).",
-      note: "Baked, boiled, or canned in its own juice.",
-      order: 8,
-    },
-    {
-      category: "protein",
-      title: "Egg whites",
-      portion: "4 pcs.",
-      note: "Without yolks.",
-      order: 9,
-    },
-
-    // FATS
-    {
-      category: "fats",
-      title: "No added fats",
-      portion: "0 g.",
-      note: "When eating fatty food, cottage cheese dessert, yogurt sauce, or simple carbs at lunch.",
-      order: 10,
-    },
-    {
-      category: "fats",
-      title: "Extra Virgin Olive Oil",
-      portion: "10 g (1 tbsp) at breakfast / 5 g (1 tsp) at lunch.",
-      note: "Cold-pressed, unrefined.",
-      order: 11,
-    },
-    {
-      category: "fats",
-      title: "Egg yolks",
-      portion: "2 pcs at breakfast / 1 pc at lunch.",
-      note: "Without egg whites.",
-      order: 12,
-    },
-    {
-      category: "fats",
-      title: "Extra Virgin Olive Oil + 1 egg yolk",
-      portion: "5 g (1 tsp) + 1 pc.",
-      note: "",
-      order: 13,
-    },
-
-    // FIBER
-    {
-      category: "fiber",
-      title: "Fresh vegetables (cucumbers, carrots, radish, lettuce)",
-      portion: "150–200 g (size of 2 fists)",
-      note: "",
-      order: 14,
-    },
-    {
-      category: "fiber",
-      title: "Mushrooms",
-      portion: "100–150 g (4–5 heaped tbsp).",
-      note: "Oven-baked or pan-seared.",
-      order: 15,
-    },
-    {
-      category: "fiber",
-      title: "Canned green peas or sweet corn (sugar-free)",
-      portion: "4–5 tbsp (in soup or with meat).",
-      note: "Skip porridge in this meal if chosen.",
-      order: 16,
-    },
-
-    // SAUCES
-    {
-      category: "sauce",
-      title: "Tomato sauce",
-      portion: "To taste",
-      note: "Avoid at dinner only. 2 tbsp tomato paste (strictly no sugar or vegetable oil in ingredients!), stevia, 2–3 tbsp warm water (to adjust thickness), spices to taste: dried or fresh garlic, basil, oregano, smoked paprika, pinch of pepper.",
-      order: 17,
-    },
-    {
-      category: "sauce",
-      title: "White garlic sauce",
-      portion: "To taste",
-      note: "Avoid if eating fatty food, cottage cheese dessert, or simple carbs at lunch.",
-      order: 18,
-    },
-    {
-      category: "sauce",
-      title: "Mild pink sauce",
-      portion: "To taste",
-      note: "Avoid if eating fatty food, cottage cheese dessert, or simple carbs at lunch.",
-      order: 19,
-    },
-
-    // DESSERTS
-    {
-      category: "dessert",
-      title:
-        "One fruit (apple, half grapefruit, kiwi, or 3–4 large strawberries)",
-      portion: "1 pc (right after a meal)",
-      note: "",
-      order: 20,
-    },
-    {
-      category: "dessert",
-      title:
-        "Cottage cheese dessert (low-fat cottage cheese up to 5% + plain yogurt 1.6% + stevia + 1 tsp cinnamon + kiwi)",
-      portion:
-        "120–130 g cottage cheese (4 level tbsp) + 30–40 g yogurt (2 tbsp)",
-      note: "Right after a meal. Avoid if eating fatty food, yogurt sauce, or simple carbs at lunch.",
-      order: 21,
-    },
-    {
-      category: "dessert",
-      title: "Tea + stevia + 2 squares of dark chocolate (70%+)",
-      portion: "2 squares (right after a meal)",
-      note: "",
-      order: 22,
-    },
-    {
-      category: "dessert",
-      title:
-        "Tea + stevia + 2 Maria biscuits or 1 oatmeal cookie (no sugar or white flour)",
-      portion: "1–2 pcs (right after a meal)",
-      note: "",
-      order: 23,
-    },
-  ],
 };
 
 export const getDefaultNutritionItems = (
-  lang: LanguageCode = "ua",
+  lang: LanguageCode = "en",
 ): NewNutritionItem[] =>
-  DEFAULT_NUTRITION_BY_LANG[lang] ?? DEFAULT_NUTRITION_BY_LANG.ua;
+  DEFAULT_NUTRITION_BY_LANG[lang] ?? DEFAULT_NUTRITION_BY_LANG.en;

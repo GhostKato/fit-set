@@ -6,20 +6,21 @@ import { WorkoutScheduleBoard } from "./components/WorkoutScheduleBoard/WorkoutS
 import { useLanguage } from "../../context/LanguageContext";
 import { translateDay } from "../../i18n";
 import type { UserProfile } from "../../types/user";
+import type { WeekDay } from "../../types/exercise";
 import styles from "./HomePage.module.css";
 
 interface HomePageProps {
   user: UserProfile;
 }
 
-const DAYS_BY_GET_DAY = [
-  "Воскресенье",
-  "Понедельник",
-  "Вторник",
-  "Среда",
-  "Четверг",
-  "Пятница",
-  "Суббота",
+const DAYS_BY_GET_DAY: WeekDay[] = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
 ];
 
 export const HomePage = ({ user }: HomePageProps) => {

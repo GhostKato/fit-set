@@ -13,18 +13,20 @@ import {
 } from "./components/WorkoutSettingsModal/WorkoutSettingsModal";
 import { playWorkoutSignal } from "../../utils/workoutSound";
 import { getMostFrequentDayTitle } from "../../utils/dayTitle";
+import { isSpecificWeekDay } from "../../utils/exerciseOrder";
 import { useLanguage } from "../../context/LanguageContext";
 import { translateDay, translateDayAccusative } from "../../i18n";
+import type { WeekDay } from "../../types/exercise";
 import styles from "./WorkoutPage.module.css";
 
-const DAYS_BY_INDEX = [
-  "Воскресенье",
-  "Понедельник",
-  "Вторник",
-  "Среда",
-  "Четверг",
-  "Пятница",
-  "Суббота",
+const DAYS_BY_INDEX: WeekDay[] = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
 ];
 
 interface SavedWorkoutProgress {
@@ -32,8 +34,8 @@ interface SavedWorkoutProgress {
   completedSets: Record<string, boolean[]>;
 }
 
-const getStorageKey = (day: string) => `fitset_workout_progress_${day}`;
-const getConfigKey = (day: string) => `fitset_workout_config_${day}`;
+const getStorageKey = (day: WeekDay) => `fitset_workout_progress_${day}`;
+const getConfigKey = (day: WeekDay) => `fitset_workout_config_${day}`;
 
 const DEFAULT_TIMING_CONFIG: WorkoutTimingConfig = {
   mode: "manual",
@@ -42,7 +44,7 @@ const DEFAULT_TIMING_CONFIG: WorkoutTimingConfig = {
   restBetweenExercises: 240,
 };
 
-const loadSavedProgress = (day: string): SavedWorkoutProgress => {
+const loadSavedProgress = (day: WeekDay): SavedWorkoutProgress => {
   try {
     const raw = localStorage.getItem(getStorageKey(day));
     if (!raw) return { currentIndex: 0, completedSets: {} };
@@ -60,7 +62,7 @@ const loadSavedProgress = (day: string): SavedWorkoutProgress => {
   }
 };
 
-const loadTimingConfig = (day: string): WorkoutTimingConfig => {
+const loadTimingConfig = (day: WeekDay): WorkoutTimingConfig => {
   try {
     const raw = localStorage.getItem(getConfigKey(day));
     if (!raw) return DEFAULT_TIMING_CONFIG;
@@ -75,7 +77,10 @@ export const WorkoutPage = () => {
   const { language, t } = useLanguage();
 
   const todayName = DAYS_BY_INDEX[new Date().getDay()];
-  const selectedDay = searchParams.get("day") || todayName;
+  const rawDayParam = searchParams.get("day") ?? undefined;
+  const selectedDay: WeekDay = isSpecificWeekDay(rawDayParam)
+    ? rawDayParam
+    : todayName;
   const storageKey = getStorageKey(selectedDay);
   const configKey = getConfigKey(selectedDay);
 
@@ -108,7 +113,7 @@ export const WorkoutPage = () => {
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
   const [isAutoRunning, setIsAutoRunning] = useState(false);
-  const [loadedDay, setLoadedDay] = useState<string>(selectedDay);
+  const [loadedDay, setLoadedDay] = useState<WeekDay>(selectedDay);
 
   if (loadedDay !== selectedDay) {
     const restored = loadSavedProgress(selectedDay);

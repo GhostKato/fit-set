@@ -1,12 +1,21 @@
 export type ExerciseUnit = "reps" | "sec";
 
+export type WeekDay =
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday";
+
 export type Exercise = {
   id: string;
   userId: string;
-  days: string[];
+  days: WeekDay[];
   dayTitle: string;
   muscleGroup: string;
-  orders: Record<string, number>;
+  orders: Partial<Record<WeekDay, number>>;
   name: string;
   targetMuscles: string;
   sets: number;

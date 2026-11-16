@@ -3,29 +3,24 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import { addExercise } from "../../../../redux/exercises/operations";
 import { CustomSelect } from "../../../../components/CustomSelect/CustomSelect";
 import { StatusToggle } from "../../../../components/StatusToggle/StatusToggle";
+import { WEEK_DAYS } from "../../../../utils/exerciseOrder";
 import { useLanguage } from "../../../../context/LanguageContext";
 import { translateDay } from "../../../../i18n";
-import type { ExerciseUnit, NewExercise } from "../../../../types/exercise";
+import type {
+  ExerciseUnit,
+  NewExercise,
+  WeekDay,
+} from "../../../../types/exercise";
 import styles from "./ExerciseCreateForm.module.css";
 
 interface ExerciseCreateFormProps {
   onSuccess: () => void;
 }
 
-const ALL_DAYS = [
-  "Понедельник",
-  "Вторник",
-  "Среда",
-  "Четверг",
-  "Пятница",
-  "Суббота",
-  "Воскресенье",
-];
-
 type CreateFormState = Omit<NewExercise, "orders"> & { order: number };
 
 const initialFormState: CreateFormState = {
-  days: ["Понедельник"],
+  days: ["monday"],
   dayTitle: "",
   muscleGroup: "",
   order: 1,
@@ -47,7 +42,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
   const { language, t } = useLanguage();
   const [formData, setFormData] = useState<CreateFormState>(initialFormState);
 
-  const dayOptions = ALL_DAYS.map((day) => ({
+  const dayOptions = WEEK_DAYS.map((day) => ({
     value: day,
     label: translateDay(day, language),
   }));
@@ -77,7 +72,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
     if (isSubmitDisabled) return;
 
     const { order, ...rest } = formData;
-    const orders: Record<string, number> = {};
+    const orders: Partial<Record<WeekDay, number>> = {};
     for (const day of formData.days) {
       orders[day] = order;
     }
@@ -104,7 +99,7 @@ export const ExerciseCreateForm = ({ onSuccess }: ExerciseCreateFormProps) => {
           options={dayOptions}
           placeholder={t.formSelectDaysPlaceholder}
           onChangeMultiple={(days) =>
-            setFormData((prev) => ({ ...prev, days }))
+            setFormData((prev) => ({ ...prev, days: days as WeekDay[] }))
           }
         />
 
