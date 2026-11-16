@@ -17,7 +17,7 @@ interface TodayNutritionBoardProps {
   isEditable?: boolean;
 }
 
-const MEAL_ORDER: MealTime[] = ["Завтрак", "Обед", "Ужин"];
+const MEAL_ORDER: MealTime[] = ["breakfast", "lunch", "dinner"];
 
 export const TodayNutritionBoard = ({
   isEditable = false,
@@ -75,9 +75,9 @@ export const TodayNutritionBoard = ({
   };
 
   const totalSelectedCount =
-    (dailySelection.Завтрак?.length ?? 0) +
-    (dailySelection.Обед?.length ?? 0) +
-    (dailySelection.Ужин?.length ?? 0);
+    (dailySelection.breakfast?.length ?? 0) +
+    (dailySelection.lunch?.length ?? 0) +
+    (dailySelection.dinner?.length ?? 0);
 
   if (totalSelectedCount === 0) {
     return null;

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { useLanguage } from "../../../../context/LanguageContext";
 import type { Exercise } from "../../../../types/exercise";
 import styles from "./WorkoutSettingsModal.module.css";
 
@@ -27,13 +28,8 @@ export const WorkoutSettingsModal = ({
   onChangeConfig,
   onClose,
 }: WorkoutSettingsModalProps) => {
+  const { t } = useLanguage();
   const [draft, setDraft] = useState<WorkoutTimingConfig>(config);
-
-  useEffect(() => {
-    if (isOpen) {
-      setDraft(config);
-    }
-  }, [isOpen, config]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -74,13 +70,13 @@ export const WorkoutSettingsModal = ({
         aria-labelledby="workout-settings-title">
         <div className={styles.header}>
           <h3 id="workout-settings-title" className={styles.title}>
-            Режим и таймеры
+            {t.settingsModalTitle}
           </h3>
           <button
             type="button"
             onClick={onClose}
             className={styles.closeIconBtn}
-            aria-label="Закрыть">
+            aria-label={t.settingsCloseAria}>
             <X size={18} strokeWidth={2.5} />
           </button>
         </div>
@@ -92,7 +88,7 @@ export const WorkoutSettingsModal = ({
             className={`${styles.modeBtn} ${
               draft.mode === "manual" ? styles.modeBtnActive : ""
             }`}>
-            Ручная
+            {t.workoutModeManual}
           </button>
           <button
             type="button"
@@ -100,7 +96,7 @@ export const WorkoutSettingsModal = ({
             className={`${styles.modeBtn} ${
               draft.mode === "auto" ? styles.modeBtnActive : ""
             }`}>
-            Автоматическая
+            {t.workoutModeAuto}
           </button>
         </div>
 
@@ -108,7 +104,7 @@ export const WorkoutSettingsModal = ({
           {isAuto && (
             <div className={styles.section}>
               <div className={styles.sectionLabel}>
-                ВРЕМЯ ВЫПОЛНЕНИЯ ПОДХОДА (СЕК.)
+                {t.settingsWorkDurationLabel}
               </div>
 
               <div className={styles.exercisesList}>
@@ -126,7 +122,7 @@ export const WorkoutSettingsModal = ({
 
                       {isFixedSec ? (
                         <span className={styles.fixedBadge}>
-                          {ex.target} сек. (по плану)
+                          {ex.target} {t.settingsFixedPlanSuffix}
                         </span>
                       ) : (
                         <input
@@ -148,11 +144,13 @@ export const WorkoutSettingsModal = ({
           )}
 
           <div className={styles.section}>
-            <div className={styles.sectionLabel}>ОТДЫХ (СЕК.)</div>
+            <div className={styles.sectionLabel}>{t.settingsRestLabel}</div>
 
             <div className={styles.restGrid}>
               <label className={styles.restField}>
-                <span className={styles.restLabel}>Между подходами</span>
+                <span className={styles.restLabel}>
+                  {t.settingsRestBetweenSets}
+                </span>
                 <input
                   type="number"
                   min={5}
@@ -169,7 +167,9 @@ export const WorkoutSettingsModal = ({
               </label>
 
               <label className={styles.restField}>
-                <span className={styles.restLabel}>Между упражнениями</span>
+                <span className={styles.restLabel}>
+                  {t.settingsRestBetweenExercises}
+                </span>
                 <input
                   type="number"
                   min={5}
@@ -193,10 +193,10 @@ export const WorkoutSettingsModal = ({
 
         <div className={styles.footer}>
           <button type="button" onClick={onClose} className={styles.cancelBtn}>
-            Отмена
+            {t.cancelBtn}
           </button>
           <button type="button" onClick={handleSave} className={styles.saveBtn}>
-            Сохранить
+            {t.saveBtn}
           </button>
         </div>
       </div>

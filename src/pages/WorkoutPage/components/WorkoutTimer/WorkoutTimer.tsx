@@ -1,3 +1,4 @@
+import { useLanguage } from "../../../../context/LanguageContext";
 import styles from "./WorkoutTimer.module.css";
 
 export type TimerPhase =
@@ -14,14 +15,6 @@ interface WorkoutTimerProps {
   statusHint: string;
 }
 
-const PHASE_LABELS: Record<TimerPhase, string> = {
-  idle: "Таймер тренировки",
-  manualWorking: "Выполнение подхода",
-  work: "Выполнение подхода",
-  restSet: "Отдых между подходами",
-  restExercise: "Отдых между упражнениями",
-};
-
 const formatTime = (totalSeconds: number): string => {
   const mins = Math.floor(totalSeconds / 60);
   const secs = totalSeconds % 60;
@@ -34,6 +27,16 @@ export const WorkoutTimer = ({
   totalDuration,
   statusHint,
 }: WorkoutTimerProps) => {
+  const { t } = useLanguage();
+
+  const phaseLabels: Record<TimerPhase, string> = {
+    idle: t.timerPhaseIdle,
+    manualWorking: t.timerPhaseWorking,
+    work: t.timerPhaseWorking,
+    restSet: t.timerPhaseRestSet,
+    restExercise: t.timerPhaseRestExercise,
+  };
+
   const isResting = phase === "restSet" || phase === "restExercise";
   const isCounting = phase === "work" || isResting;
   const isWorking = phase === "work" || phase === "manualWorking";
@@ -58,7 +61,7 @@ export const WorkoutTimer = ({
       <div className={styles.mainRow}>
         <div className={styles.leftSide}>
           <span className={styles.meta}>
-            {isPrepare ? "Приготовьтесь" : PHASE_LABELS[phase]}
+            {isPrepare ? t.timerPrepareLabel : phaseLabels[phase]}
           </span>
           <div
             className={`${styles.display} ${
@@ -66,7 +69,9 @@ export const WorkoutTimer = ({
             } ${isResting && !isPrepare ? styles.displayRest : ""} ${
               isPrepare ? styles.displayPrepare : ""
             }`}>
-            {phase === "manualWorking" ? "В процессе" : formatTime(secondsLeft)}
+            {phase === "manualWorking"
+              ? t.timerInProgress
+              : formatTime(secondsLeft)}
           </div>
         </div>
 

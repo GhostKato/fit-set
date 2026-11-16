@@ -13,6 +13,8 @@ import {
 } from "./components/WorkoutSettingsModal/WorkoutSettingsModal";
 import { playWorkoutSignal } from "../../utils/workoutSound";
 import { getMostFrequentDayTitle } from "../../utils/dayTitle";
+import { useLanguage } from "../../context/LanguageContext";
+import { translateDay, translateDayAccusative } from "../../i18n";
 import styles from "./WorkoutPage.module.css";
 
 const DAYS_BY_INDEX = [
@@ -24,16 +26,6 @@ const DAYS_BY_INDEX = [
   "Пятница",
   "Суббота",
 ];
-
-const formatDayAccusative = (day: string): string => {
-  const lower = day.toLowerCase();
-  const map: Record<string, string> = {
-    среда: "среду",
-    пятница: "пятницу",
-    суббота: "субботу",
-  };
-  return map[lower] || lower;
-};
 
 interface SavedWorkoutProgress {
   currentIndex: number;
@@ -77,10 +69,10 @@ const loadTimingConfig = (day: string): WorkoutTimingConfig => {
     return DEFAULT_TIMING_CONFIG;
   }
 };
-
 export const WorkoutPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { language, t } = useLanguage();
 
   const todayName = DAYS_BY_INDEX[new Date().getDay()];
   const selectedDay = searchParams.get("day") || todayName;
@@ -183,6 +175,7 @@ export const WorkoutPage = () => {
     },
     [dayExercises, timingConfig.setDurations],
   );
+
   const handleTimerTickComplete = useCallback(() => {
     if (!currentExercise) return;
 
@@ -365,20 +358,22 @@ export const WorkoutPage = () => {
     return (
       <div className={styles.page}>
         <div className={styles.header}>
-          <h2 className={styles.title}>Тренировка • {selectedDay}</h2>
+          <h2 className={styles.title}>
+            {t.workoutTitlePrefix} • {translateDay(selectedDay, language)}
+          </h2>
         </div>
 
         <div className={styles.emptyState}>
           <p className={styles.emptyText}>
-            На <strong>{formatDayAccusative(selectedDay)}</strong> активных
-            упражнений пока нет. Добавьте или активируйте их в своей программе,
-            чтобы начать тренировку.
+            {t.workoutNoActiveExercisesPrefix}{" "}
+            <strong>{translateDayAccusative(selectedDay, language)}</strong>{" "}
+            {t.workoutNoActiveExercisesSuffix}
           </p>
           <button
             type="button"
             onClick={() => navigate("/exercises")}
             className={styles.primaryBtn}>
-            Перейти к упражнениям
+            {t.homeGoToExercisesBtn}
           </button>
         </div>
       </div>
@@ -439,30 +434,30 @@ export const WorkoutPage = () => {
     secondsLeft <= 10;
 
   const statusHint = isWorkoutCompleted
-    ? "Тренировка выполнена! Нажмите «Закончить тренировку»"
+    ? t.workoutHintDone
     : isPrepareRest
-      ? "Приготовьтесь выполнять упражнение"
+      ? t.workoutHintPrepare
       : phase === "manualWorking"
-        ? "Выполняйте подход и нажмите «Закончить подход»"
+        ? t.workoutHintManualWorking
         : phase === "work"
-          ? `Идёт подход ${activeSetIndex !== -1 ? activeSetIndex + 1 : currentExercise.sets} из ${currentExercise.sets}`
+          ? `${t.workoutHintWorkPrefix} ${activeSetIndex !== -1 ? activeSetIndex + 1 : currentExercise.sets} ${t.workoutOf} ${currentExercise.sets}`
           : phase === "restSet"
             ? isManualMode
-              ? "Идёт отдых — новый подход станет доступен после таймера"
-              : "Восстановите дыхание перед следующим подходом"
+              ? t.workoutHintRestSetManual
+              : t.workoutHintRestSetAuto
             : phase === "restExercise"
-              ? "Отдых перед стартом следующего упражнения — изучите технику"
+              ? t.workoutHintRestExercise
               : isManualMode
-                ? "Нажмите «Начать подход» внизу экрана"
+                ? t.workoutHintIdleManual
                 : hasCompletedSets
-                  ? "Нажмите «Продолжить тренировку» для автозапуска"
-                  : "Нажмите «Начать тренировку» для автозапуска";
+                  ? t.workoutHintIdleContinue
+                  : t.workoutHintIdleStart;
 
   return (
     <div className={styles.page}>
       <div className={styles.header}>
         <h2 className={styles.title}>
-          {selectedDay}
+          {translateDay(selectedDay, language)}
           {customDayTitle ? ` • ${customDayTitle}` : ""}
         </h2>
 
@@ -471,7 +466,7 @@ export const WorkoutPage = () => {
             type="button"
             onClick={() => setIsSettingsOpen(true)}
             className={styles.modeSelectBtn}>
-            {isManualMode ? "Ручная" : "Автоматическая"}
+            {isManualMode ? t.workoutModeManual : t.workoutModeAuto}
           </button>
 
           <button
@@ -479,7 +474,7 @@ export const WorkoutPage = () => {
             disabled={!hasAnyProgress}
             onClick={handleResetProgress}
             className={styles.resetTopBtn}>
-            Сбросить
+            {t.workoutResetBtn}
           </button>
         </div>
       </div>
@@ -507,7 +502,8 @@ export const WorkoutPage = () => {
       <div className={styles.progressCard}>
         <div className={styles.progressInfo}>
           <span className={styles.progressLabel}>
-            Выполнено: {completedExercisesCount} из {dayExercises.length}
+            {t.workoutCompletedCount}: {completedExercisesCount} {t.workoutOf}{" "}
+            {dayExercises.length}
           </span>
           <span className={styles.progressPercent}>{progressPercent}%</span>
         </div>
@@ -563,7 +559,7 @@ export const WorkoutPage = () => {
             type="button"
             onClick={handleResetProgress}
             className={styles.mainActionBtn}>
-            Закончить тренировку
+            {t.workoutFinishBtn}
           </button>
         ) : isManualMode ? (
           <>
@@ -572,7 +568,7 @@ export const WorkoutPage = () => {
                 type="button"
                 onClick={handleManualCancel}
                 className={styles.cancelActionBtn}>
-                Отменить
+                {t.workoutCancelBtn}
               </button>
             )}
             <button
@@ -582,7 +578,9 @@ export const WorkoutPage = () => {
               className={`${styles.mainActionBtn} ${
                 phase === "manualWorking" ? styles.mainActionBtnStop : ""
               }`}>
-              {phase === "manualWorking" ? "Закончить подход" : "Начать подход"}
+              {phase === "manualWorking"
+                ? t.workoutFinishSetBtn
+                : t.workoutStartSetBtn}
             </button>
           </>
         ) : (
@@ -593,15 +591,16 @@ export const WorkoutPage = () => {
               isAutoRunning ? styles.mainActionBtnStop : ""
             }`}>
             {isAutoRunning
-              ? "Приостановить тренировку"
+              ? t.workoutPauseBtn
               : hasCompletedSets
-                ? "Продолжить тренировку"
-                : "Начать тренировку"}
+                ? t.workoutContinueBtn
+                : t.workoutStartBtn}
           </button>
         )}
       </div>
 
       <WorkoutSettingsModal
+        key={isSettingsOpen ? "open" : "closed"}
         isOpen={isSettingsOpen}
         exercises={dayExercises}
         config={timingConfig}

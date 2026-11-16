@@ -1,14 +1,14 @@
-export type MealTime = "Завтрак" | "Обед" | "Ужин";
+export type MealTime = "breakfast" | "lunch" | "dinner";
 
 export type NutritionCategory =
-  | "Простые углеводы"
-  | "Сложные углеводы"
-  | "Белок"
-  | "Жиры"
-  | "Клетчатка"
-  | "Соус"
-  | "Коктейли"
-  | "Десерт";
+  | "simple_carbs"
+  | "complex_carbs"
+  | "protein"
+  | "fats"
+  | "fiber"
+  | "sauce"
+  | "shakes"
+  | "dessert";
 
 export interface NutritionItem {
   id: string;

@@ -1,48 +1,48 @@
 import type { LanguageCode } from "../context/LanguageContext";
 
 const DAY_LABELS: Record<string, Record<LanguageCode, string>> = {
-  Понедельник: { ua: "Понеділок", ru: "Понедельник", en: "Monday" },
-  Вторник: { ua: "Вівторок", ru: "Вторник", en: "Tuesday" },
-  Среда: { ua: "Середа", ru: "Среда", en: "Wednesday" },
-  Четверг: { ua: "Четвер", ru: "Четверг", en: "Thursday" },
-  Пятница: { ua: "П'ятниця", ru: "Пятница", en: "Friday" },
-  Суббота: { ua: "Субота", ru: "Суббота", en: "Saturday" },
-  Воскресенье: { ua: "Неділя", ru: "Воскресенье", en: "Sunday" },
+  monday: { ua: "Понеділок", ru: "Понедельник", en: "Monday" },
+  tuesday: { ua: "Вівторок", ru: "Вторник", en: "Tuesday" },
+  wednesday: { ua: "Середа", ru: "Среда", en: "Wednesday" },
+  thursday: { ua: "Четвер", ru: "Четверг", en: "Thursday" },
+  friday: { ua: "П'ятниця", ru: "Пятница", en: "Friday" },
+  saturday: { ua: "Субота", ru: "Суббота", en: "Saturday" },
+  sunday: { ua: "Неділя", ru: "Воскресенье", en: "Sunday" },
 };
 
 const SHORT_DAY_LABELS: Record<string, Record<LanguageCode, string>> = {
-  Понедельник: { ua: "Пн", ru: "Пн", en: "Mon" },
-  Вторник: { ua: "Вт", ru: "Вт", en: "Tue" },
-  Среда: { ua: "Ср", ru: "Ср", en: "Wed" },
-  Четверг: { ua: "Чт", ru: "Чт", en: "Thu" },
-  Пятница: { ua: "Пт", ru: "Пт", en: "Fri" },
-  Суббота: { ua: "Сб", ru: "Сб", en: "Sat" },
-  Воскресенье: { ua: "Нд", ru: "Вс", en: "Sun" },
+  monday: { ua: "Пн", ru: "Пн", en: "Mon" },
+  tuesday: { ua: "Вт", ru: "Вт", en: "Tue" },
+  wednesday: { ua: "Ср", ru: "Ср", en: "Wed" },
+  thursday: { ua: "Чт", ru: "Чт", en: "Thu" },
+  friday: { ua: "Пт", ru: "Пт", en: "Fri" },
+  saturday: { ua: "Сб", ru: "Сб", en: "Sat" },
+  sunday: { ua: "Нд", ru: "Вс", en: "Sun" },
 };
 
 const MEAL_LABELS: Record<string, Record<LanguageCode, string>> = {
-  Завтрак: { ua: "Сніданок", ru: "Завтрак", en: "Breakfast" },
-  Обед: { ua: "Обід", ru: "Обід", en: "Lunch" },
-  Ужин: { ua: "Вечеря", ru: "Ужин", en: "Dinner" },
+  breakfast: { ua: "Сніданок", ru: "Завтрак", en: "Breakfast" },
+  lunch: { ua: "Обід", ru: "Обед", en: "Lunch" },
+  dinner: { ua: "Вечеря", ru: "Ужин", en: "Dinner" },
 };
 
 const CATEGORY_LABELS: Record<string, Record<LanguageCode, string>> = {
-  "Простые углеводы": {
+  simple_carbs: {
     ua: "Прості вуглеводи",
     ru: "Простые углеводы",
     en: "Simple Carbs",
   },
-  "Сложные углеводы": {
+  complex_carbs: {
     ua: "Складні вуглеводи",
     ru: "Сложные углеводы",
     en: "Complex Carbs",
   },
-  Белок: { ua: "Білок", ru: "Белок", en: "Protein" },
-  Жиры: { ua: "Жири", ru: "Жиры", en: "Fats" },
-  Клетчатка: { ua: "Клітковина", ru: "Клетчатка", en: "Fiber" },
-  Соус: { ua: "Соус", ru: "Соус", en: "Sauce" },
-  Коктейли: { ua: "Коктейлі", ru: "Коктейли", en: "Shakes" },
-  Десерт: { ua: "Десерт", ru: "Десерт", en: "Dessert" },
+  protein: { ua: "Білок", ru: "Белок", en: "Protein" },
+  fats: { ua: "Жири", ru: "Жиры", en: "Fats" },
+  fiber: { ua: "Клітковина", ru: "Клетчатка", en: "Fiber" },
+  sauce: { ua: "Соус", ru: "Соус", en: "Sauce" },
+  shakes: { ua: "Коктейлі", ru: "Коктейли", en: "Shakes" },
+  dessert: { ua: "Десерт", ru: "Десерт", en: "Dessert" },
 };
 
 export const translateDay = (day: string, lang: LanguageCode): string =>
@@ -58,22 +58,26 @@ export const translateDayAccusative = (
   if (lang === "en") return DAY_LABELS[day]?.en ?? day;
   if (lang === "ua") {
     const map: Record<string, string> = {
-      Понедельник: "понеділок",
-      Вторник: "вівторок",
-      Среда: "середу",
-      Четверг: "четвер",
-      Пятница: "п'ятницю",
-      Суббота: "суботу",
-      Воскресенье: "неділю",
+      monday: "понеділок",
+      tuesday: "вівторок",
+      wednesday: "середу",
+      thursday: "четвер",
+      friday: "п'ятницю",
+      saturday: "суботу",
+      sunday: "неділю",
     };
     return map[day] ?? translateDay(day, lang).toLowerCase();
   }
   const mapRu: Record<string, string> = {
-    Среда: "среду",
-    Пятница: "пятницу",
-    Суббота: "субботу",
+    monday: "понедельник",
+    tuesday: "вторник",
+    wednesday: "среду",
+    thursday: "четверг",
+    friday: "пятницу",
+    saturday: "субботу",
+    sunday: "воскресенье",
   };
-  return mapRu[day] ?? day.toLowerCase();
+  return mapRu[day] ?? day;
 };
 
 export const translateMeal = (meal: string, lang: LanguageCode): string =>

@@ -15,18 +15,18 @@ interface NutritionCreateFormProps {
 }
 
 const ALL_CATEGORIES: NutritionCategory[] = [
-  "Простые углеводы",
-  "Сложные углеводы",
-  "Белок",
-  "Жиры",
-  "Клетчатка",
-  "Соус",
-  "Коктейли",
-  "Десерт",
+  "simple_carbs",
+  "complex_carbs",
+  "protein",
+  "fats",
+  "fiber",
+  "sauce",
+  "shakes",
+  "dessert",
 ];
 
 const initialFormState: NewNutritionItem = {
-  category: "Белок",
+  category: "protein",
   order: 1,
   title: "",
   portion: "",

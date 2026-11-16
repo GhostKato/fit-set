@@ -18,22 +18,23 @@ import type {
   MealSchedule,
   DailyMealSelection,
 } from "../types/nutrition";
-import { DEFAULT_NUTRITION_ITEMS } from "../data/defaultNutrition";
+import { getDefaultNutritionItems } from "../data/defaultNutrition";
+import type { LanguageCode } from "../context/LanguageContext";
 
 const COLLECTION_NAME = "nutrition";
 const DAILY_COLLECTION = "dailyNutrition";
 const SCHEDULE_COLLECTION = "nutritionSchedule";
 
 export const DEFAULT_MEAL_SCHEDULE: MealSchedule = {
-  Завтрак: "8.00 – 9.00",
-  Обед: "13.00 – 14.00",
-  Ужин: "18.00 – 19.00",
+  breakfast: "8.00 – 9.00",
+  lunch: "13.00 – 14.00",
+  dinner: "18.00 – 19.00",
 };
 
 export const EMPTY_DAILY_SELECTION: DailyMealSelection = {
-  Завтрак: [],
-  Обед: [],
-  Ужин: [],
+  breakfast: [],
+  lunch: [],
+  dinner: [],
 };
 
 const getTodayDocId = (userId: string) => {
@@ -113,14 +114,16 @@ export const deleteAllUserNutrition = async (): Promise<void> => {
   await batch.commit();
 };
 
-export const seedDefaultNutritionToDb = async (): Promise<NutritionItem[]> => {
+export const seedDefaultNutritionToDb = async (
+  lang: LanguageCode = "ua",
+): Promise<NutritionItem[]> => {
   const user = auth.currentUser;
   if (!user) throw new Error("Пользователь не авторизован");
 
   const batch = writeBatch(db);
   const createdItems: NutritionItem[] = [];
 
-  DEFAULT_NUTRITION_ITEMS.forEach((item) => {
+  getDefaultNutritionItems(lang).forEach((item) => {
     const docRef = doc(collection(db, COLLECTION_NAME));
     const fullItem = { ...item, userId: user.uid };
     batch.set(docRef, fullItem);

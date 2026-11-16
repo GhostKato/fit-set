@@ -14,17 +14,17 @@ import type { NutritionCategory } from "../../types/nutrition";
 import styles from "./NutritionPage.module.css";
 
 const ALL_CATEGORIES: NutritionCategory[] = [
-  "Простые углеводы",
-  "Сложные углеводы",
-  "Белок",
-  "Жиры",
-  "Клетчатка",
-  "Соус",
-  "Коктейли",
-  "Десерт",
+  "simple_carbs",
+  "complex_carbs",
+  "protein",
+  "fats",
+  "fiber",
+  "sauce",
+  "shakes",
+  "dessert",
 ];
 
-const ALL_TAB = "Все";
+const ALL_TAB = "all";
 
 export const NutritionPage = () => {
   const dispatch = useAppDispatch();
@@ -114,7 +114,7 @@ export const NutritionPage = () => {
           <p>{t.nutritionEmptyText}</p>
           <button
             type="button"
-            onClick={() => dispatch(seedDefaultNutrition())}
+            onClick={() => dispatch(seedDefaultNutrition(language))}
             className={styles.seedBtn}>
             {t.nutritionSeedBtn}
           </button>

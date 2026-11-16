@@ -17,6 +17,7 @@ import type {
   MealSchedule,
   DailyMealSelection,
 } from "../../types/nutrition";
+import type { LanguageCode } from "../../context/LanguageContext";
 
 export const fetchNutrition = createAsyncThunk<
   NutritionItem[],
@@ -82,11 +83,11 @@ export const removeAllNutrition = createAsyncThunk<
 
 export const seedDefaultNutrition = createAsyncThunk<
   NutritionItem[],
-  void,
+  LanguageCode | undefined,
   { rejectValue: string }
->("nutrition/seedDefault", async (_, { rejectWithValue }) => {
+>("nutrition/seedDefault", async (lang = "ua", { rejectWithValue }) => {
   try {
-    return await seedDefaultNutritionToDb();
+    return await seedDefaultNutritionToDb(lang);
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }

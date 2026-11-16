@@ -79,13 +79,13 @@ const nutritionSlice = createSlice({
       .addCase(removeNutritionItem.fulfilled, (state, action) => {
         const deletedId = action.payload;
         state.items = state.items.filter((item) => item.id !== deletedId);
-        state.dailySelection.Завтрак = state.dailySelection.Завтрак.filter(
+        state.dailySelection.breakfast = state.dailySelection.breakfast.filter(
           (id) => id !== deletedId,
         );
-        state.dailySelection.Обед = state.dailySelection.Обед.filter(
+        state.dailySelection.lunch = state.dailySelection.lunch.filter(
           (id) => id !== deletedId,
         );
-        state.dailySelection.Ужин = state.dailySelection.Ужин.filter(
+        state.dailySelection.dinner = state.dailySelection.dinner.filter(
           (id) => id !== deletedId,
         );
       })

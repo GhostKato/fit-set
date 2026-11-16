@@ -1,3 +1,4 @@
+import { useLanguage } from "../../../../context/LanguageContext";
 import styles from "./SetTracker.module.css";
 
 interface SetTrackerProps {
@@ -17,6 +18,7 @@ export const SetTracker = ({
   activeSetIndex = null,
   isActive = false,
 }: SetTrackerProps) => {
+  const { t } = useLanguage();
   const completedCount = setsState.filter(Boolean).length;
   const isAllCompleted =
     setsState.length > 0 && completedCount === setsState.length;
@@ -43,7 +45,7 @@ export const SetTracker = ({
         isAllCompleted || isActive ? styles.containerActive : ""
       }`}>
       <div className={styles.header}>
-        <span className={styles.meta}>Трекинг подходов</span>
+        <span className={styles.meta}>{t.setsTrackingLabel}</span>
 
         <div className={styles.rightControls}>
           <span
@@ -51,8 +53,8 @@ export const SetTracker = ({
               isAllCompleted ? styles.counterDone : ""
             }`}>
             {isAllCompleted
-              ? `✓ Выполнено (${completedCount} из ${setsState.length})`
-              : `${completedCount} из ${setsState.length}`}
+              ? `✓ ${t.setsDoneLabel} (${completedCount} ${t.workoutOf} ${setsState.length})`
+              : `${completedCount} ${t.workoutOf} ${setsState.length}`}
           </span>
 
           <button
@@ -60,8 +62,8 @@ export const SetTracker = ({
             className={styles.resetBtn}
             onClick={handleReset}
             disabled={isResetDisabled}
-            title="Сбросить подходы этого упражнения">
-            Сбросить
+            title={t.setsResetTitle}>
+            {t.workoutResetBtn}
           </button>
         </div>
       </div>
@@ -78,7 +80,9 @@ export const SetTracker = ({
               className={`${styles.setPill} ${
                 isDone ? styles.setPillDone : ""
               } ${isCurrent ? styles.setPillActive : ""}`}>
-              <span>Подход {idx + 1}</span>
+              <span>
+                {t.setPillLabel} {idx + 1}
+              </span>
             </button>
           );
         })}

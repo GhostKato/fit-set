@@ -19,7 +19,7 @@ interface NutritionCardProps {
   onCancelEdit?: () => void;
 }
 
-const MEAL_ORDER: MealTime[] = ["Завтрак", "Обед", "Ужин"];
+const MEAL_ORDER: MealTime[] = ["breakfast", "lunch", "dinner"];
 
 export const NutritionCard = ({
   item,
