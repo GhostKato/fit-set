@@ -133,6 +133,7 @@ export const en: TranslationDict = {
   exercisesEmptyInactive: "No inactive exercises yet.",
   exercisesEmptyForDayPrefix: "No active exercises for «",
   exercisesEmptyForDaySuffix: "» yet.",
+  unitSetsShort: "sets",
   unitReps: "reps",
   unitSec: "sec.",
   weightLabel: "Weight",

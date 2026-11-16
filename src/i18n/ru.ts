@@ -133,6 +133,7 @@ export const ru: TranslationDict = {
   exercisesEmptyInactive: "Неактивных упражнений пока нет.",
   exercisesEmptyForDayPrefix: "На день «",
   exercisesEmptyForDaySuffix: "» пока нет активных упражнений.",
+  unitSetsShort: "подх.",
   unitReps: "повт.",
   unitSec: "сек.",
   weightLabel: "Вес",

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import {
-  removeNutrition,
+  removeNutritionItem,
   syncTodaySelection,
 } from "../../../../redux/nutrition/operations";
 import { setDailySelectionOptimistic } from "../../../../redux/nutrition/slice";
@@ -34,6 +34,10 @@ export const NutritionCard = ({
   );
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  const isAnyMealSelected = MEAL_ORDER.some((mealKey) =>
+    (dailySelection[mealKey] ?? []).includes(item.id),
+  );
+
   const handleToggleMealForToday = (mealKey: MealTime) => {
     const currentList = dailySelection[mealKey] ?? [];
     const exists = currentList.includes(item.id);
@@ -52,7 +56,7 @@ export const NutritionCard = ({
 
   const handleConfirmDelete = async () => {
     setIsDeleteModalOpen(false);
-    await dispatch(removeNutrition(item.id));
+    await dispatch(removeNutritionItem(item.id));
   };
 
   if (isEditing) {
@@ -61,16 +65,24 @@ export const NutritionCard = ({
 
   return (
     <>
-      <div className={styles.card}>
-        <div className={styles.cardTop}>
-          <div>
-            <span className={styles.categoryBadge}>
-              {translateCategory(item.category, language)}
+      <div
+        className={`${styles.card} ${
+          isAnyMealSelected ? styles.cardSelected : ""
+        }`}>
+        <div className={styles.header}>
+          <div className={styles.info}>
+            <span className={styles.meta}>
+              {translateCategory(item.category, language)} • №{item.order ?? 1}
             </span>
-            <h4 className={styles.cardTitle}>{item.title}</h4>
+            <h4 className={styles.name}>{item.title}</h4>
+            {item.portion && (
+              <p className={styles.portion}>
+                {t.portionLabel}: {item.portion}
+              </p>
+            )}
           </div>
 
-          <div className={styles.cardActions}>
+          <div className={styles.actions}>
             <button
               type="button"
               onClick={() => onStartEdit?.()}
@@ -86,39 +98,31 @@ export const NutritionCard = ({
           </div>
         </div>
 
-        {item.portion && (
-          <p className={styles.portionText}>
-            <strong>{t.portionLabel}:</strong> {item.portion}
-          </p>
-        )}
-
         {item.note && (
-          <p className={styles.noteText}>
+          <p className={styles.note}>
             <strong>{t.noteLabel}:</strong> {item.note}
           </p>
         )}
 
-        <div className={styles.mealSelectorRow}>
-          <span className={styles.mealSelectorLabel}>{t.selectTodayFor}</span>
-          <div className={styles.mealPills}>
-            {MEAL_ORDER.map((mealKey) => {
-              const isSelected = (dailySelection[mealKey] ?? []).includes(
-                item.id,
-              );
-              return (
-                <button
-                  key={mealKey}
-                  type="button"
-                  onClick={() => handleToggleMealForToday(mealKey)}
-                  className={`${styles.mealPill} ${
-                    isSelected ? styles.mealPillActive : ""
-                  }`}>
-                  {isSelected ? "✓ " : "+ "}
-                  {translateMeal(mealKey, language)}
-                </button>
-              );
-            })}
-          </div>
+        <div className={styles.mealPickerRow}>
+          <span className={styles.pickerLabel}>{t.selectTodayFor}</span>
+          {MEAL_ORDER.map((mealKey) => {
+            const isSelected = (dailySelection[mealKey] ?? []).includes(
+              item.id,
+            );
+            return (
+              <button
+                key={mealKey}
+                type="button"
+                onClick={() => handleToggleMealForToday(mealKey)}
+                className={`${styles.mealToggleBtn} ${
+                  isSelected ? styles.mealToggleBtnActive : ""
+                }`}>
+                {isSelected ? "✓ " : "+ "}
+                {translateMeal(mealKey, language)}
+              </button>
+            );
+          })}
         </div>
       </div>
 

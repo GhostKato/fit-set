@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { editNutrition } from "../../../../redux/nutrition/operations";
+import { editNutritionItem } from "../../../../redux/nutrition/operations";
 import { CustomSelect } from "../../../../components/CustomSelect/CustomSelect";
 import { useLanguage } from "../../../../context/LanguageContext";
 import { translateCategory } from "../../../../i18n";
@@ -41,6 +41,7 @@ export const NutritionEditForm = ({
 
   const [formData, setFormData] = useState<NewNutritionItem>({
     category: item.category,
+    order: item.order ?? 1,
     title: item.title,
     portion: item.portion,
     note: item.note,
@@ -52,7 +53,7 @@ export const NutritionEditForm = ({
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "order" ? Number(value) : value,
     }));
   };
 
@@ -61,10 +62,11 @@ export const NutritionEditForm = ({
     if (!formData.title.trim()) return;
 
     await dispatch(
-      editNutrition({
+      editNutritionItem({
         id: item.id,
         fields: {
           category: formData.category,
+          order: formData.order || 1,
           title: formData.title.trim(),
           portion: formData.portion.trim(),
           note: formData.note.trim(),
@@ -79,25 +81,39 @@ export const NutritionEditForm = ({
       <h4 className={styles.editTitle}>{t.formEditNutritionTitle}</h4>
 
       <div className={styles.editGrid}>
-        <CustomSelect
-          value={formData.category}
-          options={categoryOptions}
-          onChange={(val) =>
-            setFormData((prev) => ({
-              ...prev,
-              category: val as NutritionCategory,
-            }))
-          }
-        />
+        <div className={styles.row}>
+          <CustomSelect
+            value={formData.category}
+            options={categoryOptions}
+            onChange={(val) =>
+              setFormData((prev) => ({
+                ...prev,
+                category: val as NutritionCategory,
+              }))
+            }
+          />
 
-        <input
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          placeholder={t.formNutritionTitlePlaceholder}
-          required
-          className={styles.input}
-        />
+          <input
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            placeholder={t.formNutritionTitlePlaceholder}
+            required
+            className={`${styles.input} ${styles.flex1}`}
+          />
+
+          <label className={styles.numberGroup}>
+            <span>№:</span>
+            <input
+              type="number"
+              name="order"
+              value={formData.order}
+              onChange={handleChange}
+              min={1}
+              className={`${styles.input} ${styles.numberInput}`}
+            />
+          </label>
+        </div>
 
         <input
           name="portion"

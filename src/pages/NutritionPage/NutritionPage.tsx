@@ -52,9 +52,11 @@ export const NutritionPage = () => {
   const getTabLabel = (tab: string) =>
     tab === ALL_TAB ? t.filterAll : translateCategory(tab, language);
 
-  const filteredItems = items.filter((item) =>
-    selectedCategory === ALL_TAB ? true : item.category === selectedCategory,
-  );
+  const filteredItems = items
+    .filter((item) =>
+      selectedCategory === ALL_TAB ? true : item.category === selectedCategory,
+    )
+    .sort((a, b) => (a.order ?? 1) - (b.order ?? 1));
 
   return (
     <div className={styles.page}>
@@ -124,7 +126,7 @@ export const NutritionPage = () => {
           {t.nutritionEmptyCategorySuffix}
         </div>
       ) : (
-        <div className={styles.cardsGrid}>
+        <div className={styles.cardsList}>
           {filteredItems.map((item) => (
             <NutritionCard
               key={item.id}

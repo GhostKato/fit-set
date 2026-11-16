@@ -131,6 +131,7 @@ export const ua = {
   exercisesEmptyInactive: "Неактивних вправ поки немає.",
   exercisesEmptyForDayPrefix: "На день «",
   exercisesEmptyForDaySuffix: "» поки немає активних вправ.",
+  unitSetsShort: "підх.",
   unitReps: "повт.",
   unitSec: "сек.",
   weightLabel: "Вага",

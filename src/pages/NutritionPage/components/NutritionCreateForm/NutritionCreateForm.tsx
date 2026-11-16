@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { addNutrition } from "../../../../redux/nutrition/operations";
+import { addNutritionItem } from "../../../../redux/nutrition/operations";
 import { CustomSelect } from "../../../../components/CustomSelect/CustomSelect";
 import { useLanguage } from "../../../../context/LanguageContext";
 import { translateCategory } from "../../../../i18n";
@@ -27,6 +27,7 @@ const ALL_CATEGORIES: NutritionCategory[] = [
 
 const initialFormState: NewNutritionItem = {
   category: "Белок",
+  order: 1,
   title: "",
   portion: "",
   note: "",
@@ -50,7 +51,7 @@ export const NutritionCreateForm = ({
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "order" ? Number(value) : value,
     }));
   };
 
@@ -59,8 +60,9 @@ export const NutritionCreateForm = ({
     if (!formData.title.trim()) return;
 
     await dispatch(
-      addNutrition({
+      addNutritionItem({
         category: formData.category,
+        order: formData.order || 1,
         title: formData.title.trim(),
         portion: formData.portion.trim(),
         note: formData.note.trim(),
@@ -70,6 +72,7 @@ export const NutritionCreateForm = ({
     setFormData((prev) => ({
       ...initialFormState,
       category: prev.category,
+      order: prev.order + 1,
     }));
     onSuccess();
   };
@@ -96,8 +99,20 @@ export const NutritionCreateForm = ({
           onChange={handleChange}
           placeholder={t.formNutritionTitlePlaceholder}
           required
-          className={`${styles.input} ${styles.flex2}`}
+          className={`${styles.input} ${styles.flex1}`}
         />
+
+        <label className={styles.numberGroup}>
+          <span>№:</span>
+          <input
+            type="number"
+            name="order"
+            value={formData.order}
+            onChange={handleChange}
+            min={1}
+            className={`${styles.input} ${styles.numberInput}`}
+          />
+        </label>
       </div>
 
       <input
